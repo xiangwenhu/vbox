@@ -1,14 +1,15 @@
 <template>
   <div>
+
     <div class="tag-hd">
       <div class="tag-sort">
         <span :class='["sort-type", sortType == 1 ? "tag-select":""]' @click.stop='changeSortType(1)'>最新</span>
         <span :class='["sort-type", sortType == 2 ? "tag-select":""]' @click.stop='changeSortType(2)'>最热</span>
-        <span class="more_filter">三</span>
+        <span class="more_filter" @click.stop='toggleTag'>三</span>
       </div>
     </div>
-
-    <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying'></album-list>
+    <album-tag class="album-tag" v-show="showTag" :tag='tagOpt' @confirmed='tagsChanged'></album-tag>
+    <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-show="!showTag"></album-list>
 
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>
       <span slot="no-more" class="no-more">
@@ -21,12 +22,19 @@
 <script>
   import InfiniteLoading from 'vue-infinite-loading'
   import AlbumList from '../components/Album/AlbumList'
+  import AlbumTag from '../components/Album/AlbumTag'
   import Search from '../api/search'
   export default {
     name: 'album-search-view',
+    components: {
+      InfiniteLoading,
+      AlbumList,
+      AlbumTag
+    },
     data() {
       return {
         // 从0开始
+        tagOpt: undefined,
         page: 0,
         pagesize: 30,
         sortType: 1,
@@ -45,29 +53,30 @@
           company: -1
         },
         sum: 100,
-        albums: []
+        albums: [],
+        showTag: false
       }
-    },
-    components: {
-      InfiniteLoading,
-      AlbumList
     },
     methods: {
       async onInfinite() {
         try {
-          let res = await Search.albumLib(this.page === 0 ? 'firstpage' : 'get_album_info', this.page, this.pagesize, this.sortType, this.language,
-            this.genre, this.year, 0, this.type, this.company).then(res => res.json());
+          let res = await Search.albumLib(!this.tagOpt ? 'firstpage' : 'get_album_info', this.page, this.pagesize, this.sortType, this.tag.language,
+            this.tag.genre, this.tag.year, 0, this.tag.type, this.tag.company).then(res => res.json());
+          if (!this.tagOpt) {
+            this.tagOpt = res.data.tag
+          }
+          if (res.data.albumlist === null || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          } else {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+          }
           this.albums = this.albums.concat(res.data.albumlist.map(album => {
             album.albumMID = album.album_mid
             album.albumName = album.album_name
             return album
           }))
           this.num = res.data.sum
-          if (this.albums.length < this.sum) {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
-          } else {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
-          }
+
           this.page++
         } catch (err) {
           alert(err);
@@ -89,6 +98,15 @@
         let res = await Search.albumInfo(albumMID).then(res => res.json())
         this.$store.commit('playing/addSongs', res.data.list)
         this.$store.commit('playing/next', res.data.list[0])
+      },
+      toggleTag() {
+        this.showTag = !this.showTag
+      },
+      tagsChanged(tag) {
+        if (tag.confirmed) {
+          this.tag = tag.tag
+        }
+        this.showTag = false
       }
     },
     watch: {
@@ -140,5 +158,13 @@
   .more_filter {
     padding: 0.2rem 0.4rem;
     height: 1.2rem;
+  }
+
+  .album-tag {
+    position: absolute;
+    top: 0;
+    background: #FFF;
+    z-index: 999;
+    width: 100%;
   }
 </style>
