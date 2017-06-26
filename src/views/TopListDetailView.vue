@@ -1,7 +1,7 @@
 <template>
   <div>
     <song-list :songs='songlist' @addsong='addsong' @playsong='playsong'></song-list>
-    <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
+    <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>
       <span slot="no-more" class="no-more" style="">
         没有更多了
      </span>

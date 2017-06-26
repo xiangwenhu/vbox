@@ -1,10 +1,11 @@
 <template>
-  <div>Album Detail</div>
+  <div>{{JSON.stringify(tag)}}</div>
 </template>
 
 <script>
   export default {
-    name: 'album-tag'
+    name: 'album-tag',
+    props: ['tag']
   }
 
 </script>

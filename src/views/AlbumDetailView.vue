@@ -1,10 +1,6 @@
 <template>
-  <div>album detail</div>
+  <div></div>
 </template>
 
 <script>
-  export default {
-    name: 'album-detail-view'
-  }
-
 </script>
