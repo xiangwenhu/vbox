@@ -1,0 +1,146 @@
+<template>
+  <div id="toplist_box">
+    <div v-for="(top,i) in toplist" class="topitem">
+      <div class="box">
+        <div class="box-item box-item-1">
+          <router-link :to='{name:"TopListDetailView",params:{topid:top.topID}}' class="songlist__cover album_name" :data-id="top.topID"
+            style="position:relative">
+            <img onerror="this.src='//y.gtimg.cn/mediastyle/global/img/album_300.png?max_age=31536000';this.onerror=null;" :src="top.pic_v12"
+              alt="" class="songlist__pic" style="display: inline; visibility: visible;">
+            <span class="small-play-icon" @click.stop='addToPlaying(top.topID)'>
+                <play-icon height='1'></play-icon>
+              </span>
+          </router-link>
+        </div>
+        <div class="box-item box-item-2">
+          <router-link :to='{name:"TopListDetailView",params:{topid:top.topID}}' class="songlist__cover album_name" :data-id="top.topID"
+            style="position:relative">
+            <div style="position:relative">
+              <ul>
+                <li v-for="(song,index) in top.songlist" class="songitem ellipsis">
+                  <span class="songname">{{index+1}} {{song.songname}}</span> <span class="songsinger">-{{song.singername}}</span>
+                </li>
+              </ul>
+              <span class="go-detail">></span>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+    </div>
+    <!--
+      <swiper :options="swiperOption" class="swiper-box">
+        <swiper-slide v-for="(top,index) in toplist" class="swiper-item">
+          <div :style='{"background-color":bgColors[index]}'>
+            <h3 class="align-center">
+              <div class="toplist__tit_pop">{{top.ListName.split('\·').reverse()[0].substr(0,2)}}</div>
+            </h3>
+            <ul>
+              <li v-for="(song,i) in top.songlist">
+                <p>{{i + 1}} {{song.songname}}</p>
+                <p>{{song.singername}}</p>
+              </li>
+            </ul>
+          </div>
+        </swiper-slide>
+        
+      </swiper> -->
+
+  </div>
+  </div>
+</template>
+
+<script>
+  import PlayIcon from '../PlayIcon'
+  export default {
+    name: 'top-list-slide',
+    components: {
+      PlayIcon
+    },
+    data() {
+      return {
+        bgColors: ['rgb(2,171,114)', 'rgb(0,106,163)', 'rgb(233,163,63)', 'rgb(1,172,144)'],
+        swiperOption: {
+          pagination: '.swiper-pagination',
+          direction: 'horizontal',
+          slidesPerView: 1,
+          paginationClickable: true,
+          spaceBetween: 30,
+          mousewheelControl: true
+        }
+      }
+    },
+    props: ['toplist'],
+    methods: {
+      addToPlaying(topID) {
+        this.$emit('addToPlaying', topID)
+      }
+    }
+  }
+
+</script>
+
+<style scoped>
+  #toplist_box {
+    color: #FFF;
+    background-color: #345;
+  }
+
+
+  .topitem {
+    background-color: #FFF
+  }
+
+  .songitem {
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    max-width: 85%;
+  }
+
+  .songname {
+    color: #333;
+  }
+
+  .songsinger {
+    color: #666
+  }
+
+  .box {
+    display: -webkit-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: left;
+    align-content: space-between;
+  }
+
+  .box-item {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+
+  .box-item-1 {
+    flex: 1
+  }
+
+  .box-item-2 {
+    flex: 2;
+    max-width: 66%;
+  }
+
+  .songlist__pic {
+    width: 6rem
+  }
+
+  .go-detail {
+    color: #666;
+    position: absolute;
+    right: 0.5rem;
+    top: 2.8rem
+  }
+
+  .small-play-icon {
+    position: absolute;
+    bottom: 0.2rem;
+    right: 0.2rem;
+  }
+</style>
