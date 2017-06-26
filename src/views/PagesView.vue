@@ -16,6 +16,9 @@
     name: 'pages-view',
     components: { HeaderBar, FooterBar, MinPlayer },
     data() {
+      let href = window.location.href;
+      let path = href.split('/');
+      let cat = path.length > 0 ? path[path.indexOf('pages') + 1] : 'home';
       return {
         transitionName: 'slide-left',
         slideCats: ['home', 'singer', 'album', 'toplist', 'diss', 'mv'],
@@ -23,7 +26,7 @@
         slideType: 0,
         touchStartPoint: null,
         touchEndPoint: null,
-        cat: 'home'
+        cat: cat
       }
     },
     watch: {
