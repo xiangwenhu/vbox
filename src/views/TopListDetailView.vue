@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="toplist-detail">
     <song-list :songs='songlist' @addsong='addsong' @playsong='playsong'></song-list>
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>
       <span slot="no-more" class="no-more" style="">
@@ -68,5 +68,7 @@
 </script>
 
 <style scoped>
-
+  .toplist-detail{
+    background-color: #000
+  }
 </style>

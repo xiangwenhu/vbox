@@ -56,9 +56,6 @@
 
 
 <style scoped>
-  .song-list {
-    background-color: rgb(170, 194, 218)
-  }
 
   .songlist__item {
     border-bottom: rgba(0, 0, 0, .15) solid 1px;

@@ -120,11 +120,20 @@
   .box {
     display: flex;
     flex-wrap: wrap;
-    justify-content:flex-start;
-    align-content: space-between;   
+    justify-content: flex-start;
+    align-content: space-between;
   }
 
-  .box-item {    
-    justify-content: center;    
+  .box-item {
+    justify-content: center;
+  }
+
+  .focus__gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    background-image: -webkit-linear-gradient(top, transparent, currentColor 80%);
   }
 </style>

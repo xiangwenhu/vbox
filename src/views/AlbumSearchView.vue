@@ -8,7 +8,10 @@
         <span class="more_filter" @click.stop='toggleTag'>三</span>
       </div>
     </div>
-    <album-tag class="album-tag" v-show="showTag" :tag='tagOpt' @confirmed='tagsChanged'></album-tag>
+    <transition name="'slide-left'">
+      <album-tag class="album-tag" v-show="showTag" :tag='tagOpt' @confirmed='tagsChanged'></album-tag>
+    </transition>
+    
     <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-show="!showTag"></album-list>
 
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>

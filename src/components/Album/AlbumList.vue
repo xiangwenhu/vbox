@@ -3,13 +3,17 @@
     <div v-for="(album,index) in albums" class="box-item align-center">
       <figure>
         <div class="album_pic_zone">
-          <img class="album_pic" :src='"http://y.gtimg.cn/music/photo_new/T002R150x150M000"+ album.albumMID + ".jpg?max_age=2592000"'
-          />
-          <span class="play-icon" @click.stop='addToPlaying(album.albumMID)'><play-icon height='2'></play-icon></span>
+          <router-link :to="{name:'AlbumDetailView',params:{albummid:album.albumMID}}">
+            <img class="album_pic" :src='"http://y.gtimg.cn/music/photo_new/T002R150x150M000"+ album.albumMID + ".jpg?max_age=2592000"'
+            />
+            <span class="play-icon" @click.stop='addToPlaying(album.albumMID)'><play-icon height='2'></play-icon></span>
+          </router-link>
         </div>
         <figcaption>
-          <p class="ellipsis album_name">{{album.albumName}}</p>
-          <p class="ellipsis album_singer"> {{album.singers.map(s=>s.singer_name).join('/')}}</p>
+          <router-link :to="{name:'AlbumDetailView',params:{albummid:album.albumMID}}">
+            <p class="ellipsis album_name">{{album.albumName}}</p>
+            <p class="ellipsis album_singer"> {{album.singers.map(s=>s.singer_name).join('/')}}</p>
+          </router-link>
         </figcaption>
       </figure>
     </div>
