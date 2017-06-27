@@ -68,21 +68,19 @@
           if (!this.tagOpt) {
             this.tagOpt = res.data.tag
           }
-          this.num = res.data.sum
-          if (!res.data || res.data.albumlist === null || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
+          this.sum = res.data.sum
+          if (!res.data || !res.data.albumlist || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
             return
           } else {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')           
+            this.albums = this.albums.concat(res.data.albumlist.map(album => {
+              album.albumMID = album.album_mid
+              album.albumName = album.album_name
+              return album
+            }))
+            this.page++
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
           }
-
-          this.albums = this.albums.concat(res.data.albumlist.map(album => {
-            album.albumMID = album.album_mid
-            album.albumName = album.album_name
-            return album
-          }))
-
-          this.page++
         } catch (err) {
           alert(err);
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')

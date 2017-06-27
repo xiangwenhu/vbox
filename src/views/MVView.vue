@@ -8,7 +8,7 @@
       </div>
     </div>
     <transition name="'slide-left'">
-      <mv-tag  class="mv-tag" :tags='tsTagsOpt' @confirmed='tagsChanged' v-show='showTag'></mv-tag>
+      <mv-tag class="mv-tag" :tags='tsTagsOpt' @confirmed='tagsChanged' v-show='showTag'></mv-tag>
     </transition>
     <mv-list :mvs='mvs' v-show='!showTag'></mv-list>
 
@@ -75,17 +75,17 @@
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
             return
           } else {
+            // splice 不产生新数组
+            this.mvs = this.mvs.concat(res.data.mvlist.map(m => {
+              m.pic = m.picurl
+              m.title = m.mvtitle
+              m.listenCount = m.listennum
+              m.type = this.sortType
+              return m
+            }))
+            this.pageno++
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
-          }        
-          // splice 不产生新数组
-          this.mvs.splice(0, 0, ...res.data.mvlist.map(m => {
-            m.pic = m.picurl
-            m.title = m.mvtitle
-            m.listenCount = m.listennum
-            m.type = this.sortType
-            return m
-          }))
-          this.pageno++
+          }
         } catch (err) {
           alert(err);
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
