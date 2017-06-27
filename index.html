@@ -12,34 +12,23 @@
   <!-- built files will be auto injected -->
 </body>
 <script>
-  function resetHtmlFont() {//改变浏览器字体大小
-    var HTML = document.getElementsByTagName('html')[0];
-    var deviceWidth = document.documentElement.clientWidth;
-    var scale = deviceWidth / 640;
-    HTML.style.fontSize = Math.min((16 * 2 * scale), 40) + 'px';//乘以100的目的是浏览器最小的字体大小为12px,所以会出现屏幕过小会不执行，这样就可以按照正常的px大小除以100就是rem的值了
-  }
-  function resize() {
-    if (window.orientation == 90 || window.orientation == -90) {
-      //ipad、iphone竖屏；Andriod横屏
-      resetHtmlFont();
-      orientation = 'landscape';
-      return false;
-    } else if (window.orientation == 0 || window.orientation == 180) {
-      //ipad、iphone横屏；Andriod竖屏 
-      resetHtmlFont();
-      orientation = 'portrait';
-      return false;
-    }
-  }
-  //window.addEventListener("orientationchange",function(){//手机横屏或者竖屏事件
-  //  resize();
-  //});
-  window.onresize = window.onorientationchange = function () {
-    resize();
-    resetHtmlFont()
-  }
-  resize();
-  resetHtmlFont()
+  (function (doc, win) {
+    var docEl = doc.documentElement,
+      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+      recalc = function () {
+        var clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
+        if (clientWidth >= 640) {
+          docEl.style.fontSize = '30px';
+        } else {
+          docEl.style.fontSize = (32 * (clientWidth / 640)).toFixed(1) + 'px';
+        }
+      };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+  })(document, window);
 
   //document.addEventListener('touchstart', touchstart, false);
 
