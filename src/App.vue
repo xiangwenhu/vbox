@@ -136,4 +136,32 @@
     width: 100%;
     background-image: -webkit-linear-gradient(top, transparent, currentColor 80%);
   }
+
+  .tag-hd {
+    position: relative;
+    height: 2rem;
+  }
+
+  .tag-sort {
+    position: absolute;
+    right: 0
+  }
+
+  .sort-type {
+    display: inline-block;
+    padding: 0.2rem 0.4rem;
+    height: 1.2rem;
+    position: relative;
+    font-size: 0.8rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c9c9c9;
+  }
+
+  .tag-select {
+    background-color: #31c27c;
+    color: #fff;
+    border-color: #31c27c;
+    z-index: 2;
+  }
 </style>

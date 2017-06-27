@@ -11,7 +11,7 @@
     <transition name="'slide-left'">
       <album-tag class="album-tag" v-show="showTag" :tag='tagOpt' @confirmed='tagsChanged'></album-tag>
     </transition>
-    
+
     <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-show="!showTag"></album-list>
 
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>
@@ -68,17 +68,19 @@
           if (!this.tagOpt) {
             this.tagOpt = res.data.tag
           }
-          if (res.data.albumlist === null || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
+          this.num = res.data.sum
+          if (!res.data || res.data.albumlist === null || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+            return
           } else {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')           
           }
+
           this.albums = this.albums.concat(res.data.albumlist.map(album => {
             album.albumMID = album.album_mid
             album.albumName = album.album_name
             return album
           }))
-          this.num = res.data.sum
 
           this.page++
         } catch (err) {
@@ -91,7 +93,6 @@
       },
       resetInfiniteLoading() {
         this.page = 0
-        this.enableLoading = true
         this.albums = []
         this.$refs.infiniteLoading.isLoading = true
         this.onInfinite();
@@ -123,41 +124,12 @@
         this.resetInfiniteLoading()
       }
     }
-
   }
 
 </script>
 
 
 <style scoped>
-  .tag-hd {
-    position: relative;
-    height: 2rem;
-  }
-
-  .tag-sort {
-    position: absolute;
-    right: 0
-  }
-
-  .sort-type {
-    display: inline-block;
-    padding: 0.2rem 0.4rem;
-    height: 1.2rem;
-    position: relative;
-    font-size: 0.8rem;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #c9c9c9;
-  }
-
-  .tag-select {
-    background-color: #31c27c;
-    color: #fff;
-    border-color: #31c27c;
-    z-index: 2;
-  }
-
   .more_filter {
     padding: 0.2rem 0.4rem;
     height: 1.2rem;
