@@ -17,7 +17,9 @@ import TopListHomeView from '../views/TopListHomeView'
 import TopListDetailView from '../views/TopListDetailView'
 
 import DissView from '../views/DissView'
+
 import MVView from '../views/MVView'
+import MVDetailView from '../views/MVDetailView'
 
 Vue.use(Router)
 
@@ -110,6 +112,10 @@ export default new Router({
           path: 'mv',
           name: 'MVView',
           component: MVView
+        }, {
+          path: 'mv/:vid',
+          name: 'MVDetailView',
+          component: MVDetailView
         }]
     }
 

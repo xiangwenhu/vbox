@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'album-tag-grid',
+    name: 'tag-grid',
     props: ['name', 'list', 'type'],
     data() {
       return { id: -99 }

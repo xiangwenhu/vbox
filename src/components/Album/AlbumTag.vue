@@ -5,21 +5,21 @@
       <span @click.stop='confirm(false)'>关闭</span>
     </div>
     <div v-if='!!tag'>
-      <album-tag-grid :list='tag.language' :name='"语种"' :type='"language"' @onselect='onselect'></album-tag-grid>
-      <album-tag-grid :list='tag.genre' :name='"流派"' :type='"genre"' @onselect='onselect'></album-tag-grid>
-      <album-tag-grid :list='tag.type' :name='"类别"' :type='"type"' @onselect='onselect'></album-tag-grid>
-      <album-tag-grid :list='tag.year' :name='"年代"' :type='"year"' @onselect='onselect'></album-tag-grid>
-      <album-tag-grid :list='tag.company' :name='"发行公司"' :type='"company"' @onselect='onselect'></album-tag-grid>
+      <tag-grid :list='tag.language' :name='"语种"' :type='"language"' @onselect='onselect'></tag-grid>
+      <tag-grid :list='tag.genre' :name='"流派"' :type='"genre"' @onselect='onselect'></tag-grid>
+      <tag-grid :list='tag.type' :name='"类别"' :type='"type"' @onselect='onselect'></tag-grid>
+      <tag-grid :list='tag.year' :name='"年代"' :type='"year"' @onselect='onselect'></tag-grid>
+      <tag-grid :list='tag.company' :name='"发行公司"' :type='"company"' @onselect='onselect'></tag-grid>
     </div>
   </div>
 </template>
 
 <script>
-  import AlbumTagGrid from './AlbumTagGrid'
+  import TagGrid from '../TagGrid'
   export default {
     name: 'album-tag',
     components: {
-      AlbumTagGrid
+      TagGrid
     },
     props: ['tag', 'class'],
     methods: {

@@ -17,14 +17,14 @@
         <h2 class="part__tit">MV</h2>
         <router-link class="part__more" :to='{path:"/pages/singer/mvs",params:{singermid:singermid}}'> 全部 > </router-link>
       </div>
-      <m-v-list :mvs='mvs'></m-v-list>
+      <mv-list :mvs='mvs'></mv-list>
     </div>
   </div>
 </template>
 
 <script>
   import SingerInfo from '../components/Singer/SingerInfo'
-  import SongList from '../components/TopList/SongList'
+  import SongList from '../components/SongList'
   import AlbumList from '../components/Album/AlbumList'
   import MVList from '../components/MV/MVList'
   import Singer from '../api/singer'
@@ -35,7 +35,7 @@
       SingerInfo,
       SongList,
       AlbumList,
-      MVList
+      'mv-list': MVList
     },
     data() {
       return {
@@ -72,7 +72,7 @@
 
       // 粉丝数
       res = await this.singer.fans().then(res => res.json())
-      this.fansnum = res.num 
+      this.fansnum = res.num
     },
     computed: {
       singermid: function () {

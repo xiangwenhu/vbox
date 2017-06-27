@@ -15,7 +15,7 @@
 
 <script>
   import AlbumInfo from '../components/Album/AlbumInfo'
-  import SongList from '../components/TopList/SongList'
+  import SongList from '../components/SongList'
   import Search from '../api/search'
   import { mapMutations } from 'vuex'
   export default {

@@ -1,6 +1,6 @@
 <template>
   <div class="mv">
-         mv-view 
+        
   </div>
 </template>
  
@@ -8,6 +8,5 @@
   export default {
     name: 'mv-view'   
   }
-
 </script>
 

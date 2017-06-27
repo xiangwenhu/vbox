@@ -11,7 +11,7 @@
 
 <script>
   import Other from '../api/other'
-  import SongList from '../components/TopList/SongList'
+  import SongList from '../components/SongList'
   import InfiniteLoading from 'vue-infinite-loading'
   export default {
     name: 'toplist-detail-view',

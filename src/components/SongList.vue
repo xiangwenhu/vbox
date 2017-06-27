@@ -1,62 +1,111 @@
 <template>
-  <ul class="mod_song_list border_t c_bor1 songlist">
-    <li v-for="(song,index) in songs" class="song_list__item  js_playsong" :data-id="song.songid" :data-songmid="song.songmid"
-      :data-type="song.type">
-      <a class="song_list__box" href="javascript:;">
-        <div class="song_list__body border_b c_bor1">
-          <h3 class="song_list__tit c_txt1">{{song.songname}}</h3>
-          <p class="song_list__desc c_txt2">{{song.singer.map(s=>s.name).join('/')}} · {{song.albumname}}
-            <span style="position:absolute;right:0.2rem">
-              <input @click='add(song)' type="button" value="添加">
-              <input @click='play(song)' type="button" value="播放">
-            </span></p>
-        </div>
-      </a>
-    </li>
-  </ul>
+  <div class="song-list">
+    <div class="songlist__item box border_b" v-for="(song,index) in songs">
+      <div class="songlist__rank box-item box-item-num">
+        {{index + 1}}
+      </div>
+      <div class="songlist__artist box-item box-item-info">
+        <p class="song-title">{{pure ? song.songname :song.data.songname}}</p>
+        <p class="song-singer">
+          {{ (pure ? song.singer : song.data.singer).map(s=>s.name).join('/')}}
+        </p>
+      </div>
+      <div class="box-item-operation">
+        <span style="position:absolute;right:2.4rem" @click.stop='play(pure ? song :song.data)'>
+          <play-icon height="1.2"></play-icon>          
+        </span>
+        <span style="position:absolute;right:0.8rem" @click.stop='add(pure ? song  : song.data)'>
+          <add-icon height="1.2"></add-icon>          
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
+
+
 <script>
+  import PlayIcon from './PlayIcon'
+  import AddIcon from './AddIcon'
   export default {
     name: 'song-list',
-    props: ['songs'],
+    props: {
+      songs: {
+        default: []
+      },
+      pure: {
+        default: false
+      }
+    },
+    components: {
+      PlayIcon,
+      AddIcon
+    },
     methods: {
       add(song) {
-        this.$store.commit('playing/addSong', song)
+        this.$emit('addsong', song)
       },
       play(song) {
-        this.$store.commit('playing/addSong', song)
-        this.$store.commit('playing/next', song)
+        this.$emit('playsong', song)
       }
     }
   }
 
 </script>
 
-<style>
-  .c_txt1 {
-    color: #fff;
+
+
+<style scoped>
+
+  .songlist__item {
+    border-bottom: rgba(0, 0, 0, .15) solid 1px;
+    position: relative;
   }
 
-  .song_list__tit {
-    line-height: 1.5rem;
+  .box {
+    display: flex;
+    display: -webkit-box;
+    flex-wrap: nowrap;
+    justify-content: left;
+    align-content: space-between;
+    align-items: center;
+  }
+
+  .box-item {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    margin: 0.1rem 0;
+  }
+
+  .box-item-num {
+    width: 10%;
+    justify-content: center;
+    text-align: center;
+    color: #FFF;
+  }
+
+  .box-item-info {
+    width: 60%;
+    margin-right: 30%;
+  }
+
+  .song-title {
     font-size: 1rem;
-    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    color: #FFF;
   }
 
-  .c_txt2 {
+  .song-singer {
+    font-size: 0.7rem;
     color: rgba(255, 255, 255, .6);
   }
 
-  .song_list__desc {
-    display: -webkit-box;
-    -webkit-box-align: center;
-    font-size: 0.8rem;
-  }
-
-  .song_list__box {
-    display: -webkit-box;
-    height: 4rem;
-    padding-left: 0.6rem;
+  .box-item-operation {
+    position: absolute;
+    top: 30%
   }
 </style>
