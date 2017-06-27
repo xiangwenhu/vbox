@@ -72,7 +72,7 @@
 
       // 粉丝数
       res = await this.singer.fans().then(res => res.json())
-      this.fansnum = (res.num / 10000).toFixed(2)
+      this.fansnum = res.num 
     },
     computed: {
       singermid: function () {

@@ -20,9 +20,9 @@
               <span class="diss-play-icon" @click.stop='addToPlaying(diss.dissid)'> <play-icon height='2'></play-icon></span>
             </div>
             <figcaption>
-              <h2 class = "diss-name">{{diss.dissname}}</h2>
+              <h2 class="diss-name">{{diss.dissname}}</h2>
               <div>
-                <p>播放量：{{ (diss.listennum/10000).toFixed(2)}}万</p>
+                <p>播放量：{{ diss.listennum | tt}}万</p>
               </div>
             </figcaption>
           </figure>
@@ -66,10 +66,10 @@
   .box {
     display: -webkit-flex;
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     justify-content: center;
     align-content: space-between;
-    flex:1;
+    flex: 1;
   }
 
   .box-item {
@@ -98,7 +98,8 @@
     top: 40%;
     left: 40%
   }
-  .diss-name{
+
+  .diss-name {
     padding: 0 0.1rem;
   }
 </style>

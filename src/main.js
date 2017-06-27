@@ -11,6 +11,11 @@ Vue.use(VueAwesomeSwiper)
 
 Vue.config.productionTip = false
 
+// filter 转换单位为万, d:小数位数
+Vue.filter('tt', (value, d = 2) => {
+  return (Number.parseFloat(value || 0) / 10000).toFixed(d)
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
