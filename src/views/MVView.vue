@@ -38,7 +38,7 @@
       return {
         showTag: false,
         tagOpt: undefined,
-        sortType: 1,
+        sortType: 2,
         mvs: [],
         pageno: 0,
         pagecount: 30,

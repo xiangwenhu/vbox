@@ -1,6 +1,5 @@
 <template>
   <div :class="{'rootc':landscape}" style="height:100%">
-    <top-header></top-header>
     <router-view></router-view>
     <router-view name='settings'></router-view>
     <router-view name='other'></router-view>
@@ -9,14 +8,12 @@
 </template>
 
 <script>
-  import TopHeader from './components/TopHeader'
   import AudioPlayer from './components/AudioPlayer'
   import Search from './api/search'
   export default {
     name: 'app',
     components: {
-      AudioPlayer,
-      TopHeader
+      AudioPlayer     
     },
     data() {
       return {
@@ -36,7 +33,34 @@
         // alert(window.orientation)
       }, false)
 
-      Search.mvVkey('h00233zx9am').then(data => console.log(data))
+      // 注册resize 或者 orientationchange
+      var docEl = document.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          if (!clientWidth) return;
+          if (clientWidth >= 640) {
+            docEl.style.fontSize = '30px';
+          } else {
+            docEl.style.fontSize = (32 * (clientWidth / 640)).toFixed(1) + 'px';
+          }
+        };
+
+      if (!document.addEventListener) return;
+      window.addEventListener(resizeEvt, recalc, false);
+      document.addEventListener('DOMContentLoaded', recalc, false);
+
+      function touchstart() {
+        let audioPlayer = document.getElementById('audioPlayer')
+        audioPlayer.play()
+        audioPlayer.src = ""
+        audioPlayer.load();
+        audioPlayer.style.height = 0
+        audioPlayer.style.width = 0
+        audioPlayer.style.display = 'none'
+        setTimeout(function () { audioPlayer.pause() }, 10)
+        document.removeEventListener('touchstart', touchstart)
+      }
     }
   }
 

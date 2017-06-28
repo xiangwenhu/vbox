@@ -3,12 +3,14 @@
     <div v-for="(mv,index) in mvs" class="box-item box-item-mv">
       <figure class="album">
         <div>
-          <img class="mv_pic" :src='mv.pic' alt="" />
+          <router-link :to="{name:'MVPlayerView',params:{vid:mv.vid}}">
+            <img class="mv_pic" :src='mv.pic' alt="" />
+          </router-link>
         </div>
         <figcaption>
           <p class="album_title">{{mv.title}}</p>
           <p class="album_listen" v-if='mv.type == 2'>{{ mv.listenCount | tt}}万</p>
-          <p v-else class="album_listen" >{{ mv.listenCount }}</p>
+          <p v-else class="album_listen">{{ mv.listenCount }}</p>
         </figcaption>
       </figure>
     </div>
@@ -32,15 +34,16 @@
   .mv_pic {
     width: 100%
   }
-  .album{
+
+  .album {
     padding: 0 0.2rem
   }
 
-  .album_title{
+  .album_title {
     font-size: 0.8rem
   }
 
-  .album_listen{
+  .album_listen {
     font-size: 0.7rem;
     color: #999
   }

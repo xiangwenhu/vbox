@@ -20,6 +20,7 @@ import DissView from '../views/DissView'
 
 import MVView from '../views/MVView'
 import MVDetailView from '../views/MVDetailView'
+import MVPlayerView from '../views/MVPlayerView'
 
 Vue.use(Router)
 
@@ -116,8 +117,13 @@ export default new Router({
           path: 'mv/:vid',
           name: 'MVDetailView',
           component: MVDetailView
-        }]
+        }
+      ]
+    },
+    {
+      path: '/mvplayer/:vid',
+      name: 'MVPlayerView',
+      component: MVPlayerView
     }
-
   ]
 })

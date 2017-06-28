@@ -1,5 +1,6 @@
 <template>
   <div class="pages-view" @touchstart.stop='touchstart' @touchend.stop='touchend'>
+    <top-header></top-header>
     <header-bar :cat="cat"></header-bar>
     <transition :name="transitionName">
       <router-view class="child-view"></router-view>
@@ -9,12 +10,13 @@
 </template>
 
 <script>
+  import TopHeader from '../components/TopHeader'
   import HeaderBar from '../components/HeaderBar'
   import FooterBar from '../components/FooterBar'
   import MinPlayer from '../components/MinPlayer'
   export default {
     name: 'pages-view',
-    components: { HeaderBar, FooterBar, MinPlayer },
+    components: { HeaderBar, FooterBar, MinPlayer, TopHeader },
     data() {
       let href = window.location.href;
       let path = href.split('/');
