@@ -30,7 +30,7 @@ vue-cli创建的工程，代码检查相当严格，你检查到错误或者警�
 
 
 ios vedio播放全屏问题 
-<video webkit-playsinline="true" playsinline="true"/> webkit-playsinline is for ios 10-, and playsinline is for iOS 10+
+<code><video webkit-playsinline="true" playsinline="true"/></code> webkit-playsinline is for ios 10-, and playsinline is for iOS 10+
 
 
 
