@@ -29,4 +29,9 @@ hot load 时常有实效的时候，如果你开始怀疑更改没有生效，�
 vue-cli创建的工程，代码检查相当严格，你检查到错误或者警告，根据信息，你可以去 .eslintrc.js修改规则，不建议关闭
 
 
+ios vedio播放全屏问题 
+<video webkit-playsinline="true" playsinline="true"/> webkit-playsinline is for ios 10-, and playsinline is for iOS 10+
+
+
+
 
