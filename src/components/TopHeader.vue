@@ -1,6 +1,6 @@
 <template>
   <header id="header" class="clearfix">
-    <router-link  to="/">
+    <router-link to="/" @click='goback'>
       <img class='logo' :src="logoImg" alt="logo">
     </router-link>
     <router-link class="searchBtn" to="/pages/search">
@@ -17,6 +17,11 @@
       return {
         searchImg: require('../assets/img/searchBtn.png'),
         logoImg: require('../assets/img/logo.jpg')
+      }
+    },
+    methods: {
+      goback() {
+        this.$router.go(-1)
       }
     }
   }
@@ -36,7 +41,7 @@
     background-image: -webkit-linear-gradient(270deg, #31c27c, #20bc22);
     background-image: linear-gradient(270deg, #31c27c, #20bc22);
   }
-  
+
   .btn_nav_slide {
     position: absolute;
     right: 1rem;

@@ -13,11 +13,16 @@
   export default {
     name: 'app',
     components: {
-      AudioPlayer     
+      AudioPlayer
     },
     data() {
       return {
         landscape: false
+      }
+    },
+    watch: {
+      '$route'(to, from) {
+        window.scrollTo(0, 0)
       }
     },
     async mounted() {

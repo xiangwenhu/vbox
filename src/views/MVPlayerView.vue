@@ -1,8 +1,10 @@
 <template>
   <transition name="slide-right">
+
     <div class="video-player">
+      <top-header></top-header>
       <div class="tvp_video">
-        <video width="100%" controls :src="src" ref='videoPlayer' />
+        <video width="100%" controls :src="src" ref='videoPlayer' loop />
       </div>
       <div>
         <div class="tvp_overlay_play" @click.stop='play' v-if='!started'>
@@ -18,19 +20,21 @@
 </template>
 
 <script>
+  import TopHeader from '../components/TopHeader'
   import Search from '../api/search'
   import PlayIcon from '../components/PlayIcon'
   export default {
     name: 'mv-player-view',
     components: {
-      PlayIcon
+      PlayIcon,
+      TopHeader
     },
     data() {
       return {
         mvinfo: null,
         src: '',
         vplayer: null,
-        started :false
+        started: false
       }
     },
     async created() {
@@ -80,6 +84,7 @@
     position: relative;
     width: 100%;
     height: 100%;
+    margin-top: 2.5rem
   }
 
   .tvp_overlay_poster {
