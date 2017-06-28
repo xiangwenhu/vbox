@@ -4,7 +4,7 @@
     <div class="video-player">
       <top-header></top-header>
       <div class="tvp_video">
-        <video width="100%" controls :src="src" ref='videoPlayer' loop />
+        <video width="100%" controls :src="src" ref='videoPlayer' loop   webkit-playsinline="true" playsinline="true"/>
       </div>
       <div>
         <div class="tvp_overlay_play" @click.stop='play' v-if='!started'>

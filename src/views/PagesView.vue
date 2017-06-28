@@ -18,9 +18,6 @@
     name: 'pages-view',
     components: { HeaderBar, FooterBar, MinPlayer, TopHeader },
     data() {
-      let href = window.location.href;
-      let path = href.split('/');
-      let cat = path.length > 0 ? path[path.indexOf('pages') + 1] : 'home';
       return {
         transitionName: 'slide-left',
         slideCats: ['home', 'singer', 'album', 'toplist', 'diss', 'mv'],
@@ -28,19 +25,23 @@
         slideType: 0,
         touchStartPoint: null,
         touchEndPoint: null,
-        cat: cat
+        cat: this.getCate(this.$route.path)
       }
     },
     watch: {
       '$route'(to, from) {
-        const toDepth = to.path.split('/').length
-        const fromDepth = from.path.split('/').length
-        if (this.slideType !== 1) {
-          this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-        }
-        let cat = this.getCate(to.path)
-        if (cat) {
-          this.cat = cat
+        try {
+          const toDepth = to.path.split('/').length
+          const fromDepth = from.path.split('/').length
+          if (this.slideType !== 1) {
+            this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+          }
+          let cat = this.getCate(to.path)
+          if (cat) {
+            this.cat = cat
+          }         
+        } catch (err) {
+          alert('err' + err)
         }
       }
     },
@@ -109,7 +110,8 @@
         return result;
       },
       getCate(path) {
-        if (path.startsWith('/pages')) {
+        // if (path.startsWith('/pages')) {
+        if (path.indexOf('/pages') === 0) {
           return path.split('/')[2]
         }
       }

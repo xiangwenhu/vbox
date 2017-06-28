@@ -21,7 +21,7 @@
     components: {
       TagGrid
     },
-    props: ['tag', 'class'],
+    props: ['tag'],
     methods: {
       // 子组件选择了某个分类别
       onselect(data) {
