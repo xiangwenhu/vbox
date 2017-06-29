@@ -21,7 +21,7 @@
             </div>
             <h4 class="playlist__title">
               <span class="playlist__title_txt">
-                <a href="https://y.qq.com/n/yqq/playlist/1168315325.html#stat=y_new.playlist.dissname" class="a" :data-disstid="songs.dissid" :title="songs.dissname"><span v-html="songs.dissname" /></a>
+                <a :href='"https://y.qq.com/n/yqq/playlist/"+ songs.dissid +".html#stat=y_new.playlist.dissname"' class="a" :data-disstid="songs.dissid" :title="songs.dissname"><span v-html="songs.dissname" /></a>
               </span>
             </h4>
             <div class="playlist__author"><span v-html="songs.creator.name" /></div>
