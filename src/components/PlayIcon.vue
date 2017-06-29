@@ -41,6 +41,7 @@
     position: relative;
     display: inline-block;
     border-radius: 999px;
+    opacity: 0.9;
   }
 
   .focus__play_inner {
@@ -49,5 +50,6 @@
     height: 0;
     border-color: transparent transparent transparent currentColor;
     border-style: solid;
+    opacity: 0.99;
   }
 </style>
