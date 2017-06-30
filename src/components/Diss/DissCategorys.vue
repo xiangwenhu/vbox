@@ -1,6 +1,6 @@
 <template>
   <div class="categorys_zone">
-    <ul>
+    <ul class="ulbox">
       <li v-for="(category,index) in hotCategorys" :data-id="category.categoryId" class="categorysli categoryLi" :class='[index == 0 ? "specialLI" : ""]'>
         {{category.categoryName}}
       </li>
@@ -21,6 +21,9 @@
 
 
 <style scoped>
+  .ulbox{
+    width: 20rem;
+  }
 
   /*歌单类别start*/
   .categorys_zone {

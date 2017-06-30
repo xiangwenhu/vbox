@@ -9,7 +9,7 @@
       </span>
     </div>
     <div class="choicenessContent">
-      <ul>
+      <ul class="ulbox">
         <li v-for="(songs,index) in choicenessSongList" :data-dissid="songs.dissid" >
           <div class="playlist__item_box" :class="[(index + 1) % 2 == 0 ? 'mr0' : '']">
             <div class="playlist__cover mod_cover">
@@ -82,6 +82,10 @@
 
   .mr0 {
     margin-right: 0 !important;
+  }
+
+  .ulbox{
+    width: 20rem;
   }
   
   /*精选歌单start*/
