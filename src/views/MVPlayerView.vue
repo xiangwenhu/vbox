@@ -4,9 +4,7 @@
     <div class="video-player">
       <top-header></top-header>
       <div class="tvp_video">
-        <video width="100%" controls :src="src" ref='videoPlayer' loop webkit-playsinline="true" playsinline="true" />
-      </div>
-      <div>
+        <video width="100%" controls ref='videoPlayer' loop webkit-playsinline="true" playsinline="true" />
         <div class="tvp_overlay_play" @click.stop='play' v-if='!started'>
           <play-icon height='3'></play-icon>
         </div>
@@ -15,6 +13,30 @@
           </div>
         </div>
       </div>
+      <div>
+        <mv-list :mvs='singermvlist'>
+          <div class="qui_tit">
+            <h3 class="qui_tit_text">同艺人的其他MV</h3>
+          </div>
+        </mv-list>
+
+        <mv-list :mvs='fanmvlist'>
+          <div class="qui_tit">
+            <h3 class="qui_tit_text">粉丝们也喜欢看</h3>
+          </div>
+        </mv-list>
+
+        <mv-list :mvs='uploadermvlist' v-if='uploadermvlist && uploadermvlist.length > 0'>
+          <div class="qui_tit">
+            <h3 class="qui_tit_text">该上传者的其他作品
+            </h3>
+          </div>
+        </mv-list>
+      </div>
+
+    </div>
+
+
     </div>
   </transition>
 </template>
@@ -23,32 +45,45 @@
   import TopHeader from '../components/TopHeader'
   import Search from '../api/search'
   import PlayIcon from '../components/PlayIcon'
+  import MVListSingle from '../components/MV/MVListSingle'
   export default {
     name: 'mv-player-view',
     components: {
       PlayIcon,
-      TopHeader
+      TopHeader,
+      'mv-list': MVListSingle
     },
     data() {
       return {
-        mvinfo: null,
+        mvkeyinfo: null,
+        mvinfo: {},
+        othermvs: [],
+        similarmvs: [],
         src: '',
+        vsrc: '',
         vplayer: null,
         started: false
       }
-    },
-    async created() {
-      let res = await Search.mvVkey(this.vid)
-      this.mvinfo = res
-      this.updateMVUrl()
     },
     computed: {
       vid() {
         return this.$route.params.vid
       },
       bgSrc() {
-        return 'url("https://shp.qpic.cn/qqvideo/0/m00240pahpk/0")'
+        return `url("https://shp.qpic.cn/qqvideo/0/${this.vid}/0")`
+      },
+      singermvlist() {
+        return this.mvinfo && this.mvinfo.singermvlist ? this.mvinfo.singermvlist.list : []
+      },
+      fanmvlist() {
+        return this.mvinfo && this.mvinfo.fanmvlist ? this.mvinfo.fanmvlist.list.slice(0, 3) : []
+      },
+      uploadermvlist() {
+        return this.mvinfo && this.mvinfo.uploadermvlist ? this.mvinfo.uploadermvlist.list.slice(0, 3) : []
       }
+    },
+    created() {
+      this.load();
     },
     methods: {
       // http://103.18.209.159/music.qqvideo.tc.qq.com/m00240pahpk.mp4?
@@ -56,10 +91,10 @@
       // &br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b
       updateMVUrl() {
         // 可用解构
-        // console.log(this.mvinfo)
+        // console.log(this.mvkeyinfo)
         /* 
-        if (this.mvinfo && this.mvinfo.vl && this.mvinfo.vl.vi && this.mvinfo.vl.vi.length > 0) {
-          var vi = this.mvinfo.vl.vi[0]
+        if (this.mvkeyinfo && this.mvkeyinfo.vl && this.mvkeyinfo.vl.vi && this.mvkeyinfo.vl.vi.length > 0) {
+          var vi = this.mvkeyinfo.vl.vi[0]
           if (vi.fvkey && vi.fvkey && vi.ul.ui && vi.ul.ui.length > 0) {
             let fvkey = vi.fvkey
             let fn = vi.fn
@@ -68,7 +103,7 @@
           }
         } */
         try {
-          let { vl: { vi: [{ fvkey, fn, ul: { ui: [{ url: bUrl }] } }] } } = this.mvinfo || {}
+          let { vl: { vi: [{ fvkey, fn, ul: { ui: [{ url: bUrl }] } }] } } = this.mvkeyinfo || {}
           if (fvkey && fn && bUrl) {
             this.src = `${bUrl}${fn}?vkey=${fvkey}&br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b`
           }
@@ -77,8 +112,34 @@
         }
       },
       play() {
-        this.started = true
-        this.$refs.videoPlayer.play()
+        if (this.src) {
+          this.started = true
+          this.$refs.videoPlayer.src = this.src;
+          this.$refs.videoPlayer.play()
+        }
+      },
+      async load() {
+        // mv vkey 信息
+        let res = await Search.mvVkey(this.vid)
+        this.mvkeyinfo = res
+        this.updateMVUrl()
+
+        // mv 信息
+        res = await Search.mmvInfo(this.vid).then(res => res.json())
+        this.mvinfo = res.data
+        console.log(res)
+
+        // 设置了 access-control-allow-origin:https://y.qq.com
+        // res = await Search.comments(this.vid).then(res => res.text())
+        // console.log('comments', res)
+      }
+    },
+    watch: {
+      async vid(to) {
+        this.mvkeyinfo = this.mvinfo = null
+        this.started = false
+        this.$refs.videoPlayer.pause()
+        this.load()
       }
     }
   }
@@ -149,5 +210,23 @@
     background: rgba(23, 23, 23, .9);
     border-radius: 3px;
     cursor: pointer;
+  }
+
+  .qui_tit {
+    position: relative;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    height: 2.75rem;
+    padding: 0 2rem;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .qui_tit_text {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    font-weight: 300
   }
 </style>

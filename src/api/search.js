@@ -1,4 +1,5 @@
 import URLConsts from './URLConsts'
+import utils from './utils'
 
 export default {
   // 歌手搜索 tested
@@ -92,6 +93,18 @@ export default {
   },
 
   /**
+   * 移动端 获得mv 信息
+   * @param {*} vid mv id
+   * @param {*} smvnum 相似mv的数量
+   * @param {*} recnum  推荐 mv 数量（粉丝们也喜欢看）
+   * @param {*} othernum 上传作者的其他mv
+   */
+  mmvInfo(vid, smvnum = 3, recnum = 3, othernum = 3) {
+    let url = `${URLConsts.URL_MV_INFO_M}&vid=${vid}&smvnum=${smvnum}&recnum=${recnum}&othernum=${othernum}&_=${new Date().getTime()}`
+    return fetch(url)
+  },
+
+  /**
    * 获得mv vkey，播放地址等信息
    * @param {*} vids 
    */
@@ -135,6 +148,31 @@ export default {
   songAlbums(songid) {
     let url = `${URLConsts.URL_SONG_ALBUM}&songid=${songid}`
     return fetch(url)
+  },
+  /**
+   * 获得媒体的评论
+   * @param {*id} topid 媒体id
+   */
+  comments(topid) {
+    let params = utils.getParams({
+      needmusiccrit: 1,
+      pagesize: 5,
+      lasthotcommentid: '',
+      biztype: 5,
+      topid,
+      pagenum: 0
+    })
+    let url = `${URLConsts.URL_COMMENT}?_=${new Date().getTime()}`,
+      referer = `https://y.qq.com/w/mv.html?vid=${topid}`
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        referer
+      },
+      body: JSON.stringify(params)
+    })
   }
 
 }

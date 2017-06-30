@@ -15,6 +15,21 @@ Vue.config.productionTip = false
 Vue.filter('tt', (value, d = 2) => {
   return (Number.parseFloat(value || 0) / 10000).toFixed(d)
 })
+// filter 数组map
+Vue.filter('mp', (value, p) => {
+  if (value && Array.isArray(value)) {
+    return value.map(v => v[p])
+  } 
+  return value  
+})
+
+// filter 数组join
+Vue.filter('jn', (value, letter) => {
+  if (value && Array.isArray(value)) {
+    return value.join(letter)
+  } 
+  return value  
+})
 
 /* eslint-disable no-new */
 new Vue({

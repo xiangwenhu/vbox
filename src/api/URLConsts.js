@@ -61,6 +61,8 @@ const URL_DISS_SIMILAR = `${C_Y_QQ_COM}/musichall/fcgi-bin/fcg_similar_recomm.fc
 const URL_MV_BYTAG = `${C_Y_QQ_COM}/v8/fcg-bin/getmv_by_tag?utf8=1&otype=json&format=json&${COMMON_PARAMS}`
 // MV信息
 const URL_MV_INFO = `${C_Y_QQ_COM}/mv/fcgi-bin/fcg_getmvinfo.fcg?format=json&${COMMON_PARAMS}`
+// MV信息
+const URL_MV_INFO_M = `${C_Y_QQ_COM}/mv/fcgi-bin/fcg_get_mvinfo.fcg?&vidlist=&&simnum=&cid=205361939`
 // 相似MV
 const URL_MV_SIMILAR = `${C_Y_QQ_COM}/mv/fcgi-bin/fcg_getmvlist.fcg?reqtype=1&cid=205360328&format=json&${COMMON_PARAMS}`
 // 获取MV的vkey等信息 
@@ -76,6 +78,8 @@ const URL_SONG_LYR = `${C_Y_QQ_COM}/lyric/fcgi-bin/fcg_query_lyric_new.fcg?${COM
 const URL_SONG_INFO = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_play_single_song.fcg?songmid=0016IcYd27ZJWw&tpl=yqq_song_detail&format=json&g_tk=1885845528&${COMMON_PARAMS}`
 // 歌曲所在的专辑
 const URL_SONG_ALBUM = `${C_Y_QQ_COM}/rcmusic/fcgi-bin/fcg_iphone_music_rec_songlist?cid=338&ct=20&uin=10000&&g_tk=1885845528&${COMMON_PARAMS}`
+// 评论
+const URL_COMMENT = `${C_Y_QQ_COM}/base/fcgi-bin/fcg_global_comment_h5.fcg`
 
 const MusicJsonCallback = function (data) {
   return data
@@ -112,6 +116,7 @@ export default {
 
   URL_MV_BYTAG,
   URL_MV_INFO,
+  URL_MV_INFO_M,
   URL_MV_SIMILAR,
   URL_MV_VKEY,
 
@@ -119,5 +124,7 @@ export default {
 
   URL_SONG_LYR,
   URL_SONG_INFO,
-  URL_SONG_ALBUM
+  URL_SONG_ALBUM,
+
+  URL_COMMENT
 }
