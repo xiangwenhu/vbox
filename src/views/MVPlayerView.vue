@@ -4,7 +4,7 @@
     <div class="video-player">
       <top-header></top-header>
       <div class="tvp_video">
-        <video width="100%" controls :src="src" ref='videoPlayer' loop   webkit-playsinline="true" playsinline="true"/>
+        <video width="100%" controls :src="src" ref='videoPlayer' loop webkit-playsinline="true" playsinline="true" />
       </div>
       <div>
         <div class="tvp_overlay_play" @click.stop='play' v-if='!started'>
@@ -56,14 +56,24 @@
       // &br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b
       updateMVUrl() {
         // 可用解构
+        // console.log(this.mvinfo)
+        /* 
         if (this.mvinfo && this.mvinfo.vl && this.mvinfo.vl.vi && this.mvinfo.vl.vi.length > 0) {
           var vi = this.mvinfo.vl.vi[0]
           if (vi.fvkey && vi.fvkey && vi.ul.ui && vi.ul.ui.length > 0) {
             let fvkey = vi.fvkey
             let fn = vi.fn
             let bUrl = vi.ul.ui[0].url
+            // this.src = `${bUrl}${fn}?vkey=${fvkey}&br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b`
+          }
+        } */
+        try {
+          let { vl: { vi: [{ fvkey, fn, ul: { ui: [{ url: bUrl }] } }] } } = this.mvinfo || {}
+          if (fvkey && fn && bUrl) {
             this.src = `${bUrl}${fn}?vkey=${fvkey}&br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b`
           }
+        } catch (err) {
+          alert(err)
         }
       },
       play() {
