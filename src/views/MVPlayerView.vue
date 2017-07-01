@@ -14,6 +14,20 @@
         </div>
       </div>
       <div>
+
+        <div>
+          <div class="mv_info">
+            <p class="qui_tit_text mv_name">{{mvinfo.mvname}}</p>
+            <p class="js_go_singer" data-id="5062">薛之谦</p>
+            <p>
+              <span  v-if='toplistinfo.topnum > 0' class="mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
+              <span class="mv_top mv_top_des">{{mvinfo.listennum |tt}}次播放</span>
+              <span class="mv_top mv_top_des">{{mvinfo.pubdate}}</span>
+            </p>
+          </div>
+          <hr/>
+        </div>
+
         <mv-list :mvs='singermvlist'>
           <div class="qui_tit">
             <h3 class="qui_tit_text">同艺人的其他MV</h3>
@@ -80,6 +94,9 @@
       },
       uploadermvlist() {
         return this.mvinfo && this.mvinfo.uploadermvlist ? this.mvinfo.uploadermvlist.list.slice(0, 3) : []
+      },
+      toplistinfo() {
+        return this.mvinfo.toplist || {}
       }
     },
     created() {
@@ -136,7 +153,7 @@
     },
     watch: {
       async vid(to) {
-        this.mvkeyinfo = this.mvinfo = null
+        this.mvkeyinfo = this.mvinfo = {}
         this.started = false
         this.$refs.videoPlayer.pause()
         this.load()
@@ -229,4 +246,30 @@
     letter-spacing: 2px;
     font-weight: 300
   }
+
+  .mv_info {
+    text-align: left;
+    padding: 0 1rem;
+  }
+
+  .mv_name {
+    width: 100%;
+    line-height: 1.4rem;
+    font-size: 0.9rem
+  }
+
+  .js_go_singer {
+    color: grey;
+    font-size: 0.7rem
+  }
+
+  .mv_top {
+    color: #31c27c;
+    font-size: 0.7rem
+  }
+
+  .mv_top_des{
+    color: gray
+  }
+
 </style>
