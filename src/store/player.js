@@ -6,7 +6,7 @@ let state = {
   // 当前播放的模式 0顺序循环， 1单曲，2随机
   mode: 0
 }
-state = proxy(state, 'player', ['mode'])
+// state = proxy(state, 'player', ['mode'])
 
 const mutations = {
   /**
