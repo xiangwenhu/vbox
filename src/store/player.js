@@ -1,10 +1,12 @@
-const state = {
+import { proxy } from '../utils/LSProxy'
+let state = {
   currentTime: 0,
   // 当前状态 空闲， playing, pause
   state: 0,
   // 当前播放的模式 0顺序循环， 1单曲，2随机
   mode: 0
 }
+state = proxy(state, 'player', ['mode'])
 
 const mutations = {
   /**

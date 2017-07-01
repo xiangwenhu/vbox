@@ -1,8 +1,9 @@
-const state = {
-  // 当前播放列表
+import { proxy } from '../utils/LSProxy'
+let state = {
   list: [],
   current: null
 }
+state = proxy(state, 'playing', ['list', 'current'])
 
 const mutations = {
 
