@@ -1,6 +1,11 @@
 import LStorage from './LStorage'
 
-let createHanlder = function (lsKey, pk) {
+/**
+ * 代理二级属性
+ * @param {*} lsKey 存在localStorage的key
+ * @param {*} pk    一级属性的key
+ */
+function createHanlder(lsKey, pk) {
   return {
     set: function (target, key, value, receiver) {
       let item = LStorage.getItem(lsKey)
@@ -27,13 +32,20 @@ function copy(source, keys = []) {
   return d
 }
 
-export const proxy = function (initState, lsKey, keys = []) {
+/**
+ * 代理state
+ * @param {*} initState 初始化的值
+ * @param {*} lsKey  localStorage的key
+ * @param {*} keys   需要存储的键
+ */
+const proxy = function (initState, lsKey, keys = []) {
   let ks = keys, obj = Object.assign({}, initState, LStorage.getItem(lsKey))
- 
+
   // 代理二级属性
   keys.forEach(k => {
     obj[k] = new Proxy(obj[k], createHanlder(lsKey, k))
   })
+  // 存入合并的值
   LStorage.setItem(lsKey, copy(obj, keys))
   return new Proxy(obj, {
     set: function (target, key, value, receiver) {
@@ -42,3 +54,5 @@ export const proxy = function (initState, lsKey, keys = []) {
     }
   })
 }
+
+export { proxy }

@@ -28,28 +28,19 @@
       }
     },
     async mounted() {
-      // Listen for orientation changes
-      window.addEventListener('orientationchange', () => {
-        // Announce the new orientation number
-        if (window.orientation === 90 || window.orientation === -90) {
-          this.landscape = true
-        } else {
-          this.landscape = false
-        }
-
-        // alert(window.orientation)
-      }, false)
-
       // 注册resize 或者 orientationchange
       var docEl = document.documentElement,
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
         recalc = function () {
+          var landscape = (window.orientation === 90 || window.orientation === -90)
           var clientWidth = docEl.clientWidth;
           if (!clientWidth) return;
           if (clientWidth >= 640) {
-            docEl.style.fontSize = '30px';
+            docEl.style.fontSize = landscape ? '20px' : '30px';
+            // alert(clientWidth)
           } else {
-            docEl.style.fontSize = (32 * (clientWidth / 640)).toFixed(1) + 'px';
+            docEl.style.fontSize = ((landscape ? 16 : 32) * (clientWidth / 640)).toFixed(1) + 'px';
+            // alert(clientWidth)
           }
         };
 
