@@ -11,8 +11,8 @@
       <div class="box-item-r">
         <router-link :to="{name:'MVPlayerView',params:{vid:mv.vid}}">
           <div class="qui_list__box">
-            <h3 class="qui_list__tit c_txt1"><span class="qui_list__txt">{{mv.mvname || mv.name }}</span></h3>
-            <p class="qui_list__desc c_txt2">{{mv.singers | mp('name') | jn('/') }}</p>
+            <h3 class="qui_list__tit tit"><span class="qui_list__txt">{{mv.mvname || mv.name }}</span></h3>
+            <p class="desc">{{mv.singers | mp('name') | jn('/') }}</p>
           </div>
         </router-link>
       </div>

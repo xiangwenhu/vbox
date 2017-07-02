@@ -24,7 +24,7 @@ Vue.filter('mp', (value, p) => {
 })
 
 // filter 数组join
-Vue.filter('jn', (value, letter) => {
+Vue.filter('jn', (value, letter = '/') => {
   if (value && Array.isArray(value)) {
     return value.join(letter)
   } 

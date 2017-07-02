@@ -1,14 +1,7 @@
 <template>
   <div>
-    <div>
-      <h3 class="diss_title align-center">热门歌单</h3>
-    </div>
-    <div class="mod_playlist mod_slide">
-
-      <!-- <div class="box">
-        <div class="box-item">1</div>
-        <div class="box-item">2</div>
-      </div> -->
+    <slot></slot>
+    <div class="mod_playlist mod_slide">  
 
       <div v-for="(dissItem,index) in hotdiss">
         <div v-if='index%2 == 0' class="box">
@@ -20,16 +13,14 @@
               <span class="diss-play-icon" @click.stop='addToPlaying(diss.dissid)'> <play-icon height='2'></play-icon></span>
             </div>
             <figcaption>
-              <h2 class="diss-name">{{diss.dissname}}</h2>
+              <h2 class="diss-name tit">{{diss.dissname}}</h2>
               <div>
-                <p>播放量：{{ diss.listennum | tt}}万</p>
+                <p class="desc">播放量：{{ diss.listennum | tt}}万</p>
               </div>
             </figcaption>
           </figure>
         </div>
       </div>
-
-
 
     </div>
   </div>
@@ -85,13 +76,7 @@
 
   figcaption h2 {
     font-weight: 400;
-    font-size: 0.9rem
-  }
-
-  figcaption p {
-    color: #999;
-    font-size: 0.8rem
-  }
+  } 
 
   .diss-play-icon {
     position: absolute;

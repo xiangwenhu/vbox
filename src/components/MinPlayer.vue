@@ -57,7 +57,9 @@
         this.songname = to.songname
       },
       currentTime(to) {
-        this.progress = (to / this.current.interval).toFixed(4) * 100 + '%'
+        if (this.current) {
+          this.progress = (to / this.current.interval).toFixed(4) * 100 + '%'
+        }
       }
     }
   }

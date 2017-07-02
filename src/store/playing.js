@@ -3,7 +3,7 @@ let state = {
   list: [],
   current: null
 }
-state = proxy(state, 'playing', ['list'])
+state = proxy(state, 'playing', ['list', 'current'])
 
 const mutations = {
 

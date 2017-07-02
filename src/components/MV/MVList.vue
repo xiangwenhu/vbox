@@ -8,9 +8,9 @@
           </router-link>
         </div>
         <figcaption>
-          <p class="album_title">{{mv.title}}</p>
-          <p class="album_listen" v-if='mv.type == 2'>{{ mv.listenCount | tt}}万</p>
-          <p v-else class="album_listen">{{ mv.listenCount }}</p>
+          <p class="tit">{{mv.title}}</p>
+          <p class="desc" v-if='mv.type == 2'>{{ mv.listenCount | tt}}万</p>
+          <p v-else class="desc">{{ mv.listenCount }}</p>
         </figcaption>
       </figure>
     </div>

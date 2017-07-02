@@ -17,12 +17,12 @@
 
         <div>
           <div class="mv_info">
-            <p class="qui_tit_text mv_name">{{mvinfo.mvname}}</p>
-            <p class="js_go_singer" data-id="5062">薛之谦</p>
+            <p class="qui_tit_text tit_h4">{{mvinfo.mvname}}</p>
+            <p class="desc" data-id="5062">{{mvinfo.singers |mp('name') | jn}}</p>
             <p>
-              <span  v-if='toplistinfo.topnum > 0' class="mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
-              <span class="mv_top mv_top_des">{{mvinfo.listennum |tt}}次播放</span>
-              <span class="mv_top mv_top_des">{{mvinfo.pubdate}}</span>
+              <span  v-if='toplistinfo.topnum > 0' class="desc mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
+              <span class="desc mv_top">{{mvinfo.listennum |tt}}次播放</span>
+              <span class="desc mv_top">{{mvinfo.pubdate}}</span>
             </p>
           </div>
           <hr/>
@@ -34,7 +34,7 @@
           </div>
         </mv-list>
 
-        <mv-list :mvs='fanmvlist'>
+        <mv-list :mvs='fanmvlist' v-if='fanmvlist && fanmvlist.length > 0'>
           <div class="qui_tit">
             <h3 class="qui_tit_text">粉丝们也喜欢看</h3>
           </div>
@@ -241,10 +241,8 @@
     text-align: center;
   }
 
-  .qui_tit_text {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    font-weight: 300
+  .qui_tit_text {  
+    letter-spacing: 1px;    
   }
 
   .mv_info {
@@ -258,18 +256,8 @@
     font-size: 0.9rem
   }
 
-  .js_go_singer {
-    color: grey;
-    font-size: 0.7rem
-  }
-
   .mv_top {
-    color: #31c27c;
-    font-size: 0.7rem
-  }
-
-  .mv_top_des{
-    color: gray
-  }
+    color: #31c27c;   
+  }  
 
 </style>

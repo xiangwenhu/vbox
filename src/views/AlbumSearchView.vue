@@ -70,8 +70,7 @@
           }
           this.sum = res.data.sum
           if (!res.data || !res.data.albumlist || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
-            return
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')           
           } else {
             this.albums = this.albums.concat(res.data.albumlist.map(album => {
               album.albumMID = album.album_mid

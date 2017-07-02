@@ -12,7 +12,7 @@
 
           <figcaption>
             <h3 class="singer_list__title">
-              <router-link :to="{name:'SingerDetailView',params:{singermid:singer.Fsinger_mid}}">{{singer.Fsinger_name}}</router-link>
+              <router-link class="tit" :to="{name:'SingerDetailView',params:{singermid:singer.Fsinger_mid}}">{{singer.Fsinger_name}}</router-link>
             </h3>
           </figcaption>
         </figure>
@@ -59,8 +59,7 @@
   }
 
   .singer_list__title a {
-    color: #333;
-    font-size: 0.8rem;
+    color: #333;   
     font-weight: normal
   }
 </style>

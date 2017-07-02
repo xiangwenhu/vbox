@@ -43,7 +43,9 @@ const proxy = function (initState, lsKey, keys = []) {
 
   // 代理二级属性
   keys.forEach(k => {
-    obj[k] = new Proxy(obj[k], createHanlder(lsKey, k))
+    if (obj[k]) {
+      obj[k] = new Proxy(obj[k], createHanlder(lsKey, k))
+    }
   })
   // 存入合并的值
   LStorage.setItem(lsKey, copy(obj, keys))

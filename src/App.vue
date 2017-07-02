@@ -67,19 +67,6 @@
 <style>
   /* @import 'assets/index_light.css'; */
 
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    transform: rotate(0deg);
-  }
-
-  .rootc {
-    transform: rotate(0) !important;
-  }
-
   * {
     padding: 0;
     margin: 0
@@ -101,7 +88,6 @@
   li {
     list-style: none
   }
-
 
   .fade-enter-active,
   .fade-leave-active {
@@ -185,5 +171,38 @@
     color: #fff;
     border-color: #31c27c;
     z-index: 2;
+  }
+  .tit {
+    font-size: 0.8rem;
+    color: #333
+  }
+  
+  .tit_h2 {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #333
+  }
+  .tit_h4{
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: #333
+  }
+  
+  .desc {
+    color: #999;
+    font-size: 0.7rem
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    transform: rotate(0deg);
+  }
+
+  .rootc {
+    transform: rotate(0) !important;
   }
 </style>

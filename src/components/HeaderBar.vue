@@ -66,7 +66,7 @@
 
   .header-bar li {
     display: inline-block;
-    width: 3rem;
+    width: 15.5%;
     text-align: center;
     padding: 0.3rem 0.1rem
   }

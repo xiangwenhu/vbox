@@ -9,7 +9,7 @@
             <play-icon height="1"></play-icon>
           </span>
           </div>
-          <figcaption class="top_name">
+          <figcaption class="tit">
             {{top.ListName}}
           </figcaption>
         </figure>
@@ -54,10 +54,6 @@
 
   .top_pic {
     width: 95%
-  }
-
-  .top_name {
-    font-size: 0.8rem;
   }
 
   .play_icon {

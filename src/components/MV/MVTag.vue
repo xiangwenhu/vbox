@@ -53,11 +53,16 @@
   .tag-operation {
     text-align: center
   }
-
   .tag-operation span {
-    line-height: 1.4rem;
-    font-size: 1rem
-  }
+    /* line-height: 1.6rem; */
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+    /* margin: 1.1rem; */
+    height: 1.6rem;
+    display: inline-block;
+    padding: 0.1rem 0.2rem;
+    border-bottom: 2px solid #f2f2f2;
+  }  
 
   .tag-select {
     font-size: 0.8rem;

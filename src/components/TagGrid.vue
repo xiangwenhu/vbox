@@ -36,7 +36,13 @@
 
 <style scoped>
   .left-side {
-    width: 20%
+    width: 20%;
+    text-align: center;
+    margin-top:1rem
+  }
+
+  .box {
+    margin: 0.5rem auto;
   }
 
   .right-side {
@@ -44,8 +50,12 @@
   }
 
   .box-item {
-    width: 30%;
-    border: 1px solid #999;
+    width: 25%;
+    border-right: 2px solid #f2f2f2;
+    border-bottom: 2px solid #f2f2f2;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 1.75rem;
   }
 
   .selected {

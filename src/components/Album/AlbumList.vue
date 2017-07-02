@@ -11,8 +11,8 @@
         </div>
         <figcaption>
           <router-link :to="{name:'AlbumDetailView',params:{albummid:album.albumMID}}">
-            <p class="ellipsis album_name">{{album.albumName}}</p>
-            <p class="ellipsis album_singer"> {{album.singers.map(s=>s.singer_name).join('/')}}</p>
+            <p class="ellipsis tit">{{album.albumName}}</p>
+            <p class="ellipsis desc"> {{album.singers.map(s=>s.singer_name).join('/')}}</p>
           </router-link>
         </figcaption>
       </figure>

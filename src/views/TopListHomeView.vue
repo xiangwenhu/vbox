@@ -37,7 +37,6 @@
       this.DFName = topListOpt[0].GroupName
       this.GlobalTopList = topListOpt[1].List
       this.GlobalName = topListOpt[1].GroupName
-      console.log(this.DFTopList)
     },
     methods: {
       // 添加排行榜到播放列表

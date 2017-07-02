@@ -18,7 +18,7 @@
             <div style="position:relative">
               <ul>
                 <li v-for="(song,index) in top.songlist" class="songitem ellipsis">
-                  <span class="songname">{{index+1}} {{song.songname}}</span> <span class="songsinger">-{{song.singername}}</span>
+                  <span class="songname tit">{{index+1}} {{song.songname}}</span> <span class="songsinger tit">-{{song.singername}}</span>
                 </li>
               </ul>
               <span class="go-detail">></span>
@@ -93,7 +93,6 @@
 
   .songitem {
     line-height: 1.5rem;
-    font-size: 0.8rem;
     max-width: 85%;
   }
 

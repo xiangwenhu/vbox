@@ -6,7 +6,11 @@
       </router-link>
     </div>
     <top-list-slide :toplist="toplist" @addToPlaying='addTLToPlaying'></top-list-slide>
-    <hot-diss :hotdiss="hotdiss" @addDissToPlaying='addDissToPlaying'></hot-diss>
+    <hot-diss :hotdiss="hotdiss" @addDissToPlaying='addDissToPlaying'>
+      <div>
+        <h3 class="diss_title align-center">热门歌单</h3>
+      </div>
+    </hot-diss>
   </div>
 </template>
 
