@@ -13,14 +13,15 @@
           </div>
         </div>
       </div>
-      <div>
+
+      <div class="video_more">
 
         <div>
           <div class="mv_info">
             <p class="qui_tit_text tit_h4">{{mvinfo.mvname}}</p>
             <p class="desc" data-id="5062">{{mvinfo.singers |mp('name') | jn}}</p>
             <p>
-              <span  v-if='toplistinfo.topnum > 0' class="desc mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
+              <span v-if='toplistinfo.topnum > 0' class="desc mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
               <span class="desc mv_top">{{mvinfo.listennum |tt}}次播放</span>
               <span class="desc mv_top">{{mvinfo.pubdate}}</span>
             </p>
@@ -79,6 +80,10 @@
         started: false
       }
     },
+    beforeRouteLeave(to, from, next) {
+      this.$store.commit('player/setState', 1)
+      next();
+    },
     computed: {
       vid() {
         return this.$route.params.vid
@@ -130,6 +135,7 @@
       },
       play() {
         if (this.src) {
+          this.$store.commit('player/setState', 2)
           this.started = true
           this.$refs.videoPlayer.src = this.src;
           this.$refs.videoPlayer.play()
@@ -165,14 +171,16 @@
 
 <style scoped>
   .video-player {
-    position: relative
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%
   }
 
   .tvp_video {
     position: relative;
-    width: 100%;
-    height: 100%;
-    margin-top: 2.5rem
+    width: 100%;  
+    flex-shrink: 0;  
   }
 
   .tvp_overlay_poster {
@@ -241,8 +249,8 @@
     text-align: center;
   }
 
-  .qui_tit_text {  
-    letter-spacing: 1px;    
+  .qui_tit_text {
+    letter-spacing: 1px;
   }
 
   .mv_info {
@@ -257,7 +265,9 @@
   }
 
   .mv_top {
-    color: #31c27c;   
-  }  
-
+    color: #31c27c;
+  }
+  .video_more{
+    overflow: auto;
+  }
 </style>

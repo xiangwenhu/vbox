@@ -3,13 +3,13 @@
     <progress-bar :progress='progress'></progress-bar>
     <div>
       <div class="inlineblock albuminfo">
-        <img class='albumimg' :src="albumimg" onerror='this.src = "https://y.gtimg.cn/mediastyle/yqq/extra/player_cover.png?max_age=31536000"'
+        <img class='albumimg' :src="song?`https://y.gtimg.cn/music/photo_new/T002R150x150M000${song.albummid}.jpg?max_age=2592000`:''" onerror='this.src = "https://y.gtimg.cn/mediastyle/yqq/extra/player_cover.png?max_age=31536000"'
         />
       </div>
 
       <div class="inlineblock songinfo">
-        <span class="song_name">{{songname}}</span>
-        <div class="song_singer"> {{singers}}</div>
+        <span class="song_name">{{song.songname}}</span>
+        <div class="song_singer"> {{song.singer | mp('name') | jn('/') }}</div>
       </div>
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
@@ -28,20 +28,22 @@
     name: 'min-player',
     data() {
       return {
-        singers: '',
-        albumimg: '',
-        songname: '',
         progress: '0%'
       }
     },
     components: {
       ProgressBar
     },
-    computed: mapState({
-      current: state => state.playing.current,
-      currentTime: state => state.player.currentTime,
-      playerState: state => state.player.state
-    }),
+    computed: {
+      ...mapState({
+        current: state => state.playing.current,
+        currentTime: state => state.player.currentTime,
+        playerState: state => state.player.state
+      }),
+      song() {
+        return this.current || {}      
+      }
+    },
     methods: {
       next: function () {
         this.$store.commit('playing/next')
@@ -51,11 +53,6 @@
       }
     },
     watch: {
-      current(to) {
-        this.singers = to.singer.map(s => s.name).join('/')
-        this.albumimg = `https://y.gtimg.cn/music/photo_new/T002R150x150M000${to.albummid}.jpg?max_age=2592000`
-        this.songname = to.songname
-      },
       currentTime(to) {
         if (this.current) {
           this.progress = (to / this.current.interval).toFixed(4) * 100 + '%'

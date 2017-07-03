@@ -66,8 +66,7 @@
   .box-item {
     flex-basis: 100%;
     justify-content: center;
-    flex: 1;
-    background-color: #414141
+    flex: 1;  
   }
 
   figcaption {

@@ -132,7 +132,7 @@
 
   .header {
     width: 100%;
-    height: 4.8rem;  
+    flex: 0 0 4.8rem;
   }
 
   .child-view {
@@ -148,7 +148,6 @@
   }
 
   .footer {
-    height: 4rem;
-    line-height: 4rem
+    flex: 0 0 4rem;
   }
 </style>

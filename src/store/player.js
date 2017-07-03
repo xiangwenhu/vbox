@@ -1,7 +1,7 @@
 import { proxy } from '../utils/LSProxy'
 let state = {
   currentTime: 0,
-  // 当前状态 空闲， playing, pause
+  // 当前状态  0 空闲，1 playing, 2 pause
   state: 0,
   // 当前播放的模式 0顺序循环， 1单曲，2随机
   mode: 0
