@@ -2,7 +2,7 @@
   <div class="categorys_zone">
     <ul class="ulbox">
       <li v-for="(category,index) in hotCategorys" :data-id="category.categoryId" class="categorysli categoryLi" :class='[index == 0 ? "specialLI" : ""]'>
-        {{category.categoryName}}
+        <router-link :to="{name:'DissCategorysListView',params:{categoryId:category.categoryId}}" >{{category.categoryName}}</router-link>
       </li>
       <li class="categorysli allCategory">查看全部分类 ></li>
     </ul>
@@ -21,6 +21,11 @@
 
 
 <style scoped>
+  a {
+      color: #333;
+      text-decoration: none;
+  }
+
   .ulbox{
     width: 20rem;
   }

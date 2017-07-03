@@ -17,6 +17,8 @@ import TopListHomeView from '../views/TopListHomeView'
 import TopListDetailView from '../views/TopListDetailView'
 
 import DissView from '../views/DissView'
+import DissHomeView from '../views/DissHomeView'
+import DissCategorysListView from '../views/DissCategorysListView'
 
 import MVView from '../views/MVView'
 import MVDetailView from '../views/MVDetailView'
@@ -107,7 +109,23 @@ export default new Router({
         {
           path: 'diss',
           name: 'DissView',
-          component: DissView
+          component: DissView,
+          children: [
+            {
+              path: '',
+              redirect: '/pages/diss/home'
+            },
+            {
+              path: 'home',
+              name: 'DissHomeView',
+              component: DissHomeView
+            },
+            {
+              path: 'category/:categoryId',
+              name: 'DissCategorysListView',
+              component: DissCategorysListView
+            }
+          ]
         },
         {
           path: 'mv',
