@@ -1,8 +1,8 @@
 <template>
   <header id="header" class="clearfix">
-    <router-link to="/" @click='goback'>
+    <a @click='goback'>
       <img class='logo' :src="logoImg" alt="logo">
-    </router-link>
+    </a>
     <router-link class="searchBtn" to="/pages/search">
       <img :src="searchImg" alt="搜索">
     </router-link>

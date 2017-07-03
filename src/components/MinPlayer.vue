@@ -1,13 +1,13 @@
 <template>
   <div class="miniplayer footer">
     <progress-bar :progress='progress'></progress-bar>
-    <div>
+    <div class="play-info">
       <div class="inlineblock albuminfo">
-        <img class='albumimg' :src="song?`https://y.gtimg.cn/music/photo_new/T002R150x150M000${song.albummid}.jpg?max_age=2592000`:''" onerror='this.src = "https://y.gtimg.cn/mediastyle/yqq/extra/player_cover.png?max_age=31536000"'
-        />
+        <img class='albumimg' :src="song?`https://y.gtimg.cn/music/photo_new/T002R150x150M000${song.albummid}.jpg?max_age=2592000`:''"
+          onerror='this.src = "https://y.gtimg.cn/mediastyle/yqq/extra/player_cover.png?max_age=31536000"' />
       </div>
 
-      <div class="inlineblock songinfo">
+      <div class="inlineblock ellipsis songinfo">
         <span class="song_name">{{song.songname}}</span>
         <div class="song_singer"> {{song.singer | mp('name') | jn('/') }}</div>
       </div>
@@ -16,7 +16,6 @@
         <a @click.stop='next' href="javascript:;" class="focus__play__next focus__play c_ico1 js_playallsong"><span class="focus__play_text"></span></a>
       </div>
     </div>
-
 
   </div>
 </template>
@@ -41,7 +40,7 @@
         playerState: state => state.player.state
       }),
       song() {
-        return this.current || {}      
+        return this.current || {}
       }
     },
     methods: {
@@ -71,14 +70,17 @@
 
   .miniplayer {
     background: rgba(0, 0, 0, .7);
-    /* position: fixed; 
-    bottom: 0; */
     width: 100%
   }
 
+  .play-info{
+    display: flex;
+    align-items:center
+  }
+
   .albuminfo {
-    height: 4rem;
-    width: 4rem
+    width: 3rem;
+    flex-shrink: 0
   }
 
   .albumimg {
@@ -89,10 +91,9 @@
 
   .songinfo {
     color: #FFF;
-    width: auto;
-    vertical-align: top;
-    /* height: 100%; */
-    margin-top: 1rem;
+    width: auto; 
+    align-self:center;
+    flex: 1 1 auto;
   }
 
   .song_name {
@@ -117,15 +118,12 @@
     color: #fff;
   }
 
-  .operation {
-    position: absolute;
-    right: 0;
-    width: 5rem
+  .operation {     
+    flex: 0 0 4.5rem;
+  
   }
 
-  .focus__play {
-    /* right: 1rem; */
-    top: 1rem;
+  .focus__play {  
     position: relative;
     display: inline-block;
     width: 1.8rem;

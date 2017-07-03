@@ -148,6 +148,6 @@
   }
 
   .footer {
-    flex: 0 0 4rem;
+    flex: 0 0 3rem;
   }
 </style>
