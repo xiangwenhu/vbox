@@ -62,13 +62,16 @@
     display: inline-block;
     width: 100%;
     text-align: center;
+    position: relative;
+    line-height: 2rem;
+    height: 2rem;
   }
 
   .header-bar li {
     display: inline-block;
     width: 15.5%;
     text-align: center;
-    padding: 0.3rem 0.1rem
+    padding: 0  0.1rem  0 0.1rem
   }
 
   .mod_nav li.current a {

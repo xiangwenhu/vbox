@@ -1,9 +1,11 @@
 <template>
   <div class="pages-view" @touchstart.stop='touchstart' @touchend.stop='touchend'>
-    <top-header></top-header>
-    <header-bar :cat="cat"></header-bar>
-    <transition :name="transitionName">
-      <router-view class="child-view"></router-view>
+    <div class="header">
+      <top-header></top-header>
+      <header-bar :cat="cat"></header-bar>
+    </div>
+    <transition :name="transitionName" mode="out-in">
+      <router-view class="child-view main"></router-view>
     </transition>
     <min-player></min-player>
   </div>
@@ -39,7 +41,7 @@
           let cat = this.getCate(to.path)
           if (cat) {
             this.cat = cat
-          }         
+          }
         } catch (err) {
           alert('err' + err)
         }
@@ -122,7 +124,31 @@
 
 <style scoped>
   .pages-view {
-    margin-top: 2.5rem;
     height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    width: 100%;
+    height: 4.8rem;  
+  }
+
+  .child-view {
+    /* position: absolute; */
+    transition: all .5s cubic-bezier(.55, 0, .1, 1);
+    width: 100%;
+    flex: 1
+  }
+
+  .main {
+    overflow: auto;
+    vertical-align: baseline;
+  }
+
+  .footer {
+    height: 4rem;
+    line-height: 4rem
   }
 </style>

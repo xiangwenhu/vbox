@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'rootc':landscape}" style="height:100%">
+  <div :class="{'rootc':landscape}" style="height:100%;width:100%">
     <router-view></router-view>
     <router-view name='settings'></router-view>
     <router-view name='other'></router-view>
@@ -74,7 +74,9 @@
 
   html,
   body {
-    height: 100%
+    height: 100%;
+    width:100%;
+    overflow: hidden;
   }
 
   a {
@@ -97,12 +99,6 @@
   .fade-enter,
   .fade-leave-active {
     opacity: 0
-  }
-
-  .child-view {
-    position: absolute;
-    transition: all .5s cubic-bezier(.55, 0, .1, 1);
-    width: 100%;
   }
 
   .slide-left-enter,
@@ -172,22 +168,24 @@
     border-color: #31c27c;
     z-index: 2;
   }
+
   .tit {
     font-size: 0.8rem;
     color: #333
   }
-  
+
   .tit_h2 {
     font-weight: 400;
     font-size: 1.2rem;
     color: #333
   }
-  .tit_h4{
+
+  .tit_h4 {
     font-weight: 300;
     font-size: 0.9rem;
     color: #333
   }
-  
+
   .desc {
     color: #999;
     font-size: 0.7rem

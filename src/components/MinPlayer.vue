@@ -1,5 +1,5 @@
 <template>
-  <div class="miniplayer">
+  <div class="miniplayer footer">
     <progress-bar :progress='progress'></progress-bar>
     <div>
       <div class="inlineblock albuminfo">
@@ -74,8 +74,8 @@
 
   .miniplayer {
     background: rgba(0, 0, 0, .7);
-    position: fixed;
-    bottom: 0;
+    /* position: fixed; 
+    bottom: 0; */
     width: 100%
   }
 

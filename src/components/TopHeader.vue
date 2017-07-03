@@ -32,12 +32,10 @@
   #header {
     background: #20bc22;
     color: #fff;
-    height: 2rem;
-    position: fixed;
-    top: 0;
+    height: 2rem;    
     width: 100%;
     padding: 0.25rem 0;
-    z-index: 999;
+    position: relative;
     background-image: -webkit-linear-gradient(270deg, #31c27c, #20bc22);
     background-image: linear-gradient(270deg, #31c27c, #20bc22);
   }
@@ -81,7 +79,8 @@
   #header .searchBtn {
     position: absolute;
     right: 3rem;
-    top: 0.5rem;
+    height: 1.5rem;
+    top:0.6rem;    
   }
 
   .searchBtn img {
