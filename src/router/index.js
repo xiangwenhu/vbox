@@ -24,6 +24,8 @@ import MVView from '../views/MVView'
 import MVDetailView from '../views/MVDetailView'
 import MVPlayerView from '../views/MVPlayerView'
 
+import SearchView from '../views/SearchView'
+
 Vue.use(Router)
 
 export default new Router({
@@ -135,6 +137,11 @@ export default new Router({
           path: 'mv/:vid',
           name: 'MVDetailView',
           component: MVDetailView
+        },
+        {
+          path: 'search',
+          name: 'SearchView',
+          component: SearchView
         }
       ]
     },
