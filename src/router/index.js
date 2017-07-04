@@ -25,6 +25,7 @@ import MVDetailView from '../views/MVDetailView'
 import MVPlayerView from '../views/MVPlayerView'
 
 import SearchView from '../views/SearchView'
+import SearchResultView from '../views/SearchResultView'
 
 Vue.use(Router)
 
@@ -144,17 +145,17 @@ export default new Router({
       path: '/mvplayer/:vid',
       name: 'MVPlayerView',
       component: MVPlayerView
-    },    
+    },
     {
       path: '/search',
       name: 'SearchView',
       component: SearchView,
-      children: [{
-        path: '/:keyWords',
-        name: 'SearchViewWithKey',
-        component: SearchView
-      }]
+      children: [        
+        {
+          path: ':keyWords',
+          name: 'SearchResultView',
+          component: SearchResultView
+        }]
     }
-
   ]
 })
