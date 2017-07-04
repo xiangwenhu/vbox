@@ -10,7 +10,8 @@ const mutations = {
   /**
    * 添加歌曲
    * @param {*} state 
-   * @param {*} song 歌曲信息 
+   * @param {*} song 歌曲信息 {songname,songmid,singer,albummid}
+   *   
    */
   addSong(state, song) {
     let index = state.list.findIndex(s => s.songmid === song.songmid)

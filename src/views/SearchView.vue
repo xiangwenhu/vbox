@@ -59,6 +59,7 @@
       // 搜索
       search(key) {
         this.addH(key)
+        this.keyWords = key 
         this.showSmart = false
         this.showHotKeys = false
         this.$router.replace({ name: 'SearchResultView', params: { keyWords: key } }) 
