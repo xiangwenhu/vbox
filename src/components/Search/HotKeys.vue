@@ -2,7 +2,7 @@
   <div class="mod_search_result">
     <slot></slot>
     <div class="result_tags">
-      <a v-for="(hot,index) in hotkeys" class="js_keyword tag_s" @click.stop='selected(hot.k)'>{{hot.k}}</a>
+      <a v-for="(hot,index) in hotkeys" :class='index==0 ?"tag_hot":""' class="js_keyword tag_s" @click.stop='selected(hot.k)'>{{hot.k}}</a>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
       }
     },
     methods: {
-      search(key) {
+      selected(key) {
         this.$emit('selected', key)
       }
     }
@@ -34,11 +34,6 @@
     margin-top: 0.2rem
   }
 
-  .tag_hot {
-    color: #fc4524;
-    border-color: #fc4524;
-  }
-
   .tag_s {
     display: inline-block;
     font-size: 0.8rem;
@@ -51,5 +46,10 @@
     word-break: keep-all;
     margin-bottom: 0.5rem;
     margin-right: 0.7rem;
+  }
+
+  .tag_hot {
+    color: #fc4524;
+    border-color: #fc4524;
   }
 </style>

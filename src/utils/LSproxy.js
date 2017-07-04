@@ -1,5 +1,5 @@
 import LStorage from './LStorage'
-
+import { copy } from './utils'
 /**
  * 代理二级属性
  * @param {*} lsKey 存在localStorage的key
@@ -16,20 +16,6 @@ function createHanlder(lsKey, pk) {
       return Reflect.set(target, key, value, receiver)
     }
   }
-}
-
-/**
- * 仅仅存需要存放的数据
- * @param {*} source 
- * @param {*} keys 
- */
-function copy(source, keys = []) {
-  if (!source) {
-    return source
-  }
-  let d = Object.create(null)
-  keys.forEach(k => { d[k] = source[k] })
-  return d
 }
 
 /**

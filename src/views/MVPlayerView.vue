@@ -22,7 +22,7 @@
             <p class="desc" data-id="5062">{{mvinfo.singers |mp('name') | jn}}</p>
             <p>
               <span v-if='toplistinfo.topnum > 0' class="desc mv_top">MV排行榜第{{toplistinfo.topnum}}名(第{{toplistinfo.weekno}})期</span>
-              <span class="desc mv_top">{{mvinfo.listennum |tt}}次播放</span>
+              <span class="desc mv_top">{{mvinfo.listennum |tt}}万次播放</span>
               <span class="desc mv_top">{{mvinfo.pubdate}}</span>
             </p>
           </div>
