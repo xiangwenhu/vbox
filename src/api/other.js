@@ -58,14 +58,32 @@ export default {
    * 按照分类查询歌单 tested
    * @param {*} categoryId  
    * @param {*} sortId  排序 5 推荐 / 2 最新
+   * @param {*} sin 起始行
+   * @param {*} ein 结束行
    * 返回结果 dissid 为歌单编号
    */
-  dissByTag(categoryId = 10000000, sortId = 5) {
-    let url = `${URLConsts.URL_DISS_BYTAG}&categoryId=${categoryId}&sortId=${sortId}&rnd=${Math.random().toFixed(16)}`
+  dissByTag(categoryId = 10000000, sortId = 5, sin = 0, ein = 29) {
+    let url = `${URLConsts.URL_DISS_BYTAG}&categoryId=${categoryId}&sortId=${sortId}&sin=${sin}&ein=${ein}&rnd=${Math.random().toFixed(16)}`
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
         'referer': 'https://y.qq.com/portal/playlist.html',
+        'Content-Type': 'application/json'
+      }
+    })
+  },
+  /**
+   * 按照分类查询歌单 tested
+   * @param {*} categoryId  
+   * @param {*} sort  排序 hot 最热 / time 最新
+   * 返回结果 dissid 为歌单编号
+   */
+  dissByTag3G(categoryId = 71, sort = 'hot') {
+    let url = `${URLConsts.URL_DISS_BYTAG_3G}&categoryId=${categoryId}&sort=${sort}&rnd=${Math.random().toFixed(16)}`
+    return fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'referer': 'https://y.qq.com/m/client/categoryzone/detail.html',
         'Content-Type': 'application/json'
       }
     })

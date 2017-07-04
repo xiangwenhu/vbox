@@ -152,3 +152,7 @@
     border-style: solid;
     border-width: 0 1px 0 0;
 }
+
+.c_bor1, .c_bor1::after {
+    border-color: rgba(0,0,0,.15);
+}

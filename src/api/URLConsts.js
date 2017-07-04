@@ -1,4 +1,5 @@
 const COMMON_PARAMS = 'g_tk=5381&loginUin=0&hostUin=0&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0'
+const COMMON_PARAMS_3G = 'g_tk=5381&loginUin=0&hostUin=0&inCharset=utf8&outCharset=utf-8&notice=0&platform=h5&needNewCode=0&isParent=0&showType=2&groupId=1&index=0'
 // const C_Y_QQ_COM = 'https://c.y.qq.com'
 const C_Y_QQ_COM = '/cyqq'
 const H5VV_VIDEO_QQ_COM = '/h5vv'
@@ -50,11 +51,13 @@ const URL_VKEY = `${C_Y_QQ_COM}/base/fcgi-bin/fcg_music_express_mobile3.fcg?cid=
 // 歌单的分类
 const URL_DISS_TAG_CONF = `${C_Y_QQ_COM}/splcloud/fcgi-bin/fcg_get_diss_tag_conf.fcg?format=json&${COMMON_PARAMS}`
 // 按照分类查询歌单
-const URL_DISS_BYTAG = `${C_Y_QQ_COM}/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?format=json&sin=0&ein=29&${COMMON_PARAMS}`
+const URL_DISS_BYTAG = `${C_Y_QQ_COM}/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?format=json&${COMMON_PARAMS}`
 // 获取某个歌单的内容
 const URL_DISS_INFO = `${C_Y_QQ_COM}/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&format=json&${COMMON_PARAMS}`
 // 相似歌单
 const URL_DISS_SIMILAR = `${C_Y_QQ_COM}/musichall/fcgi-bin/fcg_similar_recomm.fcg?recomtype=2&format=json`
+// 移动按照分类查询歌单
+const URL_DISS_BYTAG_3G = `${C_Y_QQ_COM}/musichall/fcgi-bin/3g_gedan_category_detail?format=json&${COMMON_PARAMS_3G}`
 
 /* MV */
 // MV查询 taglist=1 有标签
@@ -113,6 +116,7 @@ export default {
   URL_DISS_BYTAG,
   URL_DISS_INFO,
   URL_DISS_SIMILAR,
+  URL_DISS_BYTAG_3G,
 
   URL_MV_BYTAG,
   URL_MV_INFO,
