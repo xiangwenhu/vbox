@@ -37,8 +37,7 @@
         this.$store.commit('player/timeUpdate', this.player.currentTime)
       },
       // 播放时，更新状态为播放
-      play: function () {
-        console.log('play')
+      play: function () {       
         // this.player.play()
         // this.player.removeAttribute('src')
         // alert('play')

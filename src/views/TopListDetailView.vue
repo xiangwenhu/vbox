@@ -53,9 +53,8 @@
             this.song_begin = result.song_begin + result.cur_song_num
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
           }
-          console.log(result.songlist)
         }).catch(err => {
-          console.log(err)
+          alert(err)
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         })
       }
@@ -68,7 +67,7 @@
 </script>
 
 <style scoped>
-  .toplist-detail{
+  .toplist-detail {
     background-color: #000
   }
 </style>

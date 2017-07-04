@@ -137,11 +137,6 @@ export default new Router({
           path: 'mv/:vid',
           name: 'MVDetailView',
           component: MVDetailView
-        },
-        {
-          path: 'search',
-          name: 'SearchView',
-          component: SearchView
         }
       ]
     },
@@ -149,6 +144,17 @@ export default new Router({
       path: '/mvplayer/:vid',
       name: 'MVPlayerView',
       component: MVPlayerView
+    },    
+    {
+      path: '/search',
+      name: 'SearchView',
+      component: SearchView,
+      children: [{
+        path: '/:keyWords',
+        name: 'SearchViewWithKey',
+        component: SearchView
+      }]
     }
+
   ]
 })

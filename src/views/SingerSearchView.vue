@@ -39,8 +39,7 @@
       },
       async onInfinite() {
         try {
-          this.pagenum++
-          console.log(this.pagenum)
+          this.pagenum++      
           let res = await Search.singers(this.filter.area, this.filter.letter, this.pagenum, this.pagesize).then(res => res.json())
           this.singers = this.singers.concat(res.data.list)
           if (this.pagenum < res.data.total_page) {

@@ -37,6 +37,8 @@ const URL_SEARCH_CLIENT_MV = `${C_Y_QQ_COM}/soso/fcgi-bin/client_search_cp?ct=24
 const URL_SEARCH_CLIENT_ALBUM = `${C_Y_QQ_COM}/soso/fcgi-bin/client_search_cp?ct=24&format=json&qqmusic_ver=1298&remoteplace=txt.yqq.album&aggr=0&catZhida=1&lossless=0&sem=10&t=8&${COMMON_PARAMS}`
 // 搜索后的智能搜索
 const URL_SEARCH_SMARTBOX = `${C_Y_QQ_COM}/splcloud/fcgi-bin/smartbox_new.fcg?is_xml=0&format=json&${COMMON_PARAMS}`
+// 搜索后歌单搜素
+const URL_SEARCH_CLIENT_DISS = `${C_Y_QQ_COM}//soso/fcgi-bin/client_music_search_songlist?flag_qc=0&format=json&${COMMON_PARAMS}`
 
 /* 排行 */
 // 排行榜分类
@@ -111,6 +113,7 @@ export default {
   URL_TOPLIST_OPT,
   URL_TOPLIST_LIST,
   URL_VKEY,
+  URL_SEARCH_CLIENT_DISS,
 
   URL_DISS_TAG_CONF,
   URL_DISS_BYTAG,

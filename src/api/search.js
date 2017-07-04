@@ -38,6 +38,18 @@ export default {
     let url = `${URLConsts.URL_SEARCH_CLIENT_ALBUM}&w=${encodeURIComponent(w)}&p=${p}&n=${n}`
     return fetch(url)
   },
+  /**
+   * 搜索后搜素歌单
+   * @param {*} query 关键字
+   * @param {*} page_no 页码
+   * @param {*} num_per_page 页大小 
+   * remoteplace = sizer.yqq.playlist_next , remoteplace=txt.yqq.playlist
+   */
+  searchDiss(query, page_no = 0, num_per_page = 30) {
+    let remoteplace = page_no === 0 ? 'txt.yqq.playlist' : 'sizer.yqq.playlist_next '
+    let url = `${URLConsts.URL_SEARCH_CLIENT_DISS}&query=${encodeURIComponent(query)}&page_no=${page_no}&num_per_page=${num_per_page}&remoteplace=${remoteplace}`
+    return fetch(url)
+  },
 
   /**
    * 执行搜索后的智能搜索 tested

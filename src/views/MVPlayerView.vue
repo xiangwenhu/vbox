@@ -112,8 +112,7 @@
       // vkey=2FD83FF4885B7F4DE767CE2D7FCCE1E5A35013DAE64D4231ECD34A72CC1898F8523E15756537B2BA2B7CEAACE8C9938C7201EB8327FD20EDA35066E53832F4FA23DF680052E45395306A5E30BB14CD3C3569EC7B05AACB0D
       // &br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b
       updateMVUrl() {
-        // 可用解构
-        // console.log(this.mvkeyinfo)
+        // 可用解构     
         /* 
         if (this.mvkeyinfo && this.mvkeyinfo.vl && this.mvkeyinfo.vl.vi && this.mvkeyinfo.vl.vi.length > 0) {
           var vi = this.mvkeyinfo.vl.vi[0]
@@ -149,12 +148,10 @@
 
         // mv 信息
         res = await Search.mmvInfo(this.vid).then(res => res.json())
-        this.mvinfo = res.data
-        console.log(res)
+        this.mvinfo = res.data    
 
         // 设置了 access-control-allow-origin:https://y.qq.com
-        // res = await Search.comments(this.vid).then(res => res.text())
-        // console.log('comments', res)
+        // res = await Search.comments(this.vid).then(res => res.text())      
       }
     },
     watch: {

@@ -1,35 +1,36 @@
 <template>
-  <div class="mod_search_bar">
-    <div class="search_bar_cont">
-      <input @focus='changeState' @keypress.stop='search' @input.stop='smartSearch' v-model="keywords" id="search_input" class="search_input"
-        type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑">
-      <span class="icon icon_search">搜索</span>
-    </div>
-    <div @click.stop='changeState(null)' id="cancel_btn" class="search_bar_tip_text" style="display: block;">取消</div>
+
+  <div class="search_bar_cont">
+    <input @focus='changeState(true)' @keypress.stop='search' @input.stop='smartSearch' id="search_input" class="search_input"
+      type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑" :value="keyWords">
+    <span class="icon icon_search">搜索</span>
   </div>
+
 </template>
 
 <script>
   export default {
     data() {
       return {
-        keywords: '',
+        keyWords: '',
         status: null
       }
     },
     methods: {
       search(ev) {
         if (ev.keyCode === 13) {
-          this.$emit('search', this.keywords)
+          this.$emit('search', this.keyWords)
         }
       },
-      smartSearch() {
-        this.$emit('smartSearch', this.keywords)
+      smartSearch(ev) {
+        this.keyWords = ev.target.value
+        this.$emit('smartSearch', this.keyWords)
       },
       changeState(val) {
-        let cv = val !== null ? val : null
-        this.status = cv
-        this.$emit('status', cv)
+        this.$emit('status', val)
+      },
+      clear() {
+        this.keyWords = ''
       }
     }
   }
@@ -37,15 +38,6 @@
 </script>
 
 <style scoped>
-  .mod_search_bar {
-    background: #f4f4f4;
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1
-  }
-
   .mod_search_bar .search_bar_cont {
     position: relative;
     border-radius: 3px;
@@ -75,13 +67,5 @@
     background-repeat: no-repeat;
     background-size: cover;
     text-indent: -999px;
-  }
-
-  .mod_search_bar .search_bar_tip_text {
-    padding-right: 10px;
-    padding-left: 10px;
-    font-size: 14px;
-    height: 36px;
-    line-height: 36px;
   }
 </style>

@@ -3,7 +3,7 @@
     <a @click='goback'>
       <img class='logo' :src="logoImg" alt="logo">
     </a>
-    <router-link class="searchBtn" to="/pages/search">
+    <router-link class="searchBtn" to="/search">
       <img :src="searchImg" alt="搜索">
     </router-link>
     <div class="btn_nav_slide" id="btnNavSlide"><i class="draw"></i></div>

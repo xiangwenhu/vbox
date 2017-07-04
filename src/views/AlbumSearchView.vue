@@ -94,8 +94,7 @@
         this.$refs.infiniteLoading.isLoading = true
         this.onInfinite();
       },
-      async addAlbumToPlaying(albumMID) {
-        console.log('addAlbumToPlaying')
+      async addAlbumToPlaying(albumMID) {    
         let res = await Search.albumInfo(albumMID).then(res => res.json())
         this.$store.commit('playing/addSongs', res.data.list)
         this.$store.commit('playing/next', res.data.list[0])

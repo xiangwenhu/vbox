@@ -45,8 +45,7 @@
     methods: {
       // 添加排行榜到播放列表
       addTLToPlaying: async function (topId) {
-        let topListList = await Other.topListList(topId).then(res => res.json())
-        console.log(topListList)
+        let topListList = await Other.topListList(topId).then(res => res.json())     
         this.$store.commit('playing/addSongs', topListList.songlist.map(s => s.data))
         // 空闲状态，才自动播放
         // if (this.$store.state.player.state === 0) {
