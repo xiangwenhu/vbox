@@ -8,8 +8,8 @@
       </div>
 
       <div class="inlineblock ellipsis songinfo">
-        <span class="song_name">{{song.songname}}</span>
-        <div class="song_singer"> {{song.singer | mp('name') | jn('/') }}</div>
+        <span class="song_name">{{song.songname || song.name }}</span>
+        <div class="song_singer"> {{ song.singer || ( song.singer | mp('name') | jn('/')) }}</div>
       </div>
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
@@ -47,7 +47,7 @@
       next: function () {
         this.$store.commit('playing/next')
       },
-      pause: function () {      
+      pause: function () {
         let ns = this.playerState === 2 ? 1 : 2
         this.$store.commit('player/setState', ns)
       }

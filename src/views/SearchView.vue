@@ -50,7 +50,7 @@
         // 关键字
         keyWords: null
       }
-    },  
+    },
     methods: {
       ...mapMutations('searchHistory', {
         addH: 'add',
@@ -59,15 +59,22 @@
       // 搜索
       search(key) {
         this.addH(key)
-        this.keyWords = key 
+        this.keyWords = key
         this.showSmart = false
         this.showHotKeys = false
-        this.$router.replace({ name: 'SearchResultView', params: { keyWords: key } }) 
+        this.$router.replace({ name: 'SearchResultView', params: { keyWords: key } })
       },
       // 智能搜索
       async smartSearch(key) {
         this.showSmart = true
         let res = await Search.smartBox(key).then(res => res.json())
+        if (res.data.song && res.data.song.itemlist.length > 0) {
+          res.data.song.itemlist = res.data.song.itemlist.map(s => ({
+            songname: s.name,
+            songmid: s.mid,
+            singer: s.singer
+          }))
+        }
         this.SSResult = res.data
       },
       // 更新当然搜索的状态
@@ -81,7 +88,7 @@
         this.showSmart = false
         this.$refs.sbox.clear()
         this.$router.replace({ name: 'SearchView' })
-      }     
+      }
     },
     async mounted() {
       let res = await Other.hotkey().then(res => res.json())
@@ -101,12 +108,12 @@
     font-size: 1.1rem
   }
 
-  .mod_search_bar {   
+  .mod_search_bar {
     padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0;    
+    flex-shrink: 0;
     background-image: linear-gradient(270deg, #31c27c, #20bc22);
   }
 

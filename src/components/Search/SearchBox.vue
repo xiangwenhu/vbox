@@ -2,7 +2,7 @@
 
   <div class="search_bar_cont">
     <input @focus='changeState(true)' @keypress.stop='search' @input.stop='smartSearch' id="search_input" class="search_input"
-      type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑" :value="keyWords || kw">
+      type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑" :value="keyWords">
     <span class="icon icon_search">搜索</span>
   </div>
 
@@ -13,7 +13,7 @@
     props: ['kw'],
     data() {
       return {
-        keyWords: '',
+        keyWords: this.kw,
         status: null
       }
     },

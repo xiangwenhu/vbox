@@ -4,9 +4,9 @@
     <div class="search_result__sort" v-if='result.song && result.song.itemlist.length > 0'>
       <h4 class="search_result__tit tit_h4"><i class="search_result__icon_song"></i>单曲</h4>
       <ul class="search_result__list ellipsis">
-        <li v-for="(song,index) in result.song.itemlist" class="ellipsis">
-          <a href="javascript:;" class="search_result__link js_smartbox_song" :data-mid="song.mid" :data-name="song.name">
-           <span class="search_result__name">{{song.name}}</span>-<span class="search_result__singer">{{song.singer}}</span>
+        <li v-for="(song,index) in result.song.itemlist" class="ellipsis" @click.stop='play(song)'>
+          <a href="javascript:;" class="search_result__link js_smartbox_song" :data-mid="song.songmid" :data-name="song.songname">
+           <span class="search_result__name">{{song.songname}}</span>-<span class="search_result__singer">{{song.singer }}</span>
           </a>
         </li>
       </ul>
@@ -56,7 +56,13 @@
 
 <script>
   export default {
-    props: ['result']
+    props: ['result'],
+    methods: {
+      play(song) {
+        this.$store.commit('playing/addSong', song)
+        this.$store.commit('playing/next', song)
+      }
+    }
   }
 
 </script>

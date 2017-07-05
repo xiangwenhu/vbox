@@ -3,14 +3,21 @@
     <div class="mod_tab">
       <a v-for="(t,index) in tabs" class="mod_tab__item" @click.stop='changeTab(t.value)' :class='tab == index +1?"mod_tab__current":""'>{{t.title}}</a>
     </div>
-    <song-list @addsong='addsong' @playsong='playsong' :songs='songs' :pure='true' class="song-list of-auto" v-if='tab == 1'></song-list>
-    <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-if="tab == 2" class="of-auto" ></album-list>
-    <mv-list :mvs='mvs' v-if="tab == 3" class="of-auto" ></mv-list>
-    <diss-list :songsList='disss' v-if="tab == 4" class="of-auto" ></diss-list>
+
+    <div class="list-wrapper">
+      <song-list @addsong='addsong' @playsong='playsong' :songs='songs' :pure='true' class="song-list of-auto" v-if='tab == 1'></song-list>
+      <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-if="tab == 2" class="of-auto"></album-list>
+      <mv-list :mvs='mvs' v-if="tab == 3" class="of-auto"></mv-list>
+      <diss-list :songsList='disss' v-if="tab == 4" class="of-auto"></diss-list>
+      <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles' v-if='enableLoading'>
+      </infinite-loading>
+    </div>
+
   </div>
 </template>
 
 <script>
+  import InfiniteLoading from 'vue-infinite-loading'
   import Search from '../api/search'
   import SongList from '../components/SongList'
   import AlbumList from '../components/Album/AlbumList'
@@ -18,6 +25,7 @@
   import DissList from '../components/Diss/SongsList'
   export default {
     components: {
+      InfiniteLoading,
       SongList,
       AlbumList,
       'mv-list': MVListSingle,
@@ -45,16 +53,18 @@
         songs: [],
         albums: [],
         mvs: [],
-        disss: []
+        disss: [],
+        enableLoading: true
       }
     },
     methods: {
       async executeSearch() {
-        let res = null
-        switch (this.tab) {
-          case 1:
-            res = await Search.searchSongs(this.kw, this.pageIndex, this.pageSie).then(res => res.json())
-            this.songs = res.data.song.list.map(s => ({
+        try {
+          let ended = true
+          let res
+          if (this.tab === 1) {
+            res = await Search.searchSongs(this.kw, this.pageIndex, this.pageSie).then(rs => rs.json())
+            this.songs.push(...res.data.song.list.map(s => ({
               songname: s.name,
               singer: s.singer.map(sr => ({
                 name: sr.name,
@@ -62,47 +72,68 @@
               })),
               songmid: s.mid,
               albummid: s.album.mid
-            }))
-            break
-          case 2:
-            res = await Search.searchAlbums(this.kw, this.pageIndex, this.pageSie).then(res => res.json())
-            this.albums = res.data.album.list.map(al => ({
+            })))
+            //  大于等于total ended
+            ended = this.pageIndex * this.pageSie + res.data.song.curnum >= res.data.song.totalnum
+            this.pageIndex++
+          } else if (this.tab === 2) {
+            res = await Search.searchAlbums(this.kw, this.pageIndex, this.pageSie).then(rs => rs.json())
+            this.albums.push(...res.data.album.list.map(al => ({
               albumMID: al.albumMID,
               albumName: al.albumName,
               singers: al.singer_list.map(sr => ({
                 singer_name: sr.name,
                 mid: sr.mid
               }))
-            }))
-            break
-          case 3:
-            res = await Search.searchMVs(this.kw, this.pageIndex, this.pageSie).then(res => res.json())
-            this.mvs = res.data.mv.list.map(it => ({
+            })))
+            ended = this.pageIndex * this.pageSie + res.data.album.curnum >= res.data.album.totalnum
+            this.pageIndex++
+          } else if (this.tab === 3) {
+            res = await Search.searchMVs(this.kw, this.pageIndex, this.pageSie).then(rs => rs.json())
+            this.mvs.push(...res.data.mv.list.map(it => ({
               vid: it.v_id,
               mvname: it.mv_name,
               singers: it.singer_list.map(sr => ({
                 name: sr.name,
                 mid: sr.mid
               }))
-            }))
-            break
-          case 4:
+            })))
+            ended = this.pageIndex * this.pageSie + res.data.mv.curnum >= res.data.mv.totalnum
+            this.pageIndex++
+          } else if (this.tab === 4) {
             // 特殊， pageIndex 0 开始
-            res = await Search.searchDiss(this.kw, this.pageIndex - 1, this.pageSie).then(res => res.json())
-            this.disss = res.data.list.map(it => ({
+            res = await Search.searchDiss(this.kw, this.pageIndex - 1, this.pageSie).then(rs => rs.json())
+            this.disss.push(...res.data.list.map(it => ({
               dissid: it.dissid,
               dissname: it.dissname,
               imgurl: it.imgurl,
               creator: {
                 name: it.creator.name
               }
-            }))
-            break
-          default:
-            break
+            })))
+            ended = this.pageIndex + 1 >= Math.ceil(res.data.display_num / res.data.num_per_page)
+            this.pageIndex++
+          } else {
+            ended = true
+          }
+          if (ended) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          } else {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+          }
+        } catch (err) {
+          console.log(err)
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+          }
         }
       },
       changeTab(tab) {
+        this.songs.splice(0)
+        this.albums.splice(0)
+        this.mvs.splice(0)
+        this.disss.splice(0)
+        this.$refs.infiniteLoading.isLoading = true
         this.pageIndex = 1
         this.tab = tab
       },
@@ -115,6 +146,9 @@
       },
       addAlbumToPlaying() {
 
+      },
+      onInfinite() {
+        this.executeSearch()
       }
     },
     mounted() {
@@ -150,7 +184,9 @@
     flex-shrink: 0
   }
 
-
+  .list-wrapper {
+    overflow: auto
+  }
 
   .mod_tab__item {
     position: relative;
