@@ -67,8 +67,12 @@
       // 智能搜索
       async smartSearch(key) {
         this.showSmart = true
+        if (!key || key.trim() === '') {
+          this.SSResult = null
+          return
+        }
         let res = await Search.smartBox(key).then(res => res.json())
-        if (res.data.song && res.data.song.itemlist.length > 0) {
+        if (res.data && res.data.song && res.data.song.itemlist.length > 0) {
           res.data.song.itemlist = res.data.song.itemlist.map(s => ({
             songname: s.name,
             songmid: s.mid,

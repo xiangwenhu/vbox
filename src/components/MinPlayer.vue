@@ -1,5 +1,5 @@
 <template>
-  <div class="miniplayer footer">
+  <div class="miniplayer footer" @touchstart.stop='touchstart' @touchend.stop='touchend'>
     <progress-bar :progress='progress'></progress-bar>
     <div class="play-info">
       <div class="inlineblock albuminfo">
@@ -9,11 +9,11 @@
 
       <div class="inlineblock ellipsis songinfo">
         <span class="song_name">{{song.songname || song.name }}</span>
-        <div class="song_singer"> {{ song.singer instanceof Array ?  song.singer.map(s=>s.name).join('/') : song.singer }}</div>
+        <div class="song_singer"> {{ song.singer instanceof Array ? song.singer.map(s=>s.name).join('/') : song.singer }}</div>
       </div>
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
-        <a @click.stop='next' href="javascript:;" class="focus__play__next focus__play c_ico1 js_playallsong"><span class="focus__play_text"></span></a>
+        <!-- <a @click.stop='next' href="javascript:;" class="focus__play__next focus__play c_ico1 js_playallsong"><span class="focus__play_text"></span></a> -->
       </div>
     </div>
 
@@ -23,11 +23,14 @@
 <script>
   import { mapState } from 'vuex'
   import ProgressBar from './ProgressBar'
+  import {detect} from '../utils/TouchDetect'
   export default {
     name: 'min-player',
     data() {
       return {
-        progress: '0%'
+        progress: '0%',
+        startPoint: null,
+        endPoint: null
       }
     },
     components: {
@@ -50,6 +53,21 @@
       pause: function () {
         let ns = this.playerState === 2 ? 1 : 2
         this.$store.commit('player/setState', ns)
+      },
+      touchstart(ev) {
+        this.startPoint = ev.touches[0]
+      },
+      touchend(ev) {
+        if (this.startPoint === null) {
+          return;
+        }
+        this.endPoint = ev.changedTouches[0]
+        let direction = detect(this.startPoint, this.endPoint);
+        if (direction === 3) {
+          this.$store.commit('playing/pre')
+        } else if (direction === 4) {
+          this.$store.commit('playing/next')
+        }
       }
     },
     watch: {

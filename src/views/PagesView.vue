@@ -16,6 +16,7 @@
   import HeaderBar from '../components/HeaderBar'
   import FooterBar from '../components/FooterBar'
   import MinPlayer from '../components/MinPlayer'
+  import { detect } from '../utils/TouchDetect'
   export default {
     name: 'pages-view',
     components: { HeaderBar, FooterBar, MinPlayer, TopHeader },
@@ -53,10 +54,11 @@
       },
       touchend(ev) {
         if (this.touchStartPoint === null) {
+          this.touchStartPoint = null
           return;
         }
         this.touchEndPoint = ev.changedTouches[0]
-        let direction = this.getDirection(this.touchStartPoint.pageX, this.touchStartPoint.pageX, this.touchEndPoint.pageX, this.touchEndPoint.pageY);
+        let direction = detect(this.touchStartPoint, this.touchEndPoint);
         let index = this.slideCats.findIndex(s => s === this.cat)
         if (index >= 0) {
           switch (direction) {
@@ -82,34 +84,6 @@
         }
         this.touchStartPoint = null;
         this.touchEndPoint = null
-      },
-      // 获得角度,http://www.cnblogs.com/beiz/p/5817192.html
-      getAngle(angx, angy) {
-        return Math.atan2(angy, angx) * 180 / Math.PI;
-      },
-      // 根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动 ,http://www.cnblogs.com/beiz/p/5817192.html
-      getDirection(startx, starty, endx, endy) {
-        let angx = endx - startx;
-        let angy = endy - starty;
-        let result = 0;
-
-        // 如果滑动距离太短
-        if (Math.abs(angx) < 20 && Math.abs(angy) < 20) {
-          return result;
-        }
-
-        var angle = this.getAngle(angx, angy);
-        if (angle >= -135 && angle <= -45) {
-          result = 1;
-        } else if (angle > 45 && angle < 135) {
-          result = 2;
-        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-          result = 3;
-        } else if (angle >= -45 && angle <= 45) {
-          result = 4;
-        }
-
-        return result;
       },
       getCate(path) {
         // if (path.startsWith('/pages')) {

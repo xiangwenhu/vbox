@@ -68,14 +68,14 @@ const mutations = {
     if (song) {
       let index = state.list.findIndex(s => s.songmid === song.songmid)
       if (index >= 0) {
-        state.current = state.list[index]
+        state.current = Object.assign({}, state.list[index])
         return
       }
       return
     }
     // 如果current为空，表示没有播放的歌曲
     if (!state.current && state.list && state.list.length > 0) {
-      state.current = state.list[0]
+      state.current = Object.assign({}, state.list[0])
       return
     }
     // 如果不是插放，并且current不为空
@@ -84,9 +84,23 @@ const mutations = {
       let index = state.list.findIndex(s => s.songmid === state.current.songmid)
       // 如果在歌曲列表里面，接着播放下首
       if (index >= 0) {
-        state.current = (index === state.list.length - 1 ? state.list[0] : state.list[index + 1])
+        state.current = (index === state.list.length - 1 ? Object.assign({}, state.list[0]) : Object.assign({}, state.list[index + 1]))
       } else {
-        state.current = state.list[0]
+        state.current = Object.assign({}, state.list[0])
+      }
+    }
+  },
+  /**
+   * 前一首
+   * @param {Object} state 
+   */
+  pre(state) {
+    if (state.list && state.current) {
+      let index = state.list.findIndex(s => s.songmid === state.current.songmid)
+      if (index >= 0) {
+        state.current = Object.assign({}, index === 0 ? state.list[state.list.length - 1] : state.list[state.list.length === 1 ? 0 : index - 1])
+      } else {
+        state.current = Object.assign({}, state.list[0])
       }
     }
   }

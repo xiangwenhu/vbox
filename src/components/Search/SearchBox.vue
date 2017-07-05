@@ -33,6 +33,11 @@
       clear() {
         this.keyWords = ''
       }
+    },
+    watch: {
+      '$route'(to, from) {
+        this.keyWords = to.params.keyWords
+      }
     }
   }
 
