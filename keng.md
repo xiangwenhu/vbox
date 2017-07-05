@@ -32,6 +32,12 @@ vue-cli创建的工程，代码检查相当严格，你检查到错误或者警�
 ios vedio播放全屏问题 
 <code><video webkit-playsinline="true" playsinline="true"/></code> webkit-playsinline is for ios 10-, and playsinline is for iOS 10+
 
+<p>
+android touchend不能出发
+http://blog.csdn.net/bbsyi/article/details/50570567
+http://blog.mobiscroll.com/working-with-touch-events/
+</p>
+
 
 
 
