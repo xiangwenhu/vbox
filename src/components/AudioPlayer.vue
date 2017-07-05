@@ -79,7 +79,7 @@
         this.player.play()
       },
       // 监听state，外部出发要暂停的时候，暂停播放
-      pstate(to) {
+      pstate(to) {       
         to === 2 ? this.player.pause() : this.player.play()
       }
     }

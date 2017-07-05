@@ -46,7 +46,7 @@
         return this.desc.replace(/\n/g, '<br>')
       }
     },
-    async created() {
+    async mounted() {
       let res = await Search.albumInfo(this.$route.params.albummid).then(res => res.json())
       this.album = {
         aDate: res.data.aDate,

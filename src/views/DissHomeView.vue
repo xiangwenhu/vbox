@@ -1,6 +1,6 @@
 <template>
   <div class="diss">
-    <diss-categorys :hotCategorys='hotCategorys' ></diss-categorys>
+    <diss-categorys :hotCategorys='hotCategorys'></diss-categorys>
     <songsList :songsList='choicenessSongList' module="choiceness" @filterChanged='tagchanged'></songsList>
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles' v-if='enableLoading'>
       <span slot="no-more" class="no-more">没有更多了</span>
@@ -10,8 +10,8 @@
     </p>
   </div>
 </template>
- 
-<script> 
+
+<script>
   import InfiniteLoading from 'vue-infinite-loading'
   import Other from '../api/other'
   import DissCategorys from '../components/Diss/DissCategorys'
@@ -27,34 +27,28 @@
     data() {
       return {
         filter: {},
-        hotCategorys : [
-          {'categoryId': 39, 'categoryName': 'ACG'},
-          {'categoryId': 148, 'categoryName': '情歌'},
-          {'categoryId': 199, 'categoryName': '背景音乐'},
-          {'categoryId': 133, 'categoryName': '影视'},
-          {'categoryId': 52, 'categoryName': '伤感'},
-          {'categoryId': 15, 'categoryName': '轻音乐'},
-          {'categoryId': 167, 'categoryName': '英语'},
-          {'categoryId': 24, 'categoryName': '电子'},
-          {'categoryId': 194, 'categoryName': '古风'},
-          {'categoryId': 141, 'categoryName': 'KTV热歌'},
-          {'categoryId': 197, 'categoryName': '现场音乐'}
+        hotCategorys: [
+          { 'categoryId': 39, 'categoryName': 'ACG' },
+          { 'categoryId': 148, 'categoryName': '情歌' },
+          { 'categoryId': 199, 'categoryName': '背景音乐' },
+          { 'categoryId': 133, 'categoryName': '影视' },
+          { 'categoryId': 52, 'categoryName': '伤感' },
+          { 'categoryId': 15, 'categoryName': '轻音乐' },
+          { 'categoryId': 167, 'categoryName': '英语' },
+          { 'categoryId': 24, 'categoryName': '电子' },
+          { 'categoryId': 194, 'categoryName': '古风' },
+          { 'categoryId': 141, 'categoryName': 'KTV热歌' },
+          { 'categoryId': 197, 'categoryName': '现场音乐' }
         ],
-        choicenessSongList : [],
+        choicenessSongList: [],
         enableLoading: true,
-        categoryId : 10000000, 
-        sortId : 5,
-        sin : 0, 
-        ein : 29,
-        pagenum : 0,
-        pagesize : 30
+        categoryId: 10000000,
+        sortId: 5,
+        sin: 0,
+        ein: 29,
+        pagenum: 0,
+        pagesize: 30
       }
-    },
-    async created() {
-      // let diss = await Other.dissByTag().then(res => res.json())
-      // if (diss.code === 0) {
-      //   this.choicenessSongList = diss.data.list;
-      // }
     },
     methods: {
       // 搜索条件变化
@@ -78,7 +72,9 @@
           }
         } catch (err) {
           this.enableLoading = false
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         }
       },
       addToPlaying() {
@@ -101,11 +97,8 @@
 </script>
 
 <style scoped>
-  
   .diss {
     font-size: 14px;
     height: 100%;
   }
-
-
 </style>

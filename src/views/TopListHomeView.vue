@@ -30,7 +30,7 @@
         GlobalName: '全球榜'
       }
     },
-    async created() {
+    async mounted() {
       // 排行榜的分类
       let topListOpt = await Other.topList()
       this.DFTopList = topListOpt[0].List
@@ -41,7 +41,7 @@
     methods: {
       // 添加排行榜到播放列表
       addTLToPlaying: async function (topId) {
-        let topListList = await Other.topListList(topId).then(res => res.json())    
+        let topListList = await Other.topListList(topId).then(res => res.json())
         this.$store.commit('playing/addSongs', topListList.songlist.map(s => s.data))
         // 空闲状态，才自动播放
         // if (this.$store.state.player.state === 0) {

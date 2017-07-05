@@ -104,7 +104,7 @@
         return this.mvinfo.toplist || {}
       }
     },
-    created() {
+    mounted() { 
       this.load();
     },
     methods: {
@@ -129,7 +129,7 @@
             this.src = `${bUrl}${fn}?vkey=${fvkey}&br=121&platform=2&fmt=auto&level=0&sdtfrom=v3010&guid=d756e889e0148f3c2eea4f6724d7da9b`
           }
         } catch (err) {
-          alert(err)
+          console.log(err)
         }
       },
       play() {

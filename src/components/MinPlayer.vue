@@ -47,8 +47,9 @@
       next: function () {
         this.$store.commit('playing/next')
       },
-      pause: function () {
-        this.$store.commit('player/setState', this.$store.state.player.state === 2 ? 1 : 2)
+      pause: function () {      
+        let ns = this.playerState === 2 ? 1 : 2
+        this.$store.commit('player/setState', ns)
       }
     },
     watch: {
@@ -73,9 +74,9 @@
     width: 100%
   }
 
-  .play-info{
+  .play-info {
     display: flex;
-    align-items:center
+    align-items: center
   }
 
   .albuminfo {
@@ -91,8 +92,8 @@
 
   .songinfo {
     color: #FFF;
-    width: auto; 
-    align-self:center;
+    width: auto;
+    align-self: center;
     flex: 1 1 auto;
   }
 
@@ -118,12 +119,11 @@
     color: #fff;
   }
 
-  .operation {     
+  .operation {
     flex: 0 0 4.5rem;
-  
   }
 
-  .focus__play {  
+  .focus__play {
     position: relative;
     display: inline-block;
     width: 1.8rem;

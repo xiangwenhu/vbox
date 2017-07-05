@@ -47,7 +47,8 @@
 
 <style scoped>
   .tag-operation {
-    text-align: center
+    text-align: center;
+    margin-top:  1rem;
   }
 
   .tag-operation span {

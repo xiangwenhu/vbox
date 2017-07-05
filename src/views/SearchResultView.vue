@@ -1,12 +1,12 @@
 <template>
-  <div class="result">
+  <div class="result box-col">
     <div class="mod_tab">
       <a v-for="(t,index) in tabs" class="mod_tab__item" @click.stop='changeTab(t.value)' :class='tab == index +1?"mod_tab__current":""'>{{t.title}}</a>
     </div>
-    <song-list @addsong='addsong' @playsong='playsong' :songs='songs' :pure='true' class="song-list" v-if='tab == 1'></song-list>
-    <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-if="tab == 2"></album-list>
-    <mv-list :mvs='mvs' v-if="tab == 3"></mv-list>
-    <diss-list :songsList='disss' v-if="tab == 4"></diss-list>
+    <song-list @addsong='addsong' @playsong='playsong' :songs='songs' :pure='true' class="song-list of-auto" v-if='tab == 1'></song-list>
+    <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-if="tab == 2" class="of-auto" ></album-list>
+    <mv-list :mvs='mvs' v-if="tab == 3" class="of-auto" ></mv-list>
+    <diss-list :songsList='disss' v-if="tab == 4" class="of-auto" ></diss-list>
   </div>
 </template>
 
@@ -70,7 +70,7 @@
               albumMID: al.albumMID,
               albumName: al.albumName,
               singers: al.singer_list.map(sr => ({
-                name: sr.name,
+                singer_name: sr.name,
                 mid: sr.mid
               }))
             }))
@@ -117,7 +117,7 @@
 
       }
     },
-    created() {
+    mounted() {
       this.executeSearch()
     },
     computed: {
@@ -147,6 +147,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-shrink: 0
   }
 
 

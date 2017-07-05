@@ -75,7 +75,7 @@
   html,
   body {
     height: 100%;
-    width:100%;
+    width: 100%;
     overflow: hidden;
   }
 
@@ -128,6 +128,11 @@
     align-content: space-between;
   }
 
+  .box-col {
+    display: flex;
+    flex-direction: column;
+  }
+
   .box-item {
     justify-content: center;
   }
@@ -146,9 +151,17 @@
     height: 2rem;
   }
 
+  .h100 {
+    height: 100%
+  }
+
   .tag-sort {
     position: absolute;
     right: 0
+  }
+
+  .of-auto {
+    overflow: auto
   }
 
   .sort-type {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-col h100">
     <!--搜索框 -->
     <div class="mod_search_bar">
       <back-icon class="back"> &lt; </back-icon>
@@ -101,12 +101,13 @@
     font-size: 1.1rem
   }
 
-  .mod_search_bar {
-    background: #f4f4f4;
+  .mod_search_bar {   
     padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;    
+    background-image: linear-gradient(270deg, #31c27c, #20bc22);
   }
 
   .mod_search_bar .search_bar_tip_text {

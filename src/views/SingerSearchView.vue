@@ -39,7 +39,7 @@
       },
       async onInfinite() {
         try {
-          this.pagenum++      
+          this.pagenum++
           let res = await Search.singers(this.filter.area, this.filter.letter, this.pagenum, this.pagesize).then(res => res.json())
           this.singers = this.singers.concat(res.data.list)
           if (this.pagenum < res.data.total_page) {
@@ -49,9 +49,11 @@
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
           }
         } catch (err) {
-          alert(err)
+          console.log(err)
           this.enableLoading = false
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         }
       }
     },

@@ -50,7 +50,7 @@
         singer: null
       }
     },
-    async created() {
+    async mounted() {
       this.singer = new Singer(this.singermid)
       // 获取歌曲
       let res = await this.singer.songs(0, 5).then(r => r.json())

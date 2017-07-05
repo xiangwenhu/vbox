@@ -94,7 +94,7 @@
         let result = 0;
 
         // 如果滑动距离太短
-        if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+        if (Math.abs(angx) < 20 && Math.abs(angy) < 20) {
           return result;
         }
 

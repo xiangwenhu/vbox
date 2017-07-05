@@ -2,7 +2,7 @@
 
   <div class="search_bar_cont">
     <input @focus='changeState(true)' @keypress.stop='search' @input.stop='smartSearch' id="search_input" class="search_input"
-      type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑" :value="keyWords">
+      type="search" autocomplete="off" autocorrect="off" placeholder="搜索歌曲、歌单、专辑" :value="keyWords || kw">
     <span class="icon icon_search">搜索</span>
   </div>
 
@@ -10,6 +10,7 @@
 
 <script>
   export default {
+    props: ['kw'],
     data() {
       return {
         keyWords: '',
@@ -19,12 +20,12 @@
     methods: {
       search(ev) {
         if (ev.keyCode === 13) {
-          this.$emit('search', this.keyWords)
+          this.$emit('search', (this.keyWords || '').trim())
         }
       },
       smartSearch(ev) {
         this.keyWords = ev.target.value
-        this.$emit('smartSearch', this.keyWords)
+        this.$emit('smartSearch', (this.keyWords || '').trim())
       },
       changeState(val) {
         this.$emit('status', val)

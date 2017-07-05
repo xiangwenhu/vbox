@@ -27,7 +27,7 @@
         page_size: 30
       }
     },
-    async created() {
+    async mounted() {
       // 排行榜的分类
       let topListOpt = await Other.topList()
       this.topListOpt = topListOpt
@@ -54,13 +54,12 @@
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
           }
         }).catch(err => {
-          alert(err)
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+          console.log(err)
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         })
       }
-    },
-    mounted() {
-
     }
   }
 

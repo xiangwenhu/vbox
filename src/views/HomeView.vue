@@ -30,14 +30,12 @@
         hotdiss: []
       }
     },
-    async created() {
+    async mounted() {
       let recom = await Other.recomList().then(res => res.json())
       if (recom.code === 0) {
         this.toplist = recom.data.toplist
         this.hotdiss = recom.data.hotdiss.list.slice(0, 6)
       }
-    },
-    mounted() {
       if (this.$store.state.player.state === 0) {
         this.$store.commit('playing/next')
       }
@@ -45,7 +43,7 @@
     methods: {
       // 添加排行榜到播放列表
       addTLToPlaying: async function (topId) {
-        let topListList = await Other.topListList(topId).then(res => res.json())     
+        let topListList = await Other.topListList(topId).then(res => res.json())
         this.$store.commit('playing/addSongs', topListList.songlist.map(s => s.data))
         // 空闲状态，才自动播放
         // if (this.$store.state.player.state === 0) {

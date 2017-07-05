@@ -73,7 +73,6 @@
           this.sum = res.data.sum
           if (!res.data || !res.data.mvlist || res.data.mvlist.length === 0 || this.mvs.length >= this.sum) {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
-            return
           } else {
             // splice 不产生新数组
             this.mvs = this.mvs.concat(res.data.mvlist.map(m => {
@@ -87,8 +86,10 @@
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
           }
         } catch (err) {
-          alert(err);
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          console.log(err)
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         }
       },
       resetInfiniteLoading() {

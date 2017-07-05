@@ -20,9 +20,9 @@ let mapping = {
 let mWhiteList = ['player/timeUpdate', 'player/setState']
 if (lsData) {
   let { playing: ls_playing, player: ls_player, searchHistory: ls_searchHistory } = lsData
-  Object.assign(playing, { state: ls_playing })
-  Object.assign(player, { state: ls_player })
-  Object.assign(searchHistory, { state: ls_searchHistory })
+  Object.assign(playing.state, ls_playing)
+  Object.assign(player.state, ls_player)
+  Object.assign(searchHistory.state, ls_searchHistory)
 }
 
 Vue.use(Vuex)

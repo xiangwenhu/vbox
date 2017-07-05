@@ -1,10 +1,11 @@
 <template>
   <div class="categorysList c_bg2">
     <div class="category_info" id="js_category_tit">
-      <h1 class="top_tit">{{categoryName}}</h1>         
+      <h1 class="top_tit">{{categoryName}}</h1>
       <h1 class="category_info__tit">{{categoryName}}</h1>
       <div class="category_info__media">
-        <img class="category_info__img" src="https://y.gtimg.cn/music/common/upload/t_tag_group_set/49541.jpg?max_age=2592000" alt="" onerror="this.src='http://y.gtimg.cn/music/common/upload/category_default_pic/39592.png'">
+        <img class="category_info__img" src="https://y.gtimg.cn/music/common/upload/t_tag_group_set/49541.jpg?max_age=2592000" alt=""
+          onerror="this.src='http://y.gtimg.cn/music/common/upload/category_default_pic/39592.png'">
       </div>
       <a class="category_info__btn js_playallsong" href="javascript:;">随机播放</a>
     </div>
@@ -33,13 +34,13 @@
     },
     data() {
       return {
-        choicenessSongList : [],
+        choicenessSongList: [],
         enableLoading: true,
-        sortId : 5,
-        sin : 0, 
-        ein : 29,
-        pagenum : 0,
-        pagesize : 30
+        sortId: 5,
+        sin: 0,
+        ein: 29,
+        pagenum: 0,
+        pagesize: 30
       }
     },
     computed: {
@@ -73,7 +74,9 @@
           }
         } catch (err) {
           this.enableLoading = false
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         }
       }
     }
@@ -98,5 +101,4 @@
     overflow: hidden;
     padding-bottom: 50px;
   }
-  
 </style>

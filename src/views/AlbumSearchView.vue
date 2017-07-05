@@ -70,7 +70,7 @@
           }
           this.sum = res.data.sum
           if (!res.data || !res.data.albumlist || res.data.albumlist.length === 0 || this.albums.length >= this.sum) {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')           
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
           } else {
             this.albums = this.albums.concat(res.data.albumlist.map(album => {
               album.albumMID = album.album_mid
@@ -81,8 +81,10 @@
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
           }
         } catch (err) {
-          alert(err);
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          console.log(err)
+          if (this.$refs.infiniteLoading) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          }
         }
       },
       changeSortType(sortType) {
@@ -94,7 +96,7 @@
         this.$refs.infiniteLoading.isLoading = true
         this.onInfinite();
       },
-      async addAlbumToPlaying(albumMID) {    
+      async addAlbumToPlaying(albumMID) {
         let res = await Search.albumInfo(albumMID).then(res => res.json())
         this.$store.commit('playing/addSongs', res.data.list)
         this.$store.commit('playing/next', res.data.list[0])

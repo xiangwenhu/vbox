@@ -17,7 +17,7 @@
     },
     methods: {
       selected(key) {
-        this.$emit('selected', key)
+        this.$emit('selected', (key || '').trim())
       }
     }
   }
