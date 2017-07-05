@@ -1,7 +1,14 @@
 <template>
   <div class="diss">
     <diss-categorys :hotCategorys='hotCategorys'></diss-categorys>
-    <songsList :songsList='choicenessSongList' module="choiceness" @filterChanged='tagchanged'></songsList>
+    <dissList :dissList='choicenessDissList' module="choiceness" @filterChanged='tagchanged'>
+      <div slot="dissTitle" class="dissTitle">
+        <span class="" :class="[ module == 'choiceness' ? 'dissFont' : '']">精选歌单</span>
+        <span class="">
+          <em class="select" data-sort="5" @click.stop='selectSort'>推荐</em>|<em class="pr0" data-sort="2" @click.stop='selectSort'>最新</em>
+        </span>
+      </div>
+    </dissList>
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles' v-if='enableLoading'>
       <span slot="no-more" class="no-more">没有更多了</span>
     </infinite-loading>
@@ -15,18 +22,18 @@
   import InfiniteLoading from 'vue-infinite-loading'
   import Other from '../api/other'
   import DissCategorys from '../components/Diss/DissCategorys'
-  import SongsList from '../components/Diss/SongsList'
+  import DissList from '../components/Diss/DissList'
 
   export default {
     name: 'diss-home-view',
     components: {
       DissCategorys,
-      SongsList,
+      DissList,
       InfiniteLoading
     },
     data() {
       return {
-        filter: {},
+        filter: {sortId: 5},
         hotCategorys: [
           { 'categoryId': 39, 'categoryName': 'ACG' },
           { 'categoryId': 148, 'categoryName': '情歌' },
@@ -40,7 +47,7 @@
           { 'categoryId': 141, 'categoryName': 'KTV热歌' },
           { 'categoryId': 197, 'categoryName': '现场音乐' }
         ],
-        choicenessSongList: [],
+        choicenessDissList: [],
         enableLoading: true,
         categoryId: 10000000,
         sortId: 5,
@@ -53,7 +60,7 @@
     methods: {
       // 搜索条件变化
       tagchanged: function (filter) {
-        this.choicenessSongList.splice(0);
+        this.choicenessDissList.splice(0);
         this.filter = filter;
       },
       async onInfinite() {
@@ -64,7 +71,7 @@
           this.pagenum++;
           /** 结束条数大于最大条数时停止下拉加载 */
           if (diss.code === 0 && endIn < diss.data.sum) {
-            this.choicenessSongList = this.choicenessSongList.concat(diss.data.list);
+            this.choicenessDissList = this.choicenessDissList.concat(diss.data.list);
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
           } else {
             this.enableLoading = false
@@ -75,6 +82,12 @@
           if (this.$refs.infiniteLoading) {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
           }
+        }
+      },
+      selectSort(ev) {
+        if (ev.target.tagName === 'EM') {
+          let sortData = {sortId : ev.target.getAttribute('data-sort')};
+          this.tagchanged(sortData);
         }
       },
       addToPlaying() {

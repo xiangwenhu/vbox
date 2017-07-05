@@ -27,7 +27,10 @@
   }
 
   .ulbox{
-    width: 20rem;
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row wrap;
   }
 
   /*歌单类别start*/
@@ -44,15 +47,14 @@
     background: #F7F7F7;
     margin: 0.1rem;
     border-radius: 0.1rem;
+    flex:1 1 auto;
   }
 
   .categoryLi {
-    width: 6.1rem;
+    width: 32%;
   }
 
   .specialLI {
-    height: 4.15rem;
-    line-height: 4.15rem;
   }
 
   .allCategory {

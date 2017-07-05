@@ -1,31 +1,27 @@
 <template>
-  <div class="songsList">
-    <div class="songsTitle">
-      <span class="fl" :class="[ module == 'choiceness' ? 'songsFont' : '']">精选歌单</span>
-      <span class="fr">
-        <em class="select" data-sort="5" @click.stop='selectSort'>推荐</em>|<em class="pr0" data-sort="2" @click.stop='selectSort'>最新</em>
-      </span>
-    </div>
-    
-    <div class="songsContent">
+  <div class="dissList">
+    <slot name="dissTitle">
+    </slot>
+
+    <div class="dissContent">
       <ul class="ulbox">
-        <li v-for="(songs,index) in songsList" :data-dissid="songs.dissid" class="songsLi">
+        <li v-for="(diss,index) in dissList" :data-dissid="diss.dissid" class="dissLi">
           <figure>
-            <div class="playlist__item_box" :class="[(index + 1) % 2 == 0 ? 'mr0' : '']">
+            <div class="playlist__item_box" :class="[(index + 1) % 2 == 0 ? 'mr0 ml1' : '']">
               <div class="playlist__cover mod_cover">
-                <router-link :to="{name:'AlbumDetailView',params:{albummid:'songs.dissid'}}" class="" :title="songs.dissname" :data-disstid="songs.dissid" >
-                  <img class="playlist__pic" :src='songs.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;" :alt="songs.dissname" />
-                  <span class="play-count" @click.stop='playCount(songs.dissid)'><a href="javascript:void(0);"><img src='../../assets/img/headset.png'/><span class="listennum">{{(songs.listennum / 10000).toFixed(1)}}万</span></a></span>
-                  <span class="play-icon" @click.stop='addToPlaying(songs.dissid)'><play-icon height='1'></play-icon></span>
+                <router-link :to="{name:'AlbumDetailView',params:{albummid:'diss.dissid'}}" class="" :title="diss.dissname" :data-disstid="diss.dissid" >
+                  <img class="playlist__pic" :src='diss.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;" :alt="diss.dissname" />
+                  <span class="play-count" @click.stop='playCount(diss.dissid)'><a href="javascript:void(0);"><img src='../../assets/img/headset.png'/><span class="listennum">{{(diss.listennum / 10000).toFixed(1)}}万</span></a></span>
+                  <span class="play-icon" @click.stop='addToPlaying(diss.dissid)'><play-icon height='1'></play-icon></span>
                 </router-link>
               </div>
               <figcaption>
                 <h4 class="playlist__title">
                   <span class="playlist__title_txt">
-                    <a :href='"https://y.qq.com/n/yqq/playlist/"+ songs.dissid +".html#stat=y_new.playlist.dissname"' class="a" :data-disstid="songs.dissid" :title="songs.dissname"><span v-html="songs.dissname" /></a>
+                    <a :href='"https://y.qq.com/n/yqq/playlist/"+ diss.dissid +".html#stat=y_new.playlist.dissname"' class="a" :data-disstid="diss.dissid" :title="diss.dissname"><span v-html="diss.dissname" /></a>
                   </span>
                 </h4>
-                <div class="playlist__author"><span v-html="songs.creator.name" /></div>
+                <div class="playlist__author"><span v-html="diss.creator.name" /></div>
               </figcaption>
             </div>
           </figure>
@@ -38,25 +34,14 @@
 <script>
   import PlayIcon from '../PlayIcon'
   export default {
-    name: 'songsList',
-    props: ['songsList', 'module'],
+    name: 'dissList',
+    props: ['dissList', 'module'],
     components: {
       PlayIcon
-    },
-    data() {
-      return {
-        sortId : 5
-      }
     },
     methods: {
       playCount(dissid) {
         console.log(dissid);
-      },
-      selectSort(ev) {
-        if (ev.target.tagName === 'EM') {
-          this.sortId = ev.target.getAttribute('data-sort')
-          this.$emit('filterChanged', this._data)
-        }
       }
     }
   }
@@ -97,36 +82,49 @@
     margin-right: 0 !important;
   }
 
+  .ml1 {
+    margin-left: 1px !important;
+  }
+
   .pr0 {
     padding-right: 0; 
   }
 
   .ulbox{
-    width: 20rem;
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row wrap;
+    justify-content: center;
   }
   
   /*精选歌单start*/
-  .songsList{
+  .dissList{
   }
 
-  .songsTitle{
-    margin: 0.5rem 1rem;
+  .dissTitle{
+    margin: 0.5rem 0;
+    padding: 0 1rem;
     height: 1rem;
-    width: 18rem;
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
   }
 
   .select {
     color: #34C17C;
   }
 
-  .songsFont{
+  .dissFont{
     font-size: 16px;
     font-weight: bold;
   }
 
   .playlist__item_box {
     position: relative;
-    margin-right: 2px;
+    margin-right: 1px;
     margin-bottom: 0.5rem;
   }
 
@@ -134,8 +132,6 @@
     position: relative;
     display: block;
     overflow: hidden;
-    width: 9.9rem;
-    height: 9.9rem;
     margin-bottom: 5px;
   }
 
@@ -144,11 +140,9 @@
   }
 
   .playlist__pic {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 9.9rem;
-      height: 9.9rem;
+      position: relative;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
   }
 
@@ -205,7 +199,9 @@
     line-height: 16px;
   }
 
-  .songsLi {
+  .dissLi {
     float: left;
+    width: 49%;
+    flex-grow: 1;
   }
 </style>

@@ -8,7 +8,7 @@
       <song-list @addsong='addsong' @playsong='playsong' :songs='songs' :pure='true' class="song-list of-auto" v-if='tab == 1'></song-list>
       <album-list :albums='albums' @addAlbumToPlaying='addAlbumToPlaying' v-if="tab == 2" class="of-auto"></album-list>
       <mv-list :mvs='mvs' v-if="tab == 3" class="of-auto"></mv-list>
-      <diss-list :songsList='disss' v-if="tab == 4" class="of-auto"></diss-list>
+      <diss-list :dissList='disss' v-if="tab == 4" class="of-auto"></diss-list>
       <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles' v-if='enableLoading'>
       </infinite-loading>
     </div>
@@ -22,7 +22,7 @@
   import SongList from '../components/SongList'
   import AlbumList from '../components/Album/AlbumList'
   import MVListSingle from '../components/MV/MVListSingle'
-  import DissList from '../components/Diss/SongsList'
+  import DissList from '../components/Diss/DissList'
   export default {
     components: {
       InfiniteLoading,
