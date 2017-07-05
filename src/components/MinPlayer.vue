@@ -9,7 +9,7 @@
 
       <div class="inlineblock ellipsis songinfo">
         <span class="song_name">{{song.songname || song.name }}</span>
-        <div class="song_singer"> {{ song.singer || ( song.singer | mp('name') | jn('/')) }}</div>
+        <div class="song_singer"> {{ song.singer instanceof Array ?  song.singer.map(s=>s.name).join('/') : song.singer }}</div>
       </div>
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
