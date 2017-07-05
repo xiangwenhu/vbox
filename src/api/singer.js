@@ -7,19 +7,31 @@ export default class Singer {
     this.singermid = singermid
   }
 
-  // 相似歌手
+  /**
+   * 相似歌手
+   * @param {Number} start 
+   * @param {Number} num 
+   */ 
   simsinger(start = 0, num = 5) {
     let url = `${URLConsts.URL_SINGER_SIM}&singer_mid=${this.singermid}&start=${start}&num=${num}`
     return fetch(url)
   }
 
-  // 歌曲
+  /**
+   * 歌曲
+   * @param {Number} begin 
+   * @param {Number} num 
+   */
   songs(begin = 0, num = 30) {
     let url = `${URLConsts.URL_SINGER_SONGS}&singermid=${this.singermid}&begin=${begin}&num=${num}`
     return fetch(url)
   }
 
-  // 专辑
+  /**
+   * 专辑
+   * @param {Number} begin 
+   * @param {Number} num 
+   */
   albums(begin = 0, num = 30) {
     let url = `${URLConsts.URL_SINGER_ALBUM}&singermid=${this.singermid}&begin=${begin}&num=${num}`
     return fetch(url)
@@ -27,10 +39,10 @@ export default class Singer {
 
   /**
    * 获得歌手的mvs
-   * @param {*} begin 开始下标
-   * @param {*} num  数量
-   * @param {*} order 排序 time /listen
-   * @param {*} cmd 1 爱豆视频
+   * @param {Number} begin 开始下标
+   * @param {Number} num  数量
+   * @param {Number} order 排序 time /listen
+   * @param {Number} cmd 1 爱豆视频
    */
   mvs(begin = 0, num = 10, order = 'listen', cmd = undefined) {
     let url = `${URLConsts.URL_SINGER_MVS}&singermid=${this.singermid}&begin=${begin}&num=${num}&order=${order}`

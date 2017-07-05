@@ -1,23 +1,33 @@
 import URLConsts from './URLConsts'
 import utils from './utils'
 
-export default {
-  // 歌手搜索 tested
-  singers: function (type = 'all_all', hot = 'all', pagenum = 1, pagesize = 10) {
+export default { 
+  /**
+   * 歌手搜索
+   * @param {String} type 类型 华语男等
+   * @param {String} hot 热门 A-Z # all
+   * @param {Number} pagenum 页码
+   * @param {Number} pagesize 页大小
+   */
+  singers (type = 'all_all', hot = 'all', pagenum = 1, pagesize = 10) {
     let url = `${URLConsts.URL_SEARCH_SINGER}&key=${type}_${hot}&pagenum=${pagenum}&pagesize=${pagesize}`
     return fetch(url)
   },
-  // 专辑信息  tested
-  albumInfo: function (albummid) {
+
+  /**
+   * 相册媒体id
+   * @param {String} albummid 
+   */
+  albumInfo(albummid) {
     let url = `${URLConsts.URL_ALBUM_INFO}&albummid=${albummid}`
     return fetch(url)
   },
   /** 歌曲搜索 tested
-   * @param {*w} 关键字  
-   * @param {*remoteplace}类型  txt.yqq.mv/txt.yqq.album/txt.yqq.center
-   * @param {*p} 页码
-   * @param {*n} 页大小
+   * @param {String} w 关键字     
+   * @param {Number} p 页码
+   * @param {Number} n 页大小
    * 返回结果：zhida.type 2：专辑 0：歌曲 1： 歌手
+   *  txt.yqq.mv/txt.yqq.album/txt.yqq.center
    */
   searchSongs(w, p = 1, n = 30) {
     let url = `${URLConsts.URL_SEARCH_CLIENT_SONG}&remoteplace=txt.yqq.center&w=${encodeURIComponent(w)}&p=${p}&n=${n}`
@@ -25,24 +35,29 @@ export default {
   },
   /**
    * 执行搜索后搜索mv tested
-   * @param {*} w 关键字
-   * @param {*} p 页面
-   * @param {*} n 特大小
+   * @param {String} w 关键字
+   * @param {Number} p 页码
+   * @param {Number} n 页大小
    */
   searchMVs(w, p = 1, n = 30) {
     let url = `${URLConsts.URL_SEARCH_CLIENT_MV}&w=${encodeURIComponent(w)}&p=${p}&n=${n}`
     return fetch(url)
-  },
-  // 执行搜索后搜索专辑 tested
+  },  
+  /**
+   * 执行搜索后搜索专辑 tested
+   * @param {String} w 关键字
+   * @param {Number} p 页码
+   * @param {Number} n 页大小
+   */
   searchAlbums(w, p = 1, n = 30) {
     let url = `${URLConsts.URL_SEARCH_CLIENT_ALBUM}&w=${encodeURIComponent(w)}&p=${p}&n=${n}`
     return fetch(url)
   },
   /**
    * 搜索后搜素歌单
-   * @param {*} query 关键字
-   * @param {*} page_no 页码
-   * @param {*} num_per_page 页大小 
+   * @param {String} query 关键字
+   * @param {Number} page_no 页码
+   * @param {Number} num_per_page 页大小 
    * remoteplace = sizer.yqq.playlist_next , remoteplace=txt.yqq.playlist
    */
   searchDiss(query, page_no = 0, num_per_page = 30) {
@@ -53,7 +68,7 @@ export default {
 
   /**
    * 执行搜索后的智能搜索 tested
-   * @param {*} key 关键字
+   * @param {String} key 关键字
    */
   smartBox(key) {
     let url = `${URLConsts.URL_SEARCH_SMARTBOX}&key=${encodeURIComponent(key)}`
@@ -62,16 +77,16 @@ export default {
 
   /**
    *  查询专辑 tested
-   * @param {*} cmd firstpage 返回分类信息 /get_album_info 不返回分类信息
-   * @param {*} page 页码
-   * @param {*} pagesize 页大小 
-   * @param {*} sort   1 最新 / 2 最热
-   * @param {*} language  语种
-   * @param {*} genre  流派
-   * @param {*} year 年代
-   * @param {*} pay  价格  1 免费 / 2 免费
-   * @param {*} type  类别  专辑/演唱会等
-   * @param {*} company  唱片公司 华纳唱片/环球唱片等
+   * @param {String} cmd firstpage 返回分类信息 /get_album_info 不返回分类信息
+   * @param {Number} page 页码
+   * @param {Number} pagesize 页大小 
+   * @param {Number} sort   1 最新 / 2 最热
+   * @param {Number} language  语种
+   * @param {Number} genre  流派
+   * @param {Number} year 年代
+   * @param {Number} pay  价格  1 免费 / 2 免费
+   * @param {Number} type  类别  专辑/演唱会等
+   * @param {Number} company  唱片公司 华纳唱片/环球唱片等
    */
   albumLib(cmd = 'firstpage', page = 0, pagesize = 20, sort = 1, language = -1, genre = 0, year = 1, pay = 0, type = -1, company = -1) {
     let url = `${URLConsts.URL_ALBUM_LIBRARY}&cmd=${cmd}&page=${page}&pagesize=${pagesize}&sort=${sort}&language=${language}&genre=${genre}&year=${year}&pay=${pay}&type=${type}&company=${company}`
@@ -80,13 +95,13 @@ export default {
 
   /**
    * 通过标签搜索MV  tested
-   * @param {*} area  区域
-   * @param {*} tag   类型 官方版/舞蹈等
-   * @param {*} year  年份
-   * @param {*} type 排序 2最热/1最新
-   * @param {*} taglist  是否带标签， 1带/0不带
-   * @param {*} pageno  页码
-   * @param {*} pagecount  也大小
+   * @param {Number} area  区域
+   * @param {Number} tag   类型 官方版/舞蹈等
+   * @param {Number} year  年份
+   * @param {Number} type 排序 2最热/1最新
+   * @param {Number} taglist  是否带标签， 1带/0不带
+   * @param {Number} pageno  页码
+   * @param {Number} pagecount  也大小
    */
   mvByTag(area = 0, tag = 0, year = 0, type = 2, taglist = 1, pageno = 0, pagecount = 20) {
     let url = `${URLConsts.URL_MV_BYTAG}&area=${area}&tag=${tag}&year=${year}&type=${type}&taglist=${taglist}&pageno=${pageno}&pagecount=${pagecount}&_=${Math.random().toFixed(16)}`
@@ -95,7 +110,7 @@ export default {
 
   /**
    * 获得MV的信息  tested
-   * @param {*} vid  mv id
+   * @param {String} vid  mv id
    */
   mvInfo(vid) {
     let url = `${URLConsts.URL_MV_INFO}&vid=${vid}`
@@ -106,10 +121,10 @@ export default {
 
   /**
    * 移动端 获得mv 信息
-   * @param {*} vid mv id
-   * @param {*} smvnum 相似mv的数量
-   * @param {*} recnum  推荐 mv 数量（粉丝们也喜欢看）
-   * @param {*} othernum 上传作者的其他mv
+   * @param {String} vid mv id
+   * @param {Number} smvnum 相似mv的数量
+   * @param {Number} recnum  推荐 mv 数量（粉丝们也喜欢看）
+   * @param {Number} othernum 上传作者的其他mv
    */
   mmvInfo(vid, smvnum = 3, recnum = 3, othernum = 3) {
     let url = `${URLConsts.URL_MV_INFO_M}&vid=${vid}&smvnum=${smvnum}&recnum=${recnum}&othernum=${othernum}&_=${new Date().getTime()}`
@@ -118,7 +133,7 @@ export default {
 
   /**
    * 获得mv vkey，播放地址等信息
-   * @param {*} vids 
+   * @param {String} vids 
    */
   mvVkey(vids) {
     let url = `${URLConsts.URL_MV_VKEY}&vids=${vids}&_rnd=${~~(new Date().getTime() / 1000)}`
@@ -130,7 +145,7 @@ export default {
 
   /**
    * 相似MV  tested
-   *@param {*} vid  mv id
+   *@param {String} vid  mv id
    */
   mvSimilar(vid) {
     let url = `${URLConsts.URL_MV_SIMILAR}&vid=${vid}`
@@ -139,7 +154,7 @@ export default {
 
   /**
    * 获取歌词信息  decodeURIComponent(escape(window.atob('sds==' ))) tested
-   * @param {*} songmid  歌曲id
+   * @param {String} songmid  歌曲id
    */
   lyric(songmid) {
     let url = `${URLConsts.URL_SONG_LYR}&songmid=${songmid}&pcachetime=${new Date().getTime()}`
@@ -151,19 +166,26 @@ export default {
       }
     }).then(res => res.text()).then(content => eval(content))
   },
-  // 歌曲信息  tested
+  
+  /**
+   * 歌曲信息  tested
+   * @param {String} songmid 媒体id
+   */
   songInfo(songmid) {
     let url = `${URLConsts.URL_SONG_INFO}&songmid=${songmid}`
     return fetch(url)
-  },
-  // 歌曲所在的专辑  tested
+  },  
+  /**
+   * 歌曲所在的专辑  tested
+   * @param {String} songid 
+   */
   songAlbums(songid) {
     let url = `${URLConsts.URL_SONG_ALBUM}&songid=${songid}`
     return fetch(url)
   },
   /**
    * 获得媒体的评论
-   * @param {*id} topid 媒体id
+   * @param {String} topid 媒体id
    */
   comments(topid) {
     let params = utils.getParams({

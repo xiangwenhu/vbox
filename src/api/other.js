@@ -23,9 +23,9 @@ export default {
   },
   /**
    * 排行榜详细数据  tested
-   * @param {*} topid id  
-   * @param {*} song_begin 开始 
-   * @param {*} song_num 结束
+   * @param {Number} topid id  
+   * @param {Number} song_begin 开始 
+   * @param {Number} song_num 结束
    */
   topListList(topid = 4, song_begin = 0, song_num = 30) {
     // 更新时间：每天上午10点
@@ -41,7 +41,7 @@ export default {
 
   /**
    * 歌曲的vkey  tested
-   * @param {*} songmid 歌曲id
+   * @param {*String} songmid 歌曲id
    */
   vkey(songmid) {
     let url = `${URLConsts.URL_VKEY}&songmid=${songmid}&filename=C400${songmid}.m4a`
@@ -56,10 +56,10 @@ export default {
 
   /**
    * 按照分类查询歌单 tested
-   * @param {*} categoryId  
-   * @param {*} sortId  排序 5 推荐 / 2 最新
-   * @param {*} sin 起始行
-   * @param {*} ein 结束行
+   * @param {Number} categoryId  
+   * @param {Number} sortId  排序 5 推荐 / 2 最新
+   * @param {Number} sin 起始行
+   * @param {Number} ein 结束行
    * 返回结果 dissid 为歌单编号
    */
   dissByTag(categoryId = 10000000, sortId = 5, sin = 0, ein = 29) {
@@ -74,8 +74,8 @@ export default {
   },
   /**
    * 按照分类查询歌单 tested
-   * @param {*} categoryId  
-   * @param {*} sort  排序 hot 最热 / time 最新
+   * @param {Number} categoryId  
+   * @param {Number} sort  排序 hot 最热 / time 最新
    * 返回结果 dissid 为歌单编号
    */
   dissByTag3G(categoryId = 71, sort = 'hot') {
@@ -90,7 +90,7 @@ export default {
   },
   /**
    * 按照id获取歌单信息 tested
-   * @param {*} disstid 歌单id
+   * @param {Number} disstid 歌单id
    */
   dissInfo(disstid) {
     let url = `${URLConsts.URL_DISS_INFO}&disstid=${disstid}`
@@ -99,8 +99,8 @@ export default {
 
   /**
    * 相似歌单  tested
-   * @param {*} dissid 歌单id
-   * @param {*} maxnum 最大返回条数
+   * @param {Number} dissid 歌单id
+   * @param {Number} maxnum 最大返回条数
    */
   dissSimilar(dissid, maxnum = 6) {
     let url = `${URLConsts.URL_DISS_SIMILAR}&dissid=${dissid}&maxnum=${maxnum}&_=${new Date().getTime()}`
