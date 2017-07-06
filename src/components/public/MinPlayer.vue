@@ -14,6 +14,7 @@
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
         <!-- <a @click.stop='next' href="javascript:;" class="focus__play__next focus__play c_ico1 js_playallsong"><span class="focus__play_text"></span></a> -->
+        <setting-icon class="player-detail" :height='1.2' :width='1.2'></setting-icon>
       </div>
     </div>
 
@@ -23,7 +24,8 @@
 <script>
   import { mapState } from 'vuex'
   import ProgressBar from './ProgressBar'
-  import {detect} from '../../utils/TouchDetect'
+  import SettingIcon from './Icon/SettingIcon'
+  import { detect } from '../../utils/TouchDetect'
   export default {
     name: 'min-player',
     data() {
@@ -34,7 +36,8 @@
       }
     },
     components: {
-      ProgressBar
+      ProgressBar,
+      SettingIcon
     },
     computed: {
       ...mapState({
@@ -139,6 +142,9 @@
 
   .operation {
     flex: 0 0 4.5rem;
+    position: relative;
+    display: flex;
+    justify-content: space-around
   }
 
   .focus__play {
@@ -203,5 +209,9 @@
     position: absolute;
     top: 0.4rem;
     background-color: #FFF;
+  }
+
+  .player-detail {
+    align-self: center;
   }
 </style>

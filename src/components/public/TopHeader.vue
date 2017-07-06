@@ -3,16 +3,23 @@
     <a @click='goback'>
       <img class='logo' :src="logoImg" alt="logo">
     </a>
+    <span class="header-seat"></span>
     <router-link class="searchBtn" to="/search">
       <img :src="searchImg" alt="搜索">
     </router-link>
-    <div class="btn_nav_slide" id="btnNavSlide"><i class="draw"></i></div>
+    <span class="header-setting">
+      <setting-icon  :height='1' :width='1'></setting-icon>
+    </span>
   </header>
 </template>
 
 <script>
+  import SettingIcon from './Icon/SettingIcon'
   export default {
     name: 'top-header',
+    components: {
+      SettingIcon
+    },
     data() {
       return {
         searchImg: require('../../assets/img/searchBtn.png'),
@@ -32,63 +39,36 @@
   #header {
     background: #20bc22;
     color: #fff;
-    height: 2rem;    
+    height: 2rem;
     width: 100%;
     padding: 0.25rem 0;
     position: relative;
     background-image: -webkit-linear-gradient(270deg, #31c27c, #20bc22);
     background-image: linear-gradient(270deg, #31c27c, #20bc22);
+    display: flex
   }
 
-  .btn_nav_slide {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    width: 1rem;
-    height: 1.2rem;
-  }
-
-  .draw {
-    top: 0.2rem;
-    right: 0;
-  }
-
-  .draw,
-  .draw:before,
-  .draw:after {
-    width: 1rem;
-    height: 0.1rem;
-    background: #fff;
-    position: absolute;
-    left: 0;
-    -webkit-transition: all .5s;
-    -webkit-transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .draw:before {
-    content: "";
-    top: -0.5rem;
-  }
-
-  .draw:after {
-    content: "";
-    top: 0.5rem;
-  }
 
   #header .searchBtn {
-    position: absolute;
-    right: 3rem;
-    height: 1.5rem;
-    top:0.6rem;    
+    flex: 0 0 2.5rem;
+    align-self: center;
   }
 
   .searchBtn img {
-    height: 1.5rem
+    height: 1.5rem;
   }
 
   .logo {
     height: 2rem;
     padding-left: 0.25rem
+  }
+
+  .header-seat {
+    flex: 1 1 1rem
+  }
+
+  .header-setting {
+    flex: 0 0 1.8rem;
+    align-self: center;
   }
 </style>
