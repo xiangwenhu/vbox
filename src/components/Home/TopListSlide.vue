@@ -12,16 +12,18 @@
               </span>
           </router-link>
         </div>
-        <div class="box-item box-item-2">
+        <div class="box-item box-item-2 ellipsis">
           <router-link :to='{name:"TopListDetailView",params:{topid:top.topID}}' class="songlist__cover album_name" :data-id="top.topID"
             style="position:relative">
-            <div style="position:relative">
-              <ul>
+            <div style="position:relative;display:flex">
+              <ul class='t-song-list ellipsis'>
                 <li v-for="(song,index) in top.songlist" class="songitem ellipsis">
                   <span class="songname tit">{{index+1}} {{song.songname}}</span> <span class="songsinger tit">-{{song.singername}}</span>
                 </li>
               </ul>
-              <span class="go-detail">></span>
+              <div class="arrow-more">
+                <arrow-icon></arrow-icon>
+              </div>
             </div>
           </router-link>
         </div>
@@ -52,10 +54,12 @@
 
 <script>
   import PlayIcon from '../public/Icon/PlayIcon'
+  import Arrow from '../public/Icon/Arrow'
   export default {
     name: 'top-list-slide',
     components: {
-      PlayIcon
+      PlayIcon,
+      'arrow-icon': Arrow
     },
     data() {
       return {
@@ -118,28 +122,28 @@
   }
 
   .box-item-1 {
-    flex: 1
+    flex: 0 0 7rem
   }
 
   .box-item-2 {
-    flex: 2;
-    max-width: 66%;
+    flex: 1
   }
 
   .songlist__pic {
     width: 6rem
   }
 
-  .go-detail {
-    color: #666;
-    position: absolute;
-    right: 0.5rem;
-    top: 2.8rem
-  }
-
   .small-play-icon {
     position: absolute;
     bottom: 0.2rem;
     right: 0.2rem;
+  }
+  .arrow-more{
+    flex:  0 0 2rem;
+    align-self: center;
+  }
+  .t-song-list{
+    flex: 1;
+    color:#666
   }
 </style>
