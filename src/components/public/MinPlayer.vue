@@ -23,7 +23,7 @@
 <script>
   import { mapState } from 'vuex'
   import ProgressBar from './ProgressBar'
-  import {detect} from '../utils/TouchDetect'
+  import {detect} from '../../utils/TouchDetect'
   export default {
     name: 'min-player',
     data() {

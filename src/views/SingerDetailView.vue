@@ -24,7 +24,7 @@
 
 <script>
   import SingerInfo from '../components/Singer/SingerInfo'
-  import SongList from '../components/SongList'
+  import SongList from '../components/public/SongList'
   import AlbumList from '../components/Album/AlbumList'
   import MVList from '../components/MV/MVList'
   import Singer from '../api/singer'

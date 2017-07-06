@@ -10,7 +10,7 @@
 <script>
   import 'whatwg-fetch'
   import 'es6-promise'
-  import AudioPlayer from './components/AudioPlayer'
+  import AudioPlayer from './components/public/AudioPlayer'
   import Search from './api/search'
   export default {
     name: 'app',

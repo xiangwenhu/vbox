@@ -9,7 +9,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import Other from '../api/other'
+  import Other from '../../api/other'
   export default {
     name: 'audio-player',
     data() {

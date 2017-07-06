@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import TagGrid from '../TagGrid'
+  import TagGrid from '../public/TagGrid'
   export default {
     name: 'album-tag',
     components: {

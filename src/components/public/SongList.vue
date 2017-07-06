@@ -25,8 +25,8 @@
 
 
 <script>
-  import PlayIcon from './PlayIcon'
-  import AddIcon from './AddIcon'
+  import PlayIcon from './Icon/PlayIcon'
+  import AddIcon from './Icon/AddIcon'
   export default {
     name: 'song-list',
     props: {

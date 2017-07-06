@@ -12,10 +12,10 @@
 </template>
 
 <script>
-  import TopHeader from '../components/TopHeader'
-  import HeaderBar from '../components/HeaderBar'
-  import FooterBar from '../components/FooterBar'
-  import MinPlayer from '../components/MinPlayer'
+  import TopHeader from '../components/public/TopHeader'
+  import HeaderBar from '../components/public/HeaderBar'
+  import FooterBar from '../components/public/FooterBar'
+  import MinPlayer from '../components/public/MinPlayer'
   import { detect } from '../utils/TouchDetect'
   export default {
     name: 'pages-view',

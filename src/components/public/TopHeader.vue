@@ -15,8 +15,8 @@
     name: 'top-header',
     data() {
       return {
-        searchImg: require('../assets/img/searchBtn.png'),
-        logoImg: require('../assets/img/logo.jpg')
+        searchImg: require('../../assets/img/searchBtn.png'),
+        logoImg: require('../../assets/img/logo.jpg')
       }
     },
     methods: {

@@ -19,7 +19,7 @@
 <script>
   import InfiniteLoading from 'vue-infinite-loading'
   import Search from '../api/search'
-  import SongList from '../components/SongList'
+  import SongList from '../components/public/SongList'
   import AlbumList from '../components/Album/AlbumList'
   import MVListSingle from '../components/MV/MVListSingle'
   import DissList from '../components/Diss/DissList'

@@ -21,7 +21,7 @@
 
 
 <script>
-  import PlayIcon from '../PlayIcon'
+  import PlayIcon from '../public/Icon/PlayIcon'
   export default {
     name: 'global-top-list',
     components: {

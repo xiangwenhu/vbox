@@ -24,7 +24,7 @@
   import HotKeys from '../components/Search/HotKeys'
   import SearchBox from '../components/Search/SearchBox'
   import SmartSearchResult from '../components/Search/SmartSearchResult'
-  import BackIcon from '../components/BackIcon'
+  import BackIcon from '../components/public/Icon/BackIcon'
   import { mapState, mapMutations } from 'vuex'
   import Search from '../api/search'
   import Other from '../api/other'

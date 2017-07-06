@@ -57,9 +57,9 @@
 </template>
 
 <script>
-  import TopHeader from '../components/TopHeader'
+  import TopHeader from '../components/public/TopHeader'
   import Search from '../api/search'
-  import PlayIcon from '../components/PlayIcon'
+  import PlayIcon from '../components/public/Icon/PlayIcon'
   import MVListSingle from '../components/MV/MVListSingle'
   export default {
     name: 'mv-player-view',

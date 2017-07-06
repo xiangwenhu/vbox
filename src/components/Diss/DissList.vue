@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import PlayIcon from '../PlayIcon'
+  import PlayIcon from '../public/Icon/PlayIcon'
   export default {
     name: 'dissList',
     props: ['dissList', 'module'],
