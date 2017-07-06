@@ -16,6 +16,7 @@
   import Other from '../api/other'
   import TopListSlide from '../components/Home/TopListSlide'
   import GlobalTopList from '../components/TopList/GlobalTopList'
+  import { mapState } from 'vuex'
   export default {
     name: 'toplist-home-view',
     components: {
@@ -23,20 +24,13 @@
       GlobalTopList
     },
     data() {
-      return {
-        DFTopList: [],
-        DFName: 'QQ音乐巅峰榜',
-        GlobalTopList: [],
+      return {       
+        DFName: 'QQ音乐巅峰榜',       
         GlobalName: '全球榜'
       }
     },
     async mounted() {
-      // 排行榜的分类
-      let topListOpt = await Other.topList()
-      this.DFTopList = topListOpt[0].List
-      this.DFName = topListOpt[0].GroupName
-      this.GlobalTopList = topListOpt[1].List
-      this.GlobalName = topListOpt[1].GroupName
+      this.$store.dispatch('toplist/gettoplist')
     },
     methods: {
       // 添加排行榜到播放列表
@@ -48,6 +42,12 @@
         this.$store.commit('playing/next', topListList.songlist[0].data)
         // }
       }
+    },
+    computed: {
+      ...mapState('toplist', {
+        DFTopList: state => state.DFTopList,
+        GlobalTopList: state => state.GlobalTopList
+      })
     }
 
   }

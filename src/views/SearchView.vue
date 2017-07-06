@@ -2,7 +2,7 @@
   <div class="box-col h100">
     <!--搜索框 -->
     <div class="mod_search_bar">
-      <back-icon class="back"> &lt; </back-icon>
+      <back-link class="back"> </back-link>
       <search-box ref='sbox' :kw='keyWords' @search='search' @smartSearch='smartSearch' @status='searchStatus'></search-box>
       <div @click.stop='goSeach' id="cancel_btn" class="search_bar_tip_text" style="display: block;">取消</div>
     </div>
@@ -24,7 +24,7 @@
   import HotKeys from '../components/Search/HotKeys'
   import SearchBox from '../components/Search/SearchBox'
   import SmartSearchResult from '../components/Search/SmartSearchResult'
-  import BackIcon from '../components/public/Icon/BackIcon'
+  import BackLink from '../components/public/BackLink'
   import { mapState, mapMutations } from 'vuex'
   import Search from '../api/search'
   import Other from '../api/other'
@@ -33,7 +33,7 @@
       HotKeys,
       SearchBox,
       SmartSearchResult,
-      BackIcon
+      BackLink
     },
     data() {
       return {
@@ -130,6 +130,8 @@
   }
 
   .back {
-    width: 8%
+    width: 8%;
+    display: flex;
+    justify-content: center;
   }
 </style>

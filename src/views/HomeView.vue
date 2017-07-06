@@ -5,7 +5,7 @@
         <h3 class="align-center top_title">排行榜</h3>
       </router-link>
     </div>
-    <top-list-slide :toplist="toplist" @addToPlaying='addTLToPlaying'></top-list-slide>
+    <top-list-slide :toplist="toplist.slice(0,4)" @addToPlaying='addTLToPlaying'></top-list-slide>
     <hot-diss :hotdiss="hotdiss" @addDissToPlaying='addDissToPlaying'>
       <div>
         <h3 class="diss_title align-center">热门歌单</h3>
@@ -18,6 +18,7 @@
   import Other from '../api/other'
   import TopListSlide from '../components/Home/TopListSlide'
   import HotDiss from '../components/Home/HotDiss'
+  import { mapState } from 'vuex'
   export default {
     name: 'home-view',
     components: {
@@ -26,19 +27,24 @@
     },
     data() {
       return {
-        toplist: [],
         hotdiss: []
       }
     },
     async mounted() {
+      this.$store.dispatch('toplist/gettoplist')
       let recom = await Other.recomList().then(res => res.json())
       if (recom.code === 0) {
-        this.toplist = recom.data.toplist
+        // this.toplist = recom.data.toplist
         this.hotdiss = recom.data.hotdiss.list.slice(0, 6)
       }
       if (this.$store.state.player.state === 0) {
         this.$store.commit('playing/next')
       }
+    },
+    computed: {
+      ...mapState('toplist', {
+        toplist: state => state.DFTopList
+      })
     },
     methods: {
       // 添加排行榜到播放列表
