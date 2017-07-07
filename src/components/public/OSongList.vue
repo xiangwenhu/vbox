@@ -4,7 +4,7 @@
       <div class="songlist__artist box-item-info ellipsis" :class="current&&current.songmid == item.songmid ? 'song-current' : ''">
         <span class="song-title">{{item.songname}}</span>
         <span class="song-con">-</span>
-        <span class="song-singer ellipsis">
+        <span class="song-singer ellipsis" @click.stop='play(item)'>
           {{ item.singer |mp('name') |jn('/') }}
         </span>
       </div>

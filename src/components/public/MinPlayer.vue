@@ -19,14 +19,18 @@
         </span>
       </div>
     </div>
-    <div class="playing-list" v-if='showList' @touchstart.stop='' @touchend.stop=''>
-      <div class="pl-header">
-        <div class="pl-mode">顺序播放</div>
-        <div class="pl-close"  @click.stop='togglePlayingList'>
-          <close-icon :size='1.2'></close-icon>
+    <div class="playing-list-wraper" @click.stop='togglePlayingList' v-if='showList'>
+      <div class="playing-list-gap">
+        <div class="playing-list" @touchstart.stop='' @touchend.stop='' @click.stop=''>
+          <div class="pl-header">
+            <div class="pl-mode">顺序播放</div>
+            <div class="pl-close" @click.stop='togglePlayingList'>
+              <close-icon :size='1.2'></close-icon>
+            </div>
+          </div>
+          <song-list class="pl-list" :list='plist'></song-list>
         </div>
       </div>
-      <song-list class="pl-list" :list='plist'></song-list>
     </div>
   </div>
 </template>
@@ -236,11 +240,25 @@
     align-self: center;
   }
 
-  .playing-list {
+  .playing-list-wraper {
     width: 100%;
     position: absolute;
     bottom: 0;
+    background: #666;
+    opacity: 0.75;
+    height: 100%
+  }
+
+  .playing-list-gap {
+    height: 100%;
     width: 100%;
+    position: relative
+  }
+
+  .playing-list {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
     background: #000;
     opacity: 0.75;
     display: flex;
@@ -257,13 +275,13 @@
     padding-top: 0.5rem;
   }
 
-  .pl-mode{
+  .pl-mode {
     flex: 1;
     text-align: center;
   }
 
-  .pl-close{
-    flex: 0 0 2rem;   
+  .pl-close {
+    flex: 0 0 2rem;
   }
 
   .pl-list {
