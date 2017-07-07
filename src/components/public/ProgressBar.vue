@@ -18,7 +18,7 @@
 
 <style scoped>
   .innercontainer {
-    background:rgba(105, 102, 119, 0.51);
+    background:rgba(177, 255, 226, 0.51);
     width: 100%;
     border-radius: 999rem
   }

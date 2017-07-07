@@ -8,7 +8,7 @@
       size: {
         type: Number,
         default: 1
-      }
+      }      
     },
     data() {
       return {
@@ -38,7 +38,7 @@
     position: absolute;
     content: "";
     transform: rotate(45deg);
-    background: rgba(0, 0, 0, .6)
+    background: rgba(255, 255, 255, .6)
   }
 
   .icon_close:after {

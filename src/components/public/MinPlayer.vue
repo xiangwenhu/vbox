@@ -14,10 +14,20 @@
       <div class="inlineblock operation">
         <a @click.stop='pause' href="javascript:;" :class='["focus__play", "c_ico1 js_playallsong",playerState == 1 ? "focus__play__pause":""  ]'><span class="focus__play_text"></span></a>
         <!-- <a @click.stop='next' href="javascript:;" class="focus__play__next focus__play c_ico1 js_playallsong"><span class="focus__play_text"></span></a> -->
-        <setting-icon class="player-detail" :height='1.2' :width='1.2'></setting-icon>
+        <span class="player-detail" @click.stop='togglePlayingList'>
+          <setting-icon :height='1.2' :width='1.2'></setting-icon>
+        </span>
       </div>
     </div>
-
+    <div class="playing-list" v-if='showList' @touchstart.stop='' @touchend.stop=''>
+      <div class="pl-header">
+        <div class="pl-mode">顺序播放</div>
+        <div class="pl-close"  @click.stop='togglePlayingList'>
+          <close-icon :size='1.2'></close-icon>
+        </div>
+      </div>
+      <song-list class="pl-list" :list='plist'></song-list>
+    </div>
   </div>
 </template>
 
@@ -25,25 +35,31 @@
   import { mapState } from 'vuex'
   import ProgressBar from './ProgressBar'
   import SettingIcon from './Icon/SettingIcon'
+  import CloseIcon from './Icon/CloseIcon'
   import { detect } from '../../utils/TouchDetect'
+  import OSongList from './OSongList'
   export default {
     name: 'min-player',
     data() {
       return {
         progress: '0%',
         startPoint: null,
-        endPoint: null
+        endPoint: null,
+        showList: false
       }
     },
     components: {
       ProgressBar,
-      SettingIcon
+      SettingIcon,
+      'song-list': OSongList,
+      CloseIcon
     },
     computed: {
       ...mapState({
         current: state => state.playing.current,
         currentTime: state => state.player.currentTime,
-        playerState: state => state.player.state
+        playerState: state => state.player.state,
+        plist: state => state.playing.list
       }),
       song() {
         return this.current || {}
@@ -71,6 +87,9 @@
         } else if (direction === 4) {
           this.$store.commit('playing/next')
         }
+      },
+      togglePlayingList() {
+        this.showList = !this.showList
       }
     },
     watch: {
@@ -92,7 +111,8 @@
 
   .miniplayer {
     background: rgba(0, 0, 0, .7);
-    width: 100%
+    width: 100%;
+    color: #FFF
   }
 
   .play-info {
@@ -116,6 +136,7 @@
     width: auto;
     align-self: center;
     flex: 1 1 auto;
+    padding-left: 0.3rem
   }
 
   .song_name {
@@ -213,5 +234,40 @@
 
   .player-detail {
     align-self: center;
+  }
+
+  .playing-list {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #000;
+    opacity: 0.75;
+    display: flex;
+    flex-direction: column;
+    height: 65%;
+    z-index: 999
+  }
+
+  .pl-header {
+    width: 100%;
+    display: flex;
+    flex: 0 0 2.2rem;
+    justify-content: center;
+    padding-top: 0.5rem;
+  }
+
+  .pl-mode{
+    flex: 1;
+    text-align: center;
+  }
+
+  .pl-close{
+    flex: 0 0 2rem;   
+  }
+
+  .pl-list {
+    overflow: auto;
+    flex: 1
   }
 </style>

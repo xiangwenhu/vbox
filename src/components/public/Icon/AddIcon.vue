@@ -22,15 +22,15 @@
           border: 'solid ' + (this.height / 2) * 0.1 + 'rem'
         },
         styleinner_h: {
-          top: (this.height * 0.4).toFixed(2) + 'rem',
+          top: (this.height * 0.48).toFixed(2) + 'rem',
           left: (this.height * 0.1).toFixed(2) + 'rem',
           width: (this.height * 0.8).toFixed(2) + 'rem',
-          height: (this.height * 0.2).toFixed(2) + 'rem'
+          height: (this.height * 0.05).toFixed(2) + 'rem'
         },
         styleinner_v: {
           top: (this.height * 0.1).toFixed(2) + 'rem',
-          left: (this.height * 0.4).toFixed(2) + 'rem',
-          width: (this.height * 0.2).toFixed(2) + 'rem',
+          left: (this.height * 0.48).toFixed(2) + 'rem',
+          width: (this.height * 0.05).toFixed(2) + 'rem',
           height: (this.height * 0.8).toFixed(2) + 'rem'
         }
       }

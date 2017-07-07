@@ -40,9 +40,11 @@ const mutations = {
    * @param {*} state 
    * @param {*} songmid  歌曲媒体id 
    */
-  removeSong(state, songmid) {
+  delSong(state, songmid) {
     let index = state.list.findIndex(s => s.songmid === songmid)
-    index >= 0 && state.list.splice(index, 1)
+    if (index >= 0) {
+      state.list.splice(index, 1)
+    }
   },
 
   /**
@@ -50,7 +52,7 @@ const mutations = {
    * @param {*} state 
    * @param {*} songmids 歌曲媒体列表 
    */
-  removeSongs(state, songmids = []) {
+  delSongs(state, songmids = []) {
     let index = -1
     songmids.forEach(songmid => {
       index = state.list.findIndex(s => s.songmid === songmid)
@@ -106,8 +108,21 @@ const mutations = {
   }
 }
 
+const actions = {
+  delSong({ state, commit }, songmid) {
+    // 删除的是当前播放歌曲 
+    if (songmid !== state.current.songmid) {
+      commit('delSong', songmid)
+    } else {
+      commit('next')
+      commit('delSong', songmid)
+    }
+  }
+}
+
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  actions
 }
