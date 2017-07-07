@@ -78,5 +78,13 @@ export default class Singer {
     return fetch(url)
   }
 
+  /**
+   * 获得推荐歌曲，和专辑3个
+   */
+  track(begin = 0, num = 8) {
+    let url = `${URLConsts.URL_SINGER_TRACK}&begin=${begin}&num=${num}&_=${new Date().getTime()}&singermid=${this.singermid}`
+    return fetch(url)
+  }
+
 }
 

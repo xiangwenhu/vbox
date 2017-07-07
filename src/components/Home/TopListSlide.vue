@@ -8,7 +8,7 @@
             <img onerror="this.src='//y.gtimg.cn/mediastyle/global/img/album_300.png?max_age=31536000';this.onerror=null;" :src="top.pic_v12"
               alt="" class="songlist__pic" style="display: inline; visibility: visible;">
             <span class="small-play-icon" @click.stop='addToPlaying(top.topID)'>
-                <play-icon height='1'></play-icon>
+                <play-icon height='1.5'></play-icon>
               </span>
           </router-link>
         </div>
@@ -18,7 +18,7 @@
             <div style="position:relative;display:flex">
               <ul class='t-song-list ellipsis'>
                 <li v-for="(song,index) in top.songlist" class="songitem ellipsis">
-                  <span class="songname tit">{{index+1}} {{song.songname}}</span> <span class="songsinger tit">-{{song.singername}}</span>
+                  <span class="tit">{{index+1}} {{song.songname}}</span> <span class="tit2">-{{song.singername}}</span>
                 </li>
               </ul>
               <div class="arrow-more">
@@ -87,12 +87,6 @@
 <style scoped>
   #toplist_box {
     color: #FFF;
-    background-color: #345;
-  }
-
-
-  .topitem {
-    background-color: #FFF
   }
 
   .songitem {
@@ -100,33 +94,18 @@
     max-width: 85%;
   }
 
-  .songname {
-    color: #333;
-  }
-
-  .songsinger {
-    color: #666
-  }
-
-  .box {
-    display: -webkit-flex;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: left;
-    align-content: space-between;
-  }
-
-  .box-item {
-    flex-basis: 100%;
-    justify-content: center;
-  }
-
   .box-item-1 {
-    flex: 0 0 7rem
+    flex: 0 0 7rem;
+    display: flex
   }
 
-  .box-item-2 {
+  .box-item-2,
+  .t-song-list {
     flex: 1
+  }
+
+  .t-song-list {
+    color: #666
   }
 
   .songlist__pic {
@@ -138,12 +117,9 @@
     bottom: 0.2rem;
     right: 0.2rem;
   }
-  .arrow-more{
-    flex:  0 0 2rem;
+
+  .arrow-more {
+    flex: 0 0 2rem;
     align-self: center;
-  }
-  .t-song-list{
-    flex: 1;
-    color:#666
   }
 </style>

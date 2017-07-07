@@ -11,6 +11,8 @@ const URL_SEARCH_SINGER = `${C_Y_QQ_COM}/v8/fcg-bin/v8.fcg?channel=singer&page=l
 const URL_SINGER_SIM = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_simsinger.fcg?utf8=1&format=jsonp&${COMMON_PARAMS}`
 // 歌手的歌曲
 const URL_SINGER_SONGS = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?format=json&order=listen&songstatus=1&${COMMON_PARAMS}`
+// 获得歌手的推荐歌曲和3个专辑
+const URL_SINGER_TRACK = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?order=listen&format=json&platform=h5page&from=h5&${COMMON_PARAMS}`
 // 歌手的专辑
 const URL_SINGER_ALBUM = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_singer_album.fcg?format=json&order=time&${COMMON_PARAMS}`
 // 歌手描述
@@ -97,6 +99,7 @@ export default {
 
   URL_SINGER_SIM,
   URL_SINGER_SONGS,
+  URL_SINGER_TRACK,
   URL_SINGER_ALBUM,
   URL_SINGER_MVS,
   URL_SINGER_DESC,

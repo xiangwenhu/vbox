@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot></slot>
-    <div class="mod_playlist mod_slide">  
+    <div class="mod_playlist mod_slide">
 
       <div v-for="(dissItem,index) in hotdiss">
         <div v-if='index%2 == 0' class="box">
@@ -15,7 +15,7 @@
             <figcaption>
               <h2 class="diss-name tit">{{diss.dissname}}</h2>
               <div>
-                <p class="desc">播放量：{{ diss.listennum | tt}}万</p>
+                <p class="tit2">播放量：{{ diss.listennum | tt}}万</p>
               </div>
             </figcaption>
           </figure>
@@ -44,46 +44,31 @@
 </script>
 
 <style scoped>
-  .diss_title {
-    color: #FFF;
-    padding: 0.2rem 0;
-    background-color: #345
-  }
 
   figure img {
     width: 90%
   }
 
-  .box {
-    display: -webkit-flex;
-    display: flex;
-    flex-wrap: wrap;
+  .box-item {  
     justify-content: center;
-    align-content: space-between;
     flex: 1;
-  }
-
-  .box-item {
-    flex-basis: 100%;
-    justify-content: center;
-    flex: 1;  
+    margin-top: .3rem
   }
 
   figcaption {
-    color: #FFF
+    color: #FFF;
+    text-align: left;
+    padding: 0 5%
   }
 
   figcaption h2 {
     font-weight: 400;
-  } 
+  }
 
   .diss-play-icon {
     position: absolute;
-    top: 40%;
-    left: 40%
+    bottom: 2%;
+    right: 7%
   }
-
-  .diss-name {
-    padding: 0 0.1rem;
-  }
+ 
 </style>

@@ -12,7 +12,12 @@
         <figcaption>
           <router-link :to="{name:'AlbumDetailView',params:{albummid:album.albumMID}}">
             <p class="ellipsis tit">{{album.albumName}}</p>
-            <p class="ellipsis desc"> {{album.singers.map(s=>s.singer_name).join('/')}}</p>
+            <p v-if='album.singers' class="ellipsis tit2">
+              {{album.singers.map(s=>s.singer_name).join('/')}}
+            </p>
+            <p class="ellipsis tit2" v-else>
+              {{album.publish_date || album.pubTime}}
+            </p>
           </router-link>
         </figcaption>
       </figure>

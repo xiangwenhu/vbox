@@ -101,10 +101,10 @@
 
   .singer_tag__item {
     float: left;
-    line-height: 1.2rem;
-    padding: 0 0.1rem;
-    margin: 0 0.1rem 0.1rem 0;
-    width: 4rem;
+    line-height: 1.3rem;   
+    margin: 0 0.1rem 0.1rem 0.5rem;
+    width: 3.2rem;
+    font-size: 0.8rem
   }
 
   .singer_tag__list {
@@ -120,7 +120,8 @@
   }
 
   .singer_tag-letter {
-    width: 1rem;
-    text-align: center
+    width: 1.1rem;
+    text-align: center;
+    margin-left: 0.1rem
   }
 </style>

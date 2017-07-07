@@ -8,7 +8,7 @@
     <top-list-slide :toplist="toplist.slice(0,4)" @addToPlaying='addTLToPlaying'></top-list-slide>
     <hot-diss :hotdiss="hotdiss" @addDissToPlaying='addDissToPlaying'>
       <div>
-        <h3 class="diss_title align-center">热门歌单</h3>
+        <h3 class="top_title align-center">热门歌单</h3>
       </div>
     </hot-diss>
   </div>
@@ -69,13 +69,7 @@
 
 
 <style scoped>
-  .top_title_zone {
-    background-color: #345
-  }
-
-  .top_title {
-    color: #FFF;
-    margin: 0.2rem 0;
-    padding: 0.2rem 0;
-  }
+  .top_title { 
+    background-image: linear-gradient(270deg, #666, #999);
+  } 
 </style>

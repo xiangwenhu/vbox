@@ -50,7 +50,7 @@
     justify-content: center;
     flex: 1;
     background-color: #fbfbfd;
-    margin: 0 10%;
+    margin: 0 5%;
     max-width: 50%
   }
 

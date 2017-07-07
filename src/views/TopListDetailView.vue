@@ -67,6 +67,6 @@
 
 <style scoped>
   .toplist-detail {
-    background-color: #000
+    background-image: linear-gradient(to right, #FFF, #999);
   }
 </style>

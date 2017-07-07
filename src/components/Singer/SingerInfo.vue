@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="focus__bg" id="singer_bgimg" :style='{"background-image":bgImage}'></div>
-    <div class="focus__gradient c_gradient" style="color: rgb(170, 194, 218);"></div>
+    <div class="focus__gradient c_gradient" :style="{color:bgColor}"></div>
   </div>
 </template>
 
@@ -29,7 +29,7 @@
     components: {
       PlayIcon
     },
-    props: ['singermid', 'singername', 'fansnum', 'songcount', 'albumcount', 'mvcount'],
+    props: ['singermid', 'singername', 'fansnum', 'songcount', 'albumcount', 'mvcount', 'bgColor'],
     computed: {
       bgImage: function () {
         return this.singermid ? 'url("https://y.gtimg.cn/music/photo_new/T001R300x300M000' + this.singermid + '.jpg?max_age=2592000")'
@@ -106,7 +106,7 @@
     background-repeat: no-repeat;
     background-position: top center;
     background-size: cover;
-    height: 12rem;
+    height: 14rem;
   }
 
   .focus__gradient {

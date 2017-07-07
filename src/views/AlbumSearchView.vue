@@ -2,10 +2,13 @@
   <div>
 
     <div class="tag-hd">
-      <div class="tag-sort">
+      <div class="tag-sort flex">
+        <span class="flex-flex"></span>
         <span :class='["sort-type", sortType == 1 ? "tag-select":""]' @click.stop='changeSortType(1)'>最新</span>
         <span :class='["sort-type", sortType == 2 ? "tag-select":""]' @click.stop='changeSortType(2)'>最热</span>
-        <span class="more_filter" @click.stop='toggleTag'>三</span>
+        <span class="more_filter" @click.stop='toggleTag'>
+           <setting-icon :color='"#666"'></setting-icon>
+        </span>
       </div>
     </div>
     <transition name="'slide-left'">
@@ -27,12 +30,14 @@
   import AlbumList from '../components/Album/AlbumList'
   import AlbumTag from '../components/Album/AlbumTag'
   import Search from '../api/search'
+  import SettingIcon from '../components/public/Icon/SettingIcon'
   export default {
     name: 'album-search-view',
     components: {
       InfiniteLoading,
       AlbumList,
-      AlbumTag
+      AlbumTag,
+      SettingIcon
     },
     data() {
       return {
@@ -129,8 +134,9 @@
 
 <style scoped>
   .more_filter {
-    padding: 0.2rem 0.4rem;
+    padding: 0.3rem 0.4rem;
     height: 1.2rem;
+    display: inline-block
   }
 
   .album-tag {

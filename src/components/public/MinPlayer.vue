@@ -260,7 +260,7 @@
     width: 100%;
     bottom: 0;
     background: #000;
-    opacity: 0.75;
+    opacity: 1;
     display: flex;
     flex-direction: column;
     height: 65%;

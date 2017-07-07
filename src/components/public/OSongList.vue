@@ -87,13 +87,13 @@
   }
 
   .song-title {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     flex: 1 1 auto;
     padding-left: 0.5rem
   }
 
   .song-singer {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     flex: 1 1 auto
   }
 

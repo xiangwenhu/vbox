@@ -9,7 +9,7 @@
         </div>
         <figcaption>
           <p class="tit">{{mv.title}}</p>
-          <p class="desc" v-if='mv.type == 2'>{{ mv.listenCount | tt}}万</p>
+          <p class="desc" v-if='!mv.type || mv.type == 2'>{{ mv.listenCount | tt}}万</p>
           <p v-else class="desc">{{ mv.listenCount }}</p>
         </figcaption>
       </figure>

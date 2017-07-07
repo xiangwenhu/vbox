@@ -1,13 +1,13 @@
 <template>
-  <div class="singer-detail">
+  <div class="singer-detail" :style="{'background-color': cBgColor}">
     <singer-info @playhot='playhot' :singermid='singermid' :singername='singername' :fansnum='fansnum' :songcount='songcount'
-      :albumcount='albumcount' :mvcount='mvcount'></singer-info>
+      :albumcount='albumcount' :mvcount='mvcount' :bgColor='cBgColor'></singer-info>
     <div>
       <div class="part__hd">
         <h2 class="part__tit">热门歌曲</h2>
         <router-link class="part__more" :to='{path:"/pages/singer/songs",params:{singermid:singermid}}'> 全部 > </router-link>
       </div>
-      <song-list :songs='songs' @addsong='addsong' @playsong='playsong'></song-list>
+      <song-list :songs='songs' @addsong='addsong' @playsong='playsong' :pure='true'></song-list>
       <div class="part__hd">
         <h2 class="part__tit">专辑</h2>
         <router-link class="part__more" :to='{path:"/pages/singer/albums",params:{singermid:singermid}}'> 全部 > </router-link>
@@ -47,12 +47,13 @@
         albumcount: 0,
         mvs: [],
         mvcount: 0,
-        singer: null
+        singer: null,
+        bgColor: null
       }
     },
     async mounted() {
       this.singer = new Singer(this.singermid)
-      // 获取歌曲
+      /*  获取歌曲
       let res = await this.singer.songs(0, 5).then(r => r.json())
       this.songs = res.data.list.map(s => {
         s.data = s.musicData;
@@ -60,23 +61,47 @@
         return s
       })
       this.songcount = res.data.total
-      this.singername = res.data.singer_name
-      // 获取专辑
-      res = await this.singer.albums(0, 6).then(r => r.json())
-      this.albums = res.data.list
-      this.albumcount = res.data.total
+      this.singername = res.data.singer_name  */
 
-      res = await this.singer.mvs(0, 6).then(r => r.json())
-      this.mvs = res.data.list
-      this.mvcount = res.data.total
+      let res = await this.singer.track(0, 5).then(r => r.json())
+      this.songs = res.data.list.map(s => {
+        let so = s.musicData
+        return {
+          songname: so.songname,
+          albummid: so.albummid,
+          albumname: so.albumname,
+          singer: so.singer,
+          songmid: so.songmid
+        }
+      })
+      this.songcount = res.data.total
+      this.singername = res.data.singer_name
+      this.albums = res.data.albumlist.map(a => ({
+        albumMID: a.albummid,
+        albumName: a.name,
+        pubTime: a.publish_date
+      }))
 
       // 粉丝数
-      res = await this.singer.fans().then(res => res.json())
-      this.fansnum = res.num
+      // res = await this.singer.fans().then(res => res.json())
+      this.fansnum = res.data.fans
+      this.bgColor = res.data.color
+
+      // 获取专辑数目
+      res = await this.singer.albums(0, 1).then(r => r.json())
+      this.albumcount = res.data.total
+
+      // 获取MV
+      res = await this.singer.mvs(0, 4).then(r => r.json())
+      this.mvs = res.data.list
+      this.mvcount = res.data.total
     },
     computed: {
       singermid: function () {
         return this.$route.params.singermid
+      },
+      cBgColor() {
+        return '#' + (this.bgColor || '000').toString(16)
       }
     },
     methods: {
@@ -96,7 +121,7 @@
         this.$store.commit('playing/addSong', song)
         this.$store.commit('playing/next', song)
       },
-      async addAlbumToPlaying(albumMID) {    
+      async addAlbumToPlaying(albumMID) {
         let res = await Search.albumInfo(albumMID).then(res => res.json())
         this.$store.commit('playing/addSongs', res.data.list)
         this.$store.commit('playing/next', res.data.list[0])

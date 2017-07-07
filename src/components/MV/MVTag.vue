@@ -51,7 +51,8 @@
 
 <style scoped>
   .tag-operation {
-    text-align: center
+    text-align: center;
+    margin-top: 1rem;
   }
   .tag-operation span {
     /* line-height: 1.6rem; */
@@ -66,6 +67,6 @@
 
   .tag-select {
     font-size: 0.8rem;
-    color: #535353
+    color: #535353;
   }
 </style>

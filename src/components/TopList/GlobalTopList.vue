@@ -39,8 +39,7 @@
 
 <style scoped>
   .box {
-    display: flex;
-    display: -webkit-flex;
+    display: flex;   
     justify-content: center;
     flex-wrap: wrap;
     align-content: space-between;

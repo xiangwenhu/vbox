@@ -155,11 +155,6 @@
     height: 100%
   }
 
-  .tag-sort {
-    position: absolute;
-    right: 0
-  }
-
   .of-auto {
     overflow: auto
   }
@@ -179,12 +174,16 @@
     background-color: #31c27c;
     color: #fff;
     border-color: #31c27c;
-    z-index: 2;
   }
 
   .tit {
     font-size: 0.8rem;
     color: #333
+  }
+
+  .tit2 {
+    font-size: 0.8rem;
+    color: #666
   }
 
   .tit_h2 {
@@ -202,6 +201,23 @@
   .desc {
     color: #999;
     font-size: 0.7rem
+  }
+
+  .top_title {
+    color: #FFF;
+    margin: 0.2rem 0;
+    padding: 0.2rem 0;
+    line-height: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2rem
+  }
+
+  .flex {
+    display: flex
+  }
+
+  .flex-flex {
+    flex: 1
   }
 
   #app {
