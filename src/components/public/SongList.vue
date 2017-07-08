@@ -108,4 +108,7 @@
     position: absolute;
     top: 30%
   }
+  .tit{
+    color: #FFF
+  }
 </style>

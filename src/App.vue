@@ -186,16 +186,28 @@
     color: #666
   }
 
-  .tit_h2 {
+  .t_h2,
+  .tit_h2_w {
     font-weight: 400;
     font-size: 1.2rem;
+    line-height: 1.6rem;
     color: #333
   }
 
-  .tit_h4 {
+  .tit_h2_w {
+    color: #FFF
+  }
+
+  .tit_h4,
+  .tit_h4_w {
     font-weight: 300;
     font-size: 0.9rem;
+    line-height: 1.2rem;
     color: #333
+  } 
+
+  .tit_h4_w {  
+    color: #FFF
   }
 
   .desc {
