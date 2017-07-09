@@ -4,10 +4,19 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
+import VueLazyload from 'vue-lazyload'
+
+// or with options
+Vue.use(VueLazyload, {
+  preLoad: 1,
+  error: 'static/img/logo.jpg',
+  loading: 'static/img/loading.gif',
+  attempt: 1
+})
 
 // mount with global
-Vue.use(VueAwesomeSwiper)
+// Vue.use(VueAwesomeSwiper)
 
 Vue.config.productionTip = false
 

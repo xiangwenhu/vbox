@@ -5,7 +5,7 @@
         <div class="box-item box-item-1">
           <router-link :to='{name:"TopListDetailView",params:{topid:top.topID}}' class="songlist__cover album_name" :data-id="top.topID"
             style="position:relative">
-            <img onerror="this.src='//y.gtimg.cn/mediastyle/global/img/album_300.png?max_age=31536000';this.onerror=null;" :src="top.pic_v12"
+            <img onerror="this.src='//y.gtimg.cn/mediastyle/global/img/album_300.png?max_age=31536000';this.onerror=null;" v-lazy="top.pic_v12"
               alt="" class="songlist__pic" style="display: inline; visibility: visible;">
             <span class="small-play-icon" @click.stop='addToPlaying(top.topID)'>
                 <play-icon height='1.5'></play-icon>

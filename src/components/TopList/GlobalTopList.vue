@@ -4,7 +4,7 @@
       <router-link :to='{name:"TopListDetailView",params:{topid:top.topID}}'>
         <figure>
           <div style="position:relative">
-            <img class="top_pic" :src="top.pic_v12">
+            <img class="top_pic" v-lazy="top.pic_v12">
             <span class="play_icon" @click.stop='addToPlaying(top.topID)'>
             <play-icon height="1"></play-icon>
           </span>

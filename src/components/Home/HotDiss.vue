@@ -8,7 +8,7 @@
           <figure class="box-item align-center" v-for="(diss,i) in [dissItem,hotdiss[index+1]]">
             <div style="position:relative">
               <router-link :to='"/pages/diss/detail" + diss.dissid'>
-                <img :src="(diss.imgurl||'').replace('300\?n=1','150\?n=1')" alt="diss.dissname" />
+                <img v-lazy="(diss.imgurl||'').replace('300\?n=1','150\?n=1')" alt="diss.dissname" />
               </router-link>
               <span class="diss-play-icon" @click.stop='addToPlaying(diss.dissid)'> <play-icon height='2'></play-icon></span>
             </div>

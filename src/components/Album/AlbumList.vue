@@ -4,7 +4,7 @@
       <figure>
         <div class="album_pic_zone">
           <router-link :to="{name:'AlbumDetailView',params:{albummid:album.albumMID}}">
-            <img class="album_pic" :src='"http://y.gtimg.cn/music/photo_new/T002R150x150M000"+ album.albumMID + ".jpg?max_age=2592000"'
+            <img class="album_pic" v-lazy='"http://y.gtimg.cn/music/photo_new/T002R150x150M000"+ album.albumMID + ".jpg?max_age=2592000"'
             />
             <span class="play-icon" @click.stop='addToPlaying(album.albumMID)'><play-icon height='2'></play-icon></span>
           </router-link>

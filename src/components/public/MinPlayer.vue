@@ -246,7 +246,8 @@
     bottom: 0;
     background: #666;
     opacity: 0.75;
-    height: 100%
+    height: 100%;
+    z-index: 9
   }
 
   .playing-list-gap {

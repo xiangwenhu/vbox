@@ -5,7 +5,7 @@
 
       <div class="box-item-l">
         <router-link :to="{name:'MVPlayerView',params:{vid:mv.vid}}">
-          <img :src='`https://puui.qpic.cn/qqvideo_ori/0/${mv.vid}_496_280/0?max_age=259200`' width="100%" />
+          <img v-lazy='`https://puui.qpic.cn/qqvideo_ori/0/${mv.vid}_496_280/0?max_age=259200`' width="100%" />
         </router-link>
       </div>
       <div class="box-item-r">

@@ -10,7 +10,7 @@
             <div class="playlist__item_box" :class="[(index + 1) % 2 == 0 ? 'mr0 ml1' : '']">
               <div class="playlist__cover mod_cover">
                 <router-link :to="{name:'AlbumDetailView',params:{albummid:'diss.dissid'}}" class="" :title="diss.dissname" :data-disstid="diss.dissid" >
-                  <img class="playlist__pic" :src='diss.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;" :alt="diss.dissname" />
+                  <img class="playlist__pic" v-lazy='diss.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;" :alt="diss.dissname" />
                   <span class="play-count" @click.stop='playCount(diss.dissid)'><a href="javascript:void(0);"><img src='../../assets/img/headset.png'/><span class="listennum">{{(diss.listennum / 10000).toFixed(1)}}万</span></a></span>
                   <span class="play-icon" @click.stop='addToPlaying(diss.dissid)'><play-icon height='1'></play-icon></span>
                 </router-link>

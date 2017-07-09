@@ -4,7 +4,7 @@
       <figure class="album">
         <div>
           <router-link :to="{name:'MVPlayerView',params:{vid:mv.vid}}">
-            <img class="mv_pic" :src='mv.pic' alt="" />
+            <img class="mv_pic" v-lazy='mv.pic' alt="" />
           </router-link>
         </div>
         <figcaption>

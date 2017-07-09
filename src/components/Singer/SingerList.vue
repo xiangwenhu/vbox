@@ -6,8 +6,8 @@
         <figure class="box-item align-center" v-for="(singer,i) in [singerItem,singers[index+1]]">
 
           <router-link :to="{name:'SingerDetailView',params:{singermid:singer.Fsinger_mid}}">
-            <img class="singer_list__pic" onerror="this.src='//y.gtimg.cn/mediastyle/global/img/singer_300.png?max_age=2592000';this.onerror=null;"
-              :src="'https://y.gtimg.cn/music/photo_new/T001R150x150M000' + singer.Fsinger_mid + '.jpg?max_age=2592000'" alt="Fsinger_name">
+            <img class="singer_list__pic" 
+              v-lazy="'https://y.gtimg.cn/music/photo_new/T001R150x150M000' + singer.Fsinger_mid + '.jpg?max_age=2592000'" alt="Fsinger_name">
           </router-link>
 
           <figcaption>
@@ -37,8 +37,7 @@
     border-radius: 999px
   }
 
-  .box {
-    display: -webkit-flex;
+  .box {  
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
