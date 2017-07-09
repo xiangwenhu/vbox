@@ -6,10 +6,7 @@
           <h1 class="focus__tit c_txt1" id="singer_name">
             <div class="js_marquee" style="float: left; white-space: nowrap; text-overflow: ellipsis;">{{singername}}</div>
           </h1>
-          <p class="focus__desc c_txt1">粉丝<span class="focus__number" id="singer_fans"> {{fansnum | tt}} 万人</span></p>
-          <p class="focus__desc c_txt1">歌曲<span class="focus__number" id="singer_fans"> {{songcount}}</span> 专辑
-            <span class="focus__number" id="singer_fans"> {{albumcount}}</span> MV <span class="focus__number" id="singer_fans"> {{mvcount}}</span>
-          </p>
+          <p class="focus__desc c_txt1">粉丝<span class="focus__number" id="singer_fans"> {{fansnum | tt}} 万人</span></p>   
 
         </div>
         <span @click.stop='playhot' class="play-icon">
@@ -29,7 +26,7 @@
     components: {
       PlayIcon
     },
-    props: ['singermid', 'singername', 'fansnum', 'songcount', 'albumcount', 'mvcount', 'bgColor'],
+    props: ['singermid', 'singername', 'fansnum', 'bgColor'],
     computed: {
       bgImage: function () {
         return this.singermid ? 'url("https://y.gtimg.cn/music/photo_new/T001R300x300M000' + this.singermid + '.jpg?max_age=2592000")'

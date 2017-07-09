@@ -124,7 +124,7 @@
         } catch (err) {
           console.log(err)
           if (this.$refs.infiniteLoading) {
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
           }
         }
       },
