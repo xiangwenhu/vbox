@@ -37,9 +37,10 @@
         // this.toplist = recom.data.toplist
         this.hotdiss = recom.data.hotdiss.list.slice(0, 6)
       }
+      /* 
       if (this.$store.state.player.state === 0) {
         this.$store.commit('playing/next')
-      }
+      } */
     },
     computed: {
       ...mapState('toplist', {

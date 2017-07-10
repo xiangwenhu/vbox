@@ -36,29 +36,23 @@
           var clientWidth = docEl.clientWidth;
           if (!clientWidth) return;
           if (clientWidth >= 640) {
-            docEl.style.fontSize = landscape ? '20px' : '30px';
-            // alert(clientWidth)
+            docEl.style.fontSize = landscape ? '20px' : '30px';          
           } else {
-            docEl.style.fontSize = ((landscape ? 16 : 32) * (clientWidth / 640)).toFixed(1) + 'px';
-            // alert(clientWidth)
+            docEl.style.fontSize = ((landscape ? 16 : 32) * (clientWidth / 640)).toFixed(1) + 'px';         
           }
         };
 
       if (!document.addEventListener) return;
       window.addEventListener(resizeEvt, recalc, false);
       document.addEventListener('DOMContentLoaded', recalc, false);
-
+    
+      let myPlayer = document.querySelector('#audioPlayer')
       function touchstart() {
-        let audioPlayer = document.getElementById('audioPlayer')
-        audioPlayer.play()
-        audioPlayer.src = ""
-        audioPlayer.load();
-        audioPlayer.style.height = 0
-        audioPlayer.style.width = 0
-        audioPlayer.style.display = 'none'
-        setTimeout(function () { audioPlayer.pause() }, 10)
+        myPlayer.play()
+        myPlayer.parentElement.style = 'display:none'
         document.removeEventListener('touchstart', touchstart)
       }
+      document.addEventListener('touchstart', touchstart)
     }
   }
 

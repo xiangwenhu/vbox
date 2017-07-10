@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-view" @touchstart.stop='touchstart' @touchend.stop='touchend'>
+  <div class="pages-view" @touchstart='touchstart' @touchend='touchend'>
     <div class="header">
       <top-header></top-header>
       <header-bar :cat="cat"></header-bar>

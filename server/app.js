@@ -1,52 +1,48 @@
-const Koa = require('koa')
-const koaStatic = require('koa-static')
+const express = require('express')
+const app = express()
+const proxy = require('http-proxy-middleware')
 const path = require('path')
-const betterBody = require('koa-better-body')
-const routes = require('./routes')
-const app = new Koa()
 
-// better body
-app.use(betterBody())
+// 静态资源
+console.log(path.resolve(__dirname, '../dist'))
+app.use(express.static(path.resolve(__dirname, '../dist')))
 
-// 静态服务器资源
-app.use(koaStatic(path.resolve(__dirname, '../client')))
-
-// 自定义错误处理
-app.use(async (ctx, next) => {
-  try {
-    await next()
-    if (ctx.status === 404) {
-      ctx.body = {
-        status: false,
-        msg: '404 未找到'
-      }
-    }
-  } catch (err) {
-    let status = err.status || 500
-    ctx.body = {
-      status: status,
-      msg: '服务器内部错误' + err.body || err.message
-    }
-    console.log(err)
+// c.y.qq.com
+app.use('/cyqq', proxy({
+  target: 'https://c.y.qq.com',
+  changeOrigin: true,
+  secure: false,
+  pathRewrite: {
+    '^/cyqq': ''
+  },
+  headers: {
+    Referer: 'https://c.y.qq.com'
   }
-})
+}))
 
-// logger
-app.use(async function (ctx, next) {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}`)
-})
+// dl.stream.qqmusic.qq.com
+app.use('/stream', proxy({
+  target: 'http://dl.stream.qqmusic.qq.com',
+  changeOrigin: true,
+  secure: false,
+  pathRewrite: {
+    '^/stream': ''
+  },
+  headers: {
+    Referer: 'https://c.y.qq.com'
+  }
+}))
 
-// 路由
-routes(app)
+app.use('/h5vv', proxy({
+  target: 'https://h5vv.video.qq.com',
+  changeOrigin: true,
+  secure: false,
+  pathRewrite: {
+    '^/h5vv': ''
+  },
+  headers: {
+    Referer: 'https://y.qq.com'
+  }
+}))
 
-// 异常
-app.on('error', (err, ctx) => {
-  console.log('error url:' + ctx.url)
-  console.log('error detail:' + err)
-  console.log('error stack:' + err.stack)
-})
-
-app.listen(8085)
+app.listen(8084)
