@@ -6,6 +6,9 @@ let state = {
 
 const mutations = {
 
+  reset() {
+    state.list.splice(0)
+  },
   /**
    * 添加搜索记录
    * @param {*} state 

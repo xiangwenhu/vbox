@@ -91,6 +91,20 @@
     list-style: none
   }
 
+  .item {
+    line-height: 1.6rem;
+    padding: 0.1rem 0.5rem;
+    color: #666;
+    font-size: 0.8rem
+  }
+
+  .bar-item {
+    line-height: 1.8rem;
+    padding: 0.1rem 0.5rem;
+    color: #666;
+    font-size: 1rem
+  }
+
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity .5s ease;
@@ -204,9 +218,9 @@
     font-size: 0.9rem;
     line-height: 1.2rem;
     color: #333
-  } 
+  }
 
-  .tit_h4_w {  
+  .tit_h4_w {
     color: #FFF
   }
 

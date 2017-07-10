@@ -9,6 +9,12 @@ let state = {
 // state = proxy(state, 'player', ['mode'])
 
 const mutations = {
+
+  reset(state) {
+    state.currentTime = 0
+    state.state = 0
+    state.mode = 0
+  },
   /**
    * 播放的时间更新
    * @param {*} state 

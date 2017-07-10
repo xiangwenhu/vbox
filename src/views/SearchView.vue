@@ -113,7 +113,7 @@
   }
 
   .mod_search_bar {
-    padding: 0.5rem;
+    padding: 0.2rem;
     display: flex;
     justify-content: center;
     align-items: center;

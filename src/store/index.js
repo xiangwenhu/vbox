@@ -5,6 +5,7 @@ import playing from './playing'
 import player from './player'
 import searchHistory from './searchHistory'
 import toplist from './toplist'
+import root from './root'
 
 import { createLSPlugin } from '../plugin/syncls'
 import ls from '../utils/LStorage'
@@ -34,9 +35,15 @@ const store = new Vuex.Store({
     playing,
     player,
     searchHistory,
-    toplist
+    toplist,
+    root
   },
-  plugins: [plugin]
+  plugins: [plugin],
+  actions: {
+    reset({ commit, state }) {
+      Object.keys(state).forEach(key => commit(`${key}/reset`))
+    }
+  }
 })
 
 export default store

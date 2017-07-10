@@ -4,11 +4,15 @@
       <img class='logo' :src="logoImg" alt="logo">
     </a>
     <span class="header-seat"></span>
-    <router-link class="searchBtn" to="/search">
-      <img :src="searchImg" alt="搜索">
-    </router-link>
+    <span class="searchBtn">
+      <router-link  to="/search">
+        <img :src="searchImg" alt="搜索">
+      </router-link>
+    </span>
     <span class="header-setting">
-      <setting-icon  :height='1' :width='1'></setting-icon>
+       <router-link  to="/me">
+        <setting-icon  :height='1' :width='1'></setting-icon>
+       </router-link>
     </span>
   </header>
 </template>

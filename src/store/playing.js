@@ -7,6 +7,11 @@ let state = {
 
 const mutations = {
 
+  reset(state) {
+    state.list.splice(0)
+    state.current = null
+  },
+
   /**
    * 添加歌曲
    * @param {*} state 
@@ -108,7 +113,7 @@ const mutations = {
   },
   /**
    * 清空播放列表
-   */  
+   */
   clear() {
     state.list.splice(0)
     state.current = null

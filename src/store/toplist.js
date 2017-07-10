@@ -9,6 +9,11 @@ let state = {
 
 const mutations = {
 
+  reset() {
+    state.DFTopList.splice(0)
+    state.GlobalTopList.splice(0)
+    state.updateTime = new Date(1970, 1, 1)
+  },
   /**
    * 更新巅峰榜
    * @param {Object} state 

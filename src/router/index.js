@@ -27,6 +27,9 @@ import MVPlayerView from '../views/MVPlayerView'
 import SearchView from '../views/SearchView'
 import SearchResultView from '../views/SearchResultView'
 
+import MeView from '../views/MeView'
+import MeHomeView from '../views/MeHomeView'
+
 Vue.use(Router)
 
 export default new Router({
@@ -150,12 +153,25 @@ export default new Router({
       path: '/search',
       name: 'SearchView',
       component: SearchView,
-      children: [        
+      children: [
         {
           path: ':keyWords',
           name: 'SearchResultView',
           component: SearchResultView
         }]
+    },
+    {
+      path: '/me',
+      component: MeView,
+      children: [{
+        path: '',
+        redirect: '/me/home'
+      }, {
+        path: 'home',
+        name: 'MeHome',
+        component: MeHomeView
+      }]
+
     }
   ]
 })

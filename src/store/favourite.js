@@ -8,6 +8,12 @@ const state = {
 }
 
 const mutations = {
+
+  reset(state) {
+    state.songs.splice(0)
+    state.diss.splice(0)
+    state.album.splice(0)
+  },
   // 添加歌曲
   addSong({ state }, song) {
     state.songs.push(song)
