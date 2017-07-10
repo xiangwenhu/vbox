@@ -1,7 +1,6 @@
 <template>
   <div class="categorysList c_bg2">
     <div class="category_info" id="js_category_tit">
-      <h1 class="top_tit">{{categoryName}}</h1>
       <h1 class="category_info__tit">{{categoryName}}</h1>
       <div class="category_info__media">
         <img class="category_info__img" src="https://y.gtimg.cn/music/common/upload/t_tag_group_set/49541.jpg?max_age=2592000" alt=""
@@ -12,8 +11,8 @@
     <div class="main">
       <dissList :dissList='choicenessDissList'>
         <div slot="dissTitle" class="dissTitle">
-          <span class="" :class="[ module == 'choiceness' ? 'dissFont' : '']">精选歌单</span>
-          <span class="">
+          <span class="diss-content-t">精选歌单</span>
+          <span class="diss-content-t">
             <em class="select" data-sort="5" @click.stop='selectSort'>推荐</em>|<em class="pr0" data-sort="2" @click.stop='selectSort'>最新</em>
           </span>
         </div>
@@ -119,16 +118,18 @@
   @import '../assets/category_details_v2.css';
 
   .categorysList {
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
     height: 100%;
   }
 
   .c_bg2 {
     background-color: #fff;
   }
-
-  .wrap {
-    overflow: hidden;
-    padding-bottom: 50px;
+  
+  .diss-content-t{
+    line-height: 2rem;
+    padding-left: 0.2rem
   }
+  
 </style>

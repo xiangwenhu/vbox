@@ -16,7 +16,9 @@
 
         <mv-list :mvs='mvs' v-if='tag==3'></mv-list>
 
-        <div v-if='tag==4'><p class="s-desc">{{singerDesc}}</p></div>
+        <div v-if='tag==4'>
+          <p class="s-desc">{{singerDesc}}</p>
+        </div>
         <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles' v-if='[1,2,3].indexOf(tag)>=0'>
         </infinite-loading>
       </div>
@@ -155,7 +157,9 @@
       changeTag(tag) {
         this.pageIndex = 0
         this.tag = tag
-        this.$refs.infiniteLoading.isLoading = true
+        if (this.$refs.infiniteLoading) {
+          this.$refs.infiniteLoading.isLoading = true
+        }
         this.songs.splice(0)
         this.mvs.splice(0)
         this.albums.splice(0)
@@ -176,7 +180,8 @@
               albummid: s.musicData.albummid,
               albumname: s.musicData.albumname,
               singer: s.musicData.singer,
-              songmid: s.musicData.songmid
+              songmid: s.musicData.songmid,
+              interval: s.musicData.interval
             })))
             //  大于等于total ended
             ended = !res.data.list || res.data.list.length === 0 || pageIndex * this.pageSie + res.data.list.length >= res.data.total
@@ -193,7 +198,7 @@
           } else if (this.tag === 3) {
             res = await this.singer.mvs(pageIndex * this.pageSie, this.pageSie).then(rs => rs.json())
             this.mvs.push(...res.data.list.map(it => ({
-              vid: it.vid,            
+              vid: it.vid,
               title: it.title,
               pic: it.pic,
               listenCount: it.listenCount,
@@ -252,7 +257,8 @@
   .list {
     margin-top: 0.2rem
   }
-  .s-desc{
+
+  .s-desc {
     margin: 0 3%;
     text-align: justify;
     font-size: 0.8rem;

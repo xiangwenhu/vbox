@@ -24,6 +24,7 @@
         <div class="playing-list" @touchstart.stop='' @touchend.stop='' @click.stop=''>
           <div class="pl-header">
             <div class="pl-mode">顺序播放</div>
+            <div class="pl-cls" @click.stop='clearPlaying'>清空</div>
             <div class="pl-close" @click.stop='togglePlayingList'>
               <close-icon :size='1.2'></close-icon>
             </div>
@@ -94,12 +95,20 @@
       },
       togglePlayingList() {
         this.showList = !this.showList
+      },
+      clearPlaying() {
+        this.$store.commit('playing/clear')
       }
     },
     watch: {
       currentTime(to) {
         if (this.current) {
           this.progress = (to / this.current.interval).toFixed(4) * 100 + '%'
+        }
+      },
+      current(to) {
+        if (!to) {
+          this.$store.commit('player/setState', 2)
         }
       }
     }
@@ -279,6 +288,10 @@
   .pl-mode {
     flex: 1;
     text-align: center;
+  }
+
+  .pl-cls {
+    flex: 0 0 2.5rem
   }
 
   .pl-close {

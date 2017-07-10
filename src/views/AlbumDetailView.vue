@@ -56,7 +56,14 @@
         mid: res.data.mid,
         singername: res.data.singername
       }
-      this.albumSongs = res.data.list
+      this.albumSongs = (res.data.list || []).map(s => ({
+        songname: s.songname,
+        albummid: s.albummid,
+        albumname: s.albumname,
+        singer: s.singer,
+        songmid: s.songmid,
+        interval: s.interval
+      }))
       this.desc = res.data.desc
     },
     methods: {

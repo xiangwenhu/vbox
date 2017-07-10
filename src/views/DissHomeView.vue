@@ -1,11 +1,11 @@
 <template>
   <div class="diss">
     <diss-categorys :hotCategorys='hotCategorys'></diss-categorys>
-    <dissList :dissList='choicenessDissList' module="choiceness" @filterChanged='tagchanged'>
+    <dissList :dissList='choicenessDissList' :module="'choiceness'" @filterChanged='tagchanged'>
       <div slot="dissTitle" class="dissTitle">
-        <span class="" :class="[ module == 'choiceness' ? 'dissFont' : '']">精选歌单</span>
-        <span class="">
-          <em class="select" data-sort="5" @click.stop='selectSort'>推荐</em>|<em class="pr0" data-sort="2" @click.stop='selectSort'>最新</em>
+        <span class="diss-content-t" :class="[ module == 'choiceness' ? 'dissFont' : '']">精选歌单</span>
+        <span class="diss-content-t">
+          <em :class="sortId == 5 ? 'select':''" data-sort="5" @click.stop='selectSort'>推荐</em>|<em :class="sortId == 2 ? 'select':''"  data-sort="2" @click.stop='selectSort'>最新</em>
         </span>
       </div>
     </dissList>
@@ -33,7 +33,7 @@
     },
     data() {
       return {
-        filter: {sortId: 5},
+        filter: { sortId: 5 },
         hotCategorys: [
           { 'categoryId': 39, 'categoryName': 'ACG' },
           { 'categoryId': 148, 'categoryName': '情歌' },
@@ -54,7 +54,8 @@
         sin: 0,
         ein: 29,
         pagenum: 0,
-        pagesize: 30
+        pagesize: 30,
+        module: 'choiceness'
       }
     },
     methods: {
@@ -86,7 +87,8 @@
       },
       selectSort(ev) {
         if (ev.target.tagName === 'EM') {
-          let sortData = {sortId : ev.target.getAttribute('data-sort')};
+          let sortData = { sortId: ev.target.getAttribute('data-sort') };
+          this.sortId = sortData.sortId
           this.tagchanged(sortData);
         }
       },
@@ -113,5 +115,10 @@
   .diss {
     font-size: 14px;
     height: 100%;
+  }
+
+  .diss-content-t {
+    line-height: 2rem;
+    padding-left: 0.2rem
   }
 </style>

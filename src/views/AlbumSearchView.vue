@@ -102,9 +102,9 @@
         this.onInfinite();
       },
       async addAlbumToPlaying(albumMID) {
-        let res = await Search.albumInfo(albumMID).then(res => res.json())
-        this.$store.commit('playing/addSongs', res.data.list)
-        this.$store.commit('playing/next', res.data.list[0])
+        let list = await Search.albumInfo(albumMID, true).then(res => res.json())
+        this.$store.commit('playing/addSongs', list)
+        this.$store.commit('playing/next', [0])
       },
       toggleTag() {
         this.showTag = !this.showTag

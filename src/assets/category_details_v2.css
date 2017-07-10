@@ -3,13 +3,8 @@
   position: relative
 }
 
-.top_tit {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 4;
+.top_tit {    
     width: 100%;
-    padding: 30px 0 20px;
     line-height: 1;
     font-size: 20px;
     text-align: center;

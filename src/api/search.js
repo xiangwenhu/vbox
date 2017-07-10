@@ -1,7 +1,7 @@
 import URLConsts from './URLConsts'
 import utils from './utils'
 
-export default { 
+export default {
   /**
    * 歌手搜索
    * @param {String} type 类型 华语男等
@@ -9,7 +9,7 @@ export default {
    * @param {Number} pagenum 页码
    * @param {Number} pagesize 页大小
    */
-  singers (type = 'all_all', hot = 'all', pagenum = 1, pagesize = 10) {
+  singers(type = 'all_all', hot = 'all', pagenum = 1, pagesize = 10) {
     let url = `${URLConsts.URL_SEARCH_SINGER}&key=${type}_${hot}&pagenum=${pagenum}&pagesize=${pagesize}`
     return fetch(url)
   },
@@ -17,10 +17,18 @@ export default {
   /**
    * 相册媒体id
    * @param {String} albummid 
+   * @param {Boolean} extract 是否直接抽取列表数据
    */
-  albumInfo(albummid) {
+  albumInfo(albummid, extract = false) {
     let url = `${URLConsts.URL_ALBUM_INFO}&albummid=${albummid}`
-    return fetch(url)
+    return extract ? fetch(url).then(res => res.json()).then(res => res.data.list.map(s => ({
+      songname: s.songname,
+      albummid: s.albummid,
+      albumname: s.albumname,
+      singer: s.singer,
+      songmid: s.songmid,
+      interval: s.interval
+    }))) : fetch(url)
   },
   /** 歌曲搜索 tested
    * @param {String} w 关键字     
@@ -42,7 +50,7 @@ export default {
   searchMVs(w, p = 1, n = 30) {
     let url = `${URLConsts.URL_SEARCH_CLIENT_MV}&w=${encodeURIComponent(w)}&p=${p}&n=${n}`
     return fetch(url)
-  },  
+  },
   /**
    * 执行搜索后搜索专辑 tested
    * @param {String} w 关键字
@@ -166,7 +174,7 @@ export default {
       }
     }).then(res => res.text()).then(content => eval(content))
   },
-  
+
   /**
    * 歌曲信息  tested
    * @param {String} songmid 媒体id
@@ -174,7 +182,7 @@ export default {
   songInfo(songmid) {
     let url = `${URLConsts.URL_SONG_INFO}&songmid=${songmid}`
     return fetch(url)
-  },  
+  },
   /**
    * 歌曲所在的专辑  tested
    * @param {String} songid 

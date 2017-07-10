@@ -10,7 +10,7 @@ const mutations = {
   /**
    * 添加歌曲
    * @param {*} state 
-   * @param {*} song 歌曲信息 {songname,songmid,singer,albummid}
+   * @param {*} song 歌曲信息 {songname,songmid,singer,albummid,interval}
    *   
    */
   addSong(state, song) {
@@ -105,6 +105,13 @@ const mutations = {
         state.current = Object.assign({}, state.list[0])
       }
     }
+  },
+  /**
+   * 清空播放列表
+   */  
+  clear() {
+    state.list.splice(0)
+    state.current = null
   }
 }
 

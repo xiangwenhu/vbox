@@ -9,9 +9,11 @@
           <figure>
             <div class="playlist__item_box" :class="[(index + 1) % 2 == 0 ? 'mr0 ml1' : '']">
               <div class="playlist__cover mod_cover">
-                <router-link :to="{name:'AlbumDetailView',params:{albummid:'diss.dissid'}}" class="" :title="diss.dissname" :data-disstid="diss.dissid" >
-                  <img class="playlist__pic" v-lazy='diss.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;" :alt="diss.dissname" />
-                  <span class="play-count" @click.stop='playCount(diss.dissid)'><a href="javascript:void(0);"><img src='../../assets/img/headset.png'/><span class="listennum">{{(diss.listennum / 10000).toFixed(1)}}万</span></a></span>
+                <router-link :to="{name:'AlbumDetailView',params:{albummid:'diss.dissid'}}" class="" :title="diss.dissname" :data-disstid="diss.dissid">
+                  <img class="playlist__pic" v-lazy='diss.imgurl' onerror="this.src='//y.gtimg.cn/mediastyle/global/img/cover_playlist.png?max_age=31536000';this.onerror=null;"
+                    :alt="diss.dissname" />
+                  <span class="play-count" @click.stop='playCount(diss.dissid)'><a href="javascript:void(0);"><img src='../../assets/img/headset.png'/><span class="listennum">{{(diss.listennum / 10000).toFixed(1)}}万</span></a>
+                  </span>
                   <span class="play-icon" @click.stop='addToPlaying(diss.dissid)'><play-icon height='1'></play-icon></span>
                 </router-link>
               </div>
@@ -50,15 +52,10 @@
 
 
 <style scoped>
-  * {
-    box-sizing:border-box;
+  .a {
+    color: #333;
   }
 
-  .a {
-      color: #333;
-      text-decoration: none;
-  }
-    
   h4 {
     font-size: 100%;
   }
@@ -87,28 +84,20 @@
   }
 
   .pr0 {
-    padding-right: 0; 
+    padding-right: 0;
   }
 
-  .ulbox{
+  .ulbox {
     width: 100%;
     display: flex;
-    display: -webkit-flex;
     flex-flow: row wrap;
     justify-content: center;
   }
-  
-  /*精选歌单start*/
-  .dissList{
-  }
+  /*精选歌单start*/ 
 
-  .dissTitle{
-    margin: 0.5rem 0;
-    padding: 0 1rem;
-    height: 1rem;
+  .dissTitle {   
     width: 100%;
     display: flex;
-    display: -webkit-flex;
     flex-flow: row nowrap;
     justify-content: space-between;
   }
@@ -117,7 +106,7 @@
     color: #34C17C;
   }
 
-  .dissFont{
+  .dissFont {
     font-size: 16px;
     font-weight: bold;
   }
@@ -136,28 +125,28 @@
   }
 
   .mod_cover {
-      zoom: 1;
+    zoom: 1;
   }
 
   .playlist__pic {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .play-count{
+  .play-count {
     position: absolute;
     top: 85%;
     left: 5%;
   }
 
-  .play-count img{
+  .play-count img {
     vertical-align: middle;
     opacity: 0.9;
   }
 
-  .listennum{
+  .listennum {
     vertical-align: middle;
     display: inline-block;
     height: 16px;
@@ -174,7 +163,7 @@
   }
 
   .playlist__title {
-      overflow: hidden;
+    overflow: hidden;
   }
 
   .playlist__title_txt {
@@ -189,7 +178,7 @@
     height: 32px;
   }
 
-  .playlist__author{
+  .playlist__author {
     padding-left: 0.2rem;
     color: #999;
     white-space: nowrap;
@@ -200,8 +189,16 @@
   }
 
   .dissLi {
-    float: left;
-    width: 49%;
+    width: 50%;
     flex-grow: 1;
+  }
+
+  .dissLi figure {
+    margin: 0 0.2rem
+  }
+
+  .diss-content-t {
+    line-height: 2rem;
+    padding: 0 0.2rem
   }
 </style>
