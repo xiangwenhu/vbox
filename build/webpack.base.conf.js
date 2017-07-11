@@ -3,13 +3,13 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js'   
   },
   output: {
     path: config.build.assetsRoot,
@@ -34,7 +34,8 @@ module.exports = {
         include: [resolve('src'), resolve('test')],
         options: {
           formatter: require('eslint-friendly-formatter')
-        }
+        },
+        exclude: ["./src/sw.js"]
       },
       {
         test: /\.vue$/,
@@ -44,7 +45,8 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test')],
+        exclude: ["./src/sw.js"]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
