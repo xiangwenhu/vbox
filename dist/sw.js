@@ -42,7 +42,7 @@ self.addEventListener('message', function (event) {
    }) */
 })
 
-self.addEventListener('activate', function (event) {
+self.addEventListener('activate', function (ev) {
   return event.waitUntil(
     Promise.all([
       console.log('activating ....'),
