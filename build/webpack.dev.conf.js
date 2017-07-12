@@ -36,6 +36,10 @@ module.exports = merge(baseWebpackConfig, {
       {
         from: path.resolve(__dirname, '../src/sw.js'),
         to: config.build.assetsRoot
+      },      
+      {
+        from: path.resolve(__dirname, '../update.html'),
+        to: config.build.assetsRoot
       }
     ]),
     new FriendlyErrorsPlugin()

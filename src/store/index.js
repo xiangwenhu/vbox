@@ -43,6 +43,11 @@ const store = new Vuex.Store({
     reset({ commit, state }) {
       Object.keys(state).forEach(key => commit(`${key}/reset`))
     }
+  },
+  mutations: {
+    checkUpdate() {
+      window.location.href = '/update.html'
+    }
   }
 })
 
