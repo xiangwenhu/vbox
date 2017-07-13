@@ -13,21 +13,21 @@
 <script>
   export default {
     methods: {
-      clearCache() {
+      async clearCache() {
         // 复原localStorage
         this.$store.dispatch('reset')
         if (navigator.serviceWorker) {
           // 卸载 service worker
-          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          let r = await navigator.serviceWorker.getRegistrations().then(function (registrations) {
             for (let registration of registrations) {
               registration.unregister()
             }
-          }).then(() => {
-            // 清空文件系统
-            return window.LocalFileSystem.getInstance().then(fs => fs.clear())
-          }).then(() => {
-            alert('清除完毕')
           })
+          let fs = window.LocalFileSystem.getInstance()
+          if (fs && typeof fs.clear === 'function') {
+            r = await fs.clear()
+          }
+          alert('清除成功')
         }
       },
       checkUpdate() {

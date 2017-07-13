@@ -1,4 +1,4 @@
-var version = 'vbox-cache-v1.0.4',
+var version = 'vbox-cache-v1.0.6',
   cacheList = [
     '/',
     '/index.html',

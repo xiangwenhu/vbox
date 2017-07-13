@@ -139,17 +139,25 @@ class LocalFileSystem {
       return Promise.resolve(this._instance)
     }
     // 类型
-    let typeValue = type, that = this,
-      // 文件系统基础地址
-      fsBaseUrl = FS_SCHEME + location.origin + '/' + (type === 1 ? _PERSISTENT : _TEMPORARY) + '/'
-    return new Promise((resolve, reject) => {
-      window.requestFileSystem(type, size * 1024 * 1024, fs => {
-        that._instance = new LocalFileSystem(fs)
-        that._instance._type = typeValue
-        that._instance._fsBaseUrl = fsBaseUrl
-        return resolve(that._instance)
-      }, (err) => reject(err))
-    })
+    try {
+      if (!window.requestFileSystem) {
+        return Promise.resolve(null)
+      }
+
+      let typeValue = type, that = this,
+        // 文件系统基础地址
+        fsBaseUrl = FS_SCHEME + location.origin + '/' + (type === 1 ? _PERSISTENT : _TEMPORARY) + '/'
+      return new Promise((resolve, reject) => {
+        window.requestFileSystem(type, size * 1024 * 1024, fs => {
+          that._instance = new LocalFileSystem(fs)
+          that._instance._type = typeValue
+          that._instance._fsBaseUrl = fsBaseUrl
+          return resolve(that._instance)
+        }, () => resolve(null))
+      }).catch().then(() => null)
+    } catch (err) {
+      Promise.resolve(null)
+    }
   }
 
   /**

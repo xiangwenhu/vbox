@@ -57,17 +57,23 @@
         }
       },
       async updateMedia(to) {
+        if (!to) {
+          return
+        }
+
         if (this.player.src.indexOf('blob:') === 0) {
           window.URL.revokeObjectURL(this.player.src)
         }
         let fname = `C400${to.songmid}.m4a`
         let fs = await window.LocalFileSystem.getInstance()
-        let file = await fs.getFile(`vbox/${fname}`)
-        if (file != null) {
-          this.player.src = window.URL.createObjectURL(file)
+        if (fs && typeof fs.clear === 'function') {
+          let file = await fs.getFile(`vbox/${fname}`)
+          if (file != null) {
+            this.player.src = window.URL.createObjectURL(file)
+          }
         } else {
           let res = await Other.vkey(to.songmid).then(res => res.json()),
-            vkey = res.data.items[0].vkey         
+            vkey = res.data.items[0].vkey
           this.player.src = `/stream/${fname}?vkey=${vkey}&guid=488797456&uin=0&fromtag=66`
         }
         this.player.play()

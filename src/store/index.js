@@ -55,19 +55,21 @@ const store = new Vuex.Store({
 
 const saveFile = async function (src) {
   try {
-    let xhr = new XMLHttpRequest()
-    xhr.open('get', src, true)
-    xhr.responseType = 'blob'
-    xhr.onload = async function () {
-      var res = xhr.response
-      var fname = 'vbox/' + src.split('?')[0].split('/').reverse()[0]
-      let fs = await window.LocalFileSystem.getInstance()
-      let file = await fs.getFile(fname)
-      if (!file) {
-        fs.writeToFile(fname, res)
+    let fs = await window.LocalFileSystem.getInstance()
+    if (fs && typeof fs.clear === 'function') {
+      let xhr = new XMLHttpRequest()
+      xhr.open('get', src, true)
+      xhr.responseType = 'blob'
+      xhr.onload = async function () {
+        var res = xhr.response
+        var fname = 'vbox/' + src.split('?')[0].split('/').reverse()[0]
+        let file = await fs.getFile(fname)
+        if (!file) {
+          fs.writeToFile(fname, res)
+        }
       }
+      xhr.send()
     }
-    xhr.send()
   } catch (err) {
     console.log(err)
   }
