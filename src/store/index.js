@@ -5,10 +5,10 @@ import playing from './playing'
 import player from './player'
 import searchHistory from './searchHistory'
 import toplist from './toplist'
-import root from './root'
 
 import { createLSPlugin } from '../plugin/syncls'
 import ls from '../utils/LStorage'
+import '../utils/LocalFileSystem'
 
 const LS_KEY = 'vbox'
 
@@ -35,13 +35,15 @@ const store = new Vuex.Store({
     playing,
     player,
     searchHistory,
-    toplist,
-    root
+    toplist
   },
   plugins: [plugin],
   actions: {
     reset({ commit, state }) {
       Object.keys(state).forEach(key => commit(`${key}/reset`))
+    },
+    cache({ commit, state }, src) {
+      saveFile(src)
     }
   },
   mutations: {
@@ -51,4 +53,23 @@ const store = new Vuex.Store({
   }
 })
 
+const saveFile = async function (src) {
+  try {
+    let xhr = new XMLHttpRequest()
+    xhr.open('get', src, true)
+    xhr.responseType = 'blob'
+    xhr.onload = async function () {
+      var res = xhr.response
+      var fname = 'vbox/' + src.split('?')[0].split('/').reverse()[0]
+      let fs = await window.LocalFileSystem.getInstance()
+      let file = await fs.getFile(fname)
+      if (!file) {
+        fs.writeToFile(fname, res)
+      }
+    }
+    xhr.send()
+  } catch (err) {
+    console.log(err)
+  }
+}
 export default store

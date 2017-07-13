@@ -18,8 +18,8 @@
         cstyle: {
           // width: '100%',
           // height: '100%',
-          opacity: 0,
-          height: '100%'
+          // opacity: 0,
+          // height: '100%'
         }
       }
     },
@@ -29,6 +29,7 @@
     }),
     methods: {
       next: function () {
+        this.$store.dispatch('cache', this.player.src)
         this.$store.commit('playing/next')
       },
       timeupdate: function () {
@@ -56,10 +57,19 @@
         }
       },
       async updateMedia(to) {
-        let res = await Other.vkey(to.songmid).then(res => res.json()),
-          vkey = res.data.items[0].vkey,
-          fileName = `C400${to.songmid}.m4a`
-        this.player.src = `/stream/${fileName}?vkey=${vkey}&guid=488797456&uin=0&fromtag=66`
+        if (this.player.src.indexOf('blob:') === 0) {
+          window.URL.revokeObjectURL(this.player.src)
+        }
+        let fname = `C400${to.songmid}.m4a`
+        let fs = await window.LocalFileSystem.getInstance()
+        let file = await fs.getFile(`vbox/${fname}`)
+        if (file != null) {
+          this.player.src = window.URL.createObjectURL(file)
+        } else {
+          let res = await Other.vkey(to.songmid).then(res => res.json()),
+            vkey = res.data.items[0].vkey         
+          this.player.src = `/stream/${fname}?vkey=${vkey}&guid=488797456&uin=0&fromtag=66`
+        }
         this.player.play()
       }
     },
