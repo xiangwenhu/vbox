@@ -114,6 +114,8 @@ class FileStorageQuota {
   }
 }
 
+window.FileStorageQuota = global.FileStorageQuota = self.FileStorageQuota = FileStorageQuota
+
 class LocalFileSystem {
 
   constructor(fs) {
@@ -154,7 +156,7 @@ class LocalFileSystem {
           that._instance._fsBaseUrl = fsBaseUrl
           return resolve(that._instance)
         }, () => resolve(null))
-      }).catch().then(() => null)
+      })
     } catch (err) {
       Promise.resolve(null)
     }

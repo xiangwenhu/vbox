@@ -29,6 +29,7 @@ import SearchResultView from '../views/SearchResultView'
 
 import MeView from '../views/MeView'
 import MeHomeView from '../views/MeHomeView'
+import MeRecorder from '../views/MeRecorder'
 
 Vue.use(Router)
 
@@ -170,6 +171,10 @@ export default new Router({
         path: 'home',
         name: 'MeHome',
         component: MeHomeView
+      }, {
+        path: 'recorder',
+        name: 'MeRecorder',
+        component: MeRecorder
       }]
 
     }

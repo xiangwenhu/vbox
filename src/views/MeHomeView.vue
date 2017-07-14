@@ -6,6 +6,13 @@
         <li class="item" @click.stop='clearCache'>清除缓存</li>
         <li class="item" @click.stop='checkUpdate'>检查更新</li>
       </ul>
+      <hr>
+      <p class="bar-item"> 扩展功能</p>
+      <ul class="setting-list">
+        <router-link to="/me/recorder">
+          <li class="item">录制音乐</li>
+        </router-link>
+      </ul>
     </div>
   </div>
 </template>
@@ -23,7 +30,7 @@
               registration.unregister()
             }
           })
-          let fs = window.LocalFileSystem.getInstance()
+          let fs = await window.LocalFileSystem.getInstance()
           if (fs && typeof fs.clear === 'function') {
             r = await fs.clear()
           }

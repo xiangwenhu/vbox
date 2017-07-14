@@ -240,6 +240,10 @@
     flex: 1
   }
 
+  .hide{
+    display: none
+  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

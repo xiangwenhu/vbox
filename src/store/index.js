@@ -56,7 +56,7 @@ const store = new Vuex.Store({
 const saveFile = async function (src) {
   try {
     let fs = await window.LocalFileSystem.getInstance()
-    if (fs && typeof fs.clear === 'function') {
+    if (src && src.indexOf('blob:') < 0 && fs && typeof fs.clear === 'function') {
       let xhr = new XMLHttpRequest()
       xhr.open('get', src, true)
       xhr.responseType = 'blob'
