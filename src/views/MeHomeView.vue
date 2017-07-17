@@ -30,7 +30,7 @@
               registration.unregister()
             }
           })
-          let fs = await window.LocalFileSystem.getInstance()
+          let fs = await window.FileSystem.getInstance()
           if (fs && typeof fs.clear === 'function') {
             r = await fs.clear()
           }

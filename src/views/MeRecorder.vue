@@ -96,7 +96,7 @@
           time = new Date().toLocaleString().replace(/[^\x00-\xff]/g, '').replace(/\//g, '-'),
           fname = window.prompt('请输入音乐的名字', `我的音乐-${time}`),
           songmid = 'MyMusic' + new Date().getTime()
-        let fs = await window.LocalFileSystem.getInstance()
+        let fs = await window.FileSystem.getInstance()
         if (fs && typeof fs.clear === 'function') {
           await fs.writeToFile(`vbox/C400${songmid}.m4a`, blob)
           this.$store.commit('playing/addSong', {

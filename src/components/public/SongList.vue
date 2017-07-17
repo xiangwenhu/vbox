@@ -11,10 +11,10 @@
         </p>
       </div>
       <div class="box-item-operation">
-        <span style="position:absolute;right:2.4rem" @click.stop='play(pure ? song :song.data)'>
+        <span  @click.stop='play(pure ? song :song.data)'>
           <play-icon height="1.2"></play-icon>          
         </span>
-        <span style="position:absolute;right:0.8rem" @click.stop='add(pure ? song  : song.data)'>
+        <span  @click.stop='add(pure ? song  : song.data)'>
           <add-icon height="1.2"></add-icon>          
         </span>
       </div>
@@ -66,8 +66,7 @@
   }
 
   .box {
-    display: flex;
-    display: -webkit-box;
+    display: flex; 
     flex-wrap: nowrap;
     justify-content: left;
     align-content: space-between;
@@ -81,14 +80,14 @@
   }
 
   .box-item-num {
-    width: 10%;
     justify-content: center;
     text-align: center;    
+    flex: 0 0 3rem
   }
 
   .box-item-info {
     width: 60%;
-    margin-right: 30%;
+    flex: 1  
   }
 
   .song-title {
@@ -105,8 +104,7 @@
   }
 
   .box-item-operation {
-    position: absolute;
-    top: 30%
+    flex: 0 0 3.5rem;   
   }
   .tit{
     color: #FFF

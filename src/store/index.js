@@ -8,7 +8,7 @@ import toplist from './toplist'
 
 import { createLSPlugin } from '../plugin/syncls'
 import ls from '../utils/LStorage'
-import '../utils/LocalFileSystem'
+import '../utils/FileSystem'
 
 const LS_KEY = 'vbox'
 
@@ -55,7 +55,7 @@ const store = new Vuex.Store({
 
 const saveFile = async function (src) {
   try {
-    let fs = await window.LocalFileSystem.getInstance()
+    let fs = await window.FileSystem.getInstance()
     if (src && src.indexOf('blob:') < 0 && fs && typeof fs.clear === 'function') {
       let xhr = new XMLHttpRequest()
       xhr.open('get', src, true)
