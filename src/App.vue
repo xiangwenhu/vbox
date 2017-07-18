@@ -10,6 +10,7 @@
 <script>
   import 'whatwg-fetch'
   import 'es6-promise'
+  import './utils/support.js'
   import AudioPlayer from './components/public/AudioPlayer'
   import Search from './api/search'
   export default {
@@ -36,16 +37,16 @@
           var clientWidth = docEl.clientWidth;
           if (!clientWidth) return;
           if (clientWidth >= 640) {
-            docEl.style.fontSize = landscape ? '20px' : '30px';          
+            docEl.style.fontSize = landscape ? '20px' : '30px';
           } else {
-            docEl.style.fontSize = ((landscape ? 16 : 32) * (clientWidth / 640)).toFixed(1) + 'px';         
+            docEl.style.fontSize = ((landscape ? 16 : 32) * (clientWidth / 640)).toFixed(1) + 'px';
           }
         };
 
       if (!document.addEventListener) return;
       window.addEventListener(resizeEvt, recalc, false);
       document.addEventListener('DOMContentLoaded', recalc, false);
-    
+
       let myPlayer = document.querySelector('#audioPlayer')
       function touchstart() {
         myPlayer.play()
@@ -53,6 +54,15 @@
         document.removeEventListener('touchstart', touchstart)
       }
       document.addEventListener('touchstart', touchstart)
+
+      let pv = window.support.pageVisibility
+      if (pv.status) {
+        document.addEventListener("visibilitychange", function () {
+          if (!document[pv.ref]) {
+            console.log('欢迎回来')
+          }
+        })
+      }
     }
   }
 
@@ -240,7 +250,7 @@
     flex: 1
   }
 
-  .hide{
+  .hide {
     display: none
   }
 
