@@ -4,11 +4,15 @@ const express = require('express'),
   path = require('path'),
   fs = require('fs'),
   https = require('https'),
+  compression = require('compression'),
   privateKey = fs.readFileSync(path.resolve(__dirname, './cert/private.pem'), 'utf8'),
   certificate = fs.readFileSync(path.resolve(__dirname, './cert/file.crt'), 'utf8'),
   credentials = { key: privateKey, cert: certificate }
 
 const httpsServer = https.createServer(credentials, app)
+
+// compress responses
+app.use(compression())
 
 // 静态资源
 app.use(express.static(path.resolve(__dirname, '../dist')))
