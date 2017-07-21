@@ -4,7 +4,9 @@ if ('serviceWorker' in navigator) {
       if (reg.installing) {
         console.log('Service worker installing')
       } else if (reg.waiting) {
+        // firefox
         console.log('Service worker installed')
+        window.location.href = '/update.html'
       } else if (reg.active) {
         console.log('Service worker active')
       }
@@ -22,7 +24,11 @@ if ('serviceWorker' in navigator) {
         //                replaced by a newer version
 
         newWorker.addEventListener('statechange', () => {
+          // chrome 
           console.log('newWorker.state:', newWorker.state)
+          if (newWorker.state && newWorker.state === 'installed') {
+            window.location.href = '/update.html'
+          }
         })
       })
 

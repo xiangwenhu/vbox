@@ -1,9 +1,9 @@
-var version = 'vbox-cache-v1.0.6',
+var version = 'vbox-cache-v0.0.7',
   cacheList = [
     '/',
     '/index.html',
     '/update.html',
-    '/app.js',
+    '/static/js/app.js',
     '/static/js/main.js',
     '/static/js/update.js',
     '/static/img/loading.gif',

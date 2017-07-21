@@ -26,7 +26,7 @@ if ('serviceWorker' in navigator) {
 
 setTimeout(function () {
   window.location.href = '/'
-}, 8000)
+}, 5000)
 
 setInterval(function () {
   document.querySelector('#messageEl').innerHTML += '<p>check Updating.....</p>'
