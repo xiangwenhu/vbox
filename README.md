@@ -1,6 +1,6 @@
 # vbox
 一款基于vue的音乐播放web app<br/>
-<p>在线预览地址 <a href= 'http://babydairy2017.cloudapp.net:8084' target='_blank'>VBox</a>  </p>
+<p>在线预览地址 <a href= 'https://babydairy2017.cloudapp.net:8084' target='_blank'>VBox</a>  </p>
 <strong>因预览服务器不在中国，qq音乐里面的MV数据是请求不到的</strong>
 <strong>预览版本不是最新版本，service Worker因为证书问题，可能不能正常工作，可以下载项目进行预览</strong>
 <br/>
