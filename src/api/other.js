@@ -43,9 +43,11 @@ export default {
    * 歌曲的vkey  tested
    * @param {*String} songmid 歌曲id
    */
-  vkey(songmid) {
-    let url = `${URLConsts.URL_VKEY}&songmid=${songmid}&filename=C400${songmid}.m4a`
-    return fetch(url)
+  vkey(songmid, strMediaMid, guid) {
+    let url = `${URLConsts.URL_VKEY}&songmid=${songmid}&filename=C400${strMediaMid || songmid}.m4a&guid=${guid}`
+    return fetch(url, {
+      credentials: 'include'
+    })
   },
   /**
    * 歌单的分类 tested
@@ -67,7 +69,7 @@ export default {
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'referer': 'https://y.qq.com/portal/playlist.html',
+        '_referer': 'https://y.qq.com/portal/playlist.html',
         'Content-Type': 'application/json'
       }
     })
@@ -83,7 +85,7 @@ export default {
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'referer': 'https://y.qq.com/m/client/categoryzone/detail.html',
+        '_referer': 'https://y.qq.com/m/client/categoryzone/detail.html',
         'Content-Type': 'application/json'
       }
     })
@@ -94,7 +96,13 @@ export default {
    */
   dissInfo(disstid) {
     let url = `${URLConsts.URL_DISS_INFO}&disstid=${disstid}`
-    return fetch(url)
+    return fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        '_referer': `https://y.qq.com/n/yqq/playlist/${disstid}.html`,
+        'Content-Type': 'application/json'
+      }
+    })
   },
 
   /**

@@ -64,7 +64,7 @@ export default class Singer {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'referer': 'https://c.y.qq.com/xhr_proxy_utf8.html'
+        '_referer': 'https://c.y.qq.com/xhr_proxy_utf8.html'
       }
     })
   }

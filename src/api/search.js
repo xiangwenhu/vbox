@@ -170,7 +170,7 @@ export default {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        referer: 'https://y.qq.com/portal/player.html'
+        '_referer': 'https://y.qq.com/portal/player.html'
       }
     }).then(res => res.text()).then(content => eval(content))
   },
@@ -211,7 +211,7 @@ export default {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        referer
+        '_referer': referer
       },
       body: JSON.stringify(params)
     })

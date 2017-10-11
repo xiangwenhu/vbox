@@ -37,6 +37,11 @@ module.exports = {
         },
         headers: {
           Referer: 'https://c.y.qq.com'
+        },
+        onProxyReq: function (proxyReq, req) {
+          if (req.headers && req.headers['_referer']) {
+            proxyReq.setHeader('referer', req.headers['_referer'])
+          }
         }
       },
       '/stream': {

@@ -1,2 +1,9 @@
-[0618/163418.733:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: 管道正在被关闭。 (0xE8)
-[0624/133430.151:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: 管道正在被关闭。 (0xE8)
+https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?g_tk=5381&jsonpCallback=MusicJsonCallback1939815285138513&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&cid=205361747&callback=MusicJsonCallback1939815285138513&uin=0&
+    001qjdRZ4ZswWO
+C400101qjdRZ4ZswWO.m4a
+
+001qjdRZ4ZswWO
+C400101qjdRZ4ZswWO.m4a
+
+http://localhost:8080/stream/C400001qjdRZ4ZswWO.m4a?vkey=931F9175FDD5D0ED3070538BCC780FAD17BA155FF4A1DF83C5833871C39B98E69C4B7C60BBD2DB62E700F4F97A582421E22587F3A089A8BD&guid=6829316192&uin=0&fromtag=66
+

@@ -62,7 +62,8 @@
         albumname: s.albumname,
         singer: s.singer,
         songmid: s.songmid,
-        interval: s.interval
+        interval: s.interval,
+        strMediaMid : s.strMediaMid
       }))
       this.desc = res.data.desc
     },

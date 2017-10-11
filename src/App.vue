@@ -8,11 +8,11 @@
 </template>
 
 <script>
-  import 'whatwg-fetch'
-  import 'es6-promise'
   import './utils/support.js'
+  import cookie from './utils/cookie.js'
   import AudioPlayer from './components/public/AudioPlayer'
   import Search from './api/search'
+  import Other from './api/other'
   export default {
     name: 'app',
     components: {
@@ -62,6 +62,15 @@
             console.log('欢迎回来')
           }
         })
+      }
+      if (!cookie.get('pgv_pvid')) {
+        let t = (new Date()).getUTCMilliseconds(),
+          pvid = Math.round(2147483647 * Math.random()) * t % 1e10
+        document.cookie = `pgv_pvid=${pvid}; Expires=Sun, 18 Jan 2038 00:00:00 GMT; PATH=/;`
+        document.cookie = 'qqmusic_fromtag=66'
+        window.pvid = pvid
+      } else {
+        window.pvid = cookie.get('pgv_pvid')
       }
     }
   }

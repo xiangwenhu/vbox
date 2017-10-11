@@ -49,7 +49,7 @@ const URL_TOPLIST_OPT = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_toplist_opt.fcg?page=in
 const URL_TOPLIST_LIST = `${C_Y_QQ_COM}/v8/fcg-bin/fcg_v8_toplist_cp.fcg?tpl=3&page=detail&type=top&${COMMON_PARAMS}`
 
 // 节目的vkey
-const URL_VKEY = `${C_Y_QQ_COM}/base/fcgi-bin/fcg_music_express_mobile3.fcg?cid=205361747&uin=0&guid=488797456&${COMMON_PARAMS}`
+const URL_VKEY = `${C_Y_QQ_COM}/base/fcgi-bin/fcg_music_express_mobile3.fcg?cid=205361747&uin=0&${COMMON_PARAMS}`
 
 /* 歌单 */
 // 歌单的分类

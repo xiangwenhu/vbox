@@ -61,10 +61,11 @@
         }
       },
       async updateMedia(to) {
+        console.log(to)
         if (!to) {
           return
         }
-        let fname = `C400${to.songmid}.m4a`
+        let fname = `C400${to.strMediaMid || to.songmid}.m4a`
         let fs = await window.FileSystem.getInstance()
         if (fs && typeof fs.clear === 'function') {
           let file = await fs.getFile(`vbox/${fname}`)
@@ -76,9 +77,9 @@
           }
         }
 
-        let res = await Other.vkey(to.songmid).then(res => res.json()),
+        let res = await Other.vkey(to.songmid, to.strMediaMid, window.pvid).then(res => res.json()),
           vkey = res.data.items[0].vkey
-        this.player.src = `/stream/${fname}?vkey=${vkey}&guid=488797456&uin=0&fromtag=66`
+        this.player.src = `/stream/${fname}?vkey=${vkey}&guid=${window.pvid}&uin=0&fromtag=66`
         this.player.play()
       }
     },

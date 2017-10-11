@@ -7,11 +7,13 @@ const express = require('express'),
   compression = require('compression'),
   privateKey = fs.readFileSync(path.resolve(__dirname, './cert/private.pem'), 'utf8'),
   certificate = fs.readFileSync(path.resolve(__dirname, './cert/file.crt'), 'utf8'),
-  credentials = { key: privateKey, cert: certificate }
+  credentials = { key: privateKey, cert: certificate },
+  cookieParser = require('cookie-parser')
 
 const httpsServer = https.createServer(credentials, app)
 
 // compress responses
+app.use(cookieParser())
 app.use(compression())
 
 // 静态资源
@@ -25,8 +27,10 @@ app.use('/cyqq', proxy({
   pathRewrite: {
     '^/cyqq': ''
   },
-  headers: {
-    Referer: 'https://c.y.qq.com'
+  onProxyReq: function (proxyReq, req) {
+    if (req.headers && req.headers['_referer']) {
+      proxyReq.setHeader('referer', req.headers['_referer'])
+    }
   }
 }))
 
@@ -37,9 +41,9 @@ app.use('/stream', proxy({
   secure: false,
   pathRewrite: {
     '^/stream': ''
-  },
-  headers: {
-    Referer: 'https://c.y.qq.com'
+  },  
+  onProxyReq: function (proxyReq, req) {
+    
   }
 }))
 
@@ -49,9 +53,6 @@ app.use('/h5vv', proxy({
   secure: false,
   pathRewrite: {
     '^/h5vv': ''
-  },
-  headers: {
-    Referer: 'https://y.qq.com'
   }
 }))
 

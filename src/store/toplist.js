@@ -1,4 +1,4 @@
-import Other from '../api/Other'
+import Other from '../api/other'
 
 let state = {
   DFTopList: [],

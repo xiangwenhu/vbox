@@ -1,7 +1,7 @@
 {
-  "name": "m",
+  "name": "vbox",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Music box",
   "author": "Shawn ",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "compression": "^1.7.0",
+    "cookie-parser": "^1.4.3",
     "es6-promise": "^4.1.1",
     "koa": "^2.2.0",
     "koa-better-body": "^3.0.2",
