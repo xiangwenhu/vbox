@@ -59,7 +59,7 @@
       if (pv.status) {
         document.addEventListener("visibilitychange", function () {
           if (!document[pv.ref]) {
-            console.log('欢迎回来')
+            alert('欢迎回来');
           }
         })
       }
