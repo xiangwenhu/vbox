@@ -55,23 +55,23 @@
       }
       document.addEventListener('touchstart', touchstart)
 
+      // 窗口切换
       let pv = window.support.pageVisibility
       if (pv.status) {
         document.addEventListener("visibilitychange", function () {
           if (!document[pv.ref]) {
-            alert('欢迎回来');
+            console.log('欢迎回来');
           }
         })
       }
-      if (!cookie.get('pgv_pvid')) {
-        let t = (new Date()).getUTCMilliseconds(),
-          pvid = Math.round(2147483647 * Math.random()) * t % 1e10
-        document.cookie = `pgv_pvid=${pvid}; Expires=Sun, 18 Jan 2038 00:00:00 GMT; PATH=/;`
-        document.cookie = 'qqmusic_fromtag=66'
-        window.pvid = pvid
-      } else {
-        window.pvid = cookie.get('pgv_pvid')
-      }
+
+      // 网络状态
+      window.addEventListener("offline", function (e) {
+        confirm('断网了，继续使用，有缓存的。')
+      })
+      window.addEventListener("online", function (e) {
+        confirm('网络恢复了，继续使用。')
+      })
     }
   }
 
