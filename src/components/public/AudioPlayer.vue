@@ -44,7 +44,7 @@
         // this.player.play()
         // this.player.removeAttribute('src')
         // alert('play')
-        // this.player.load();       
+        // this.player.load();
 
         // setTimeout(function () { this.player.pause() }, 10)
 
@@ -65,7 +65,7 @@
         if (!to) {
           return
         }
-        let fname = `C400${to.strMediaMid || to.songmid}.m4a`
+        let fname = `C100${to.strMediaMid || to.songmid}.m4a`
         let fs = await window.FileSystem.getInstance()
         if (fs && typeof fs.clear === 'function') {
           let file = await fs.getFile(`vbox/${fname}`)
