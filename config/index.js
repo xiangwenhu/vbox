@@ -45,7 +45,7 @@ module.exports = {
         }
       },
       '/stream': {
-        target: 'http://dl.stream.qqmusic.qq.com',
+        target: 'http://isure.stream.qqmusic.qq.com',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
