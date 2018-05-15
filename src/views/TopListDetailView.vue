@@ -12,8 +12,8 @@
       <song-list :songs='songlist' @addsong='addsong' @playsong='playsong'></song-list>
       <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner='bubbles'>
         <span slot="no-more" class="no-more">
-        没有更多了
-     </span>
+          没有更多了
+        </span>
       </infinite-loading>
     </div>
   </div>
@@ -50,6 +50,10 @@
       // 某个排行榜的数据
       // let topListList = await Other.topListList(this.$route.params.topid).then(res => res.json())
       // this.songlist.concat(topListList.songlist)
+      this.$nextTick(() => {
+        this.$refs.infiniteLoading.isLoading = true
+        this.onInfinite();
+      });
     },
     methods: {
       addsong(song) {
