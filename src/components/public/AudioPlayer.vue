@@ -67,11 +67,13 @@
         }
         let fname = `C100${to.strMediaMid || to.songmid}.m4a`
         let fs = await window.FileSystem.getInstance()
-        if (fs && typeof fs.clear === 'function') {
-          let file = await fs.getFile(`vbox/${fname}`)
+        if (fs && typeof fs.root.getFile === 'function') {
+          let file = await fs.root.getFile(`vbox/${fname}`, {
+            create: false
+          })
           if (file != null) {
             // 文件系统可用，并且找到缓存文件
-            this.player.src = window.URL.createObjectURL(file)
+            this.player.src = window.URL.createObjectURL(file.file.blob)
             this.player.play()
             return
           }

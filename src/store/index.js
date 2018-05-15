@@ -56,16 +56,16 @@ const store = new Vuex.Store({
 const saveFile = async function (src) {
   try {
     let fs = await window.FileSystem.getInstance()
-    if (src && src.indexOf('blob:') < 0 && fs && typeof fs.clear === 'function') {
+    if (src && src.indexOf('blob:') < 0 && fs && typeof fs.root.getFile === 'function') {
       let xhr = new XMLHttpRequest()
       xhr.open('get', src, true)
       xhr.responseType = 'blob'
       xhr.onload = async function () {
         var res = xhr.response
         var fname = 'vbox/' + src.split('?')[0].split('/').reverse()[0]
-        let file = await fs.getFile(fname)
-        if (!file) {
-          fs.writeToFile(fname, res)
+        let file = await fs.root.getFile(fname, { create: true })
+        if (file) {
+          file.write(res)
         }
       }
       xhr.send()

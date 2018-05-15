@@ -1,594 +1,664 @@
-/**
- * 转为promise，主要是把 a.b(param1,param2,successCallback,errorCall) 转为promise
- * @param {*期待的是函数} obj 
- * @param {*上下文} ctx 
- * @param {*参数} args 
- */
-function toPromise(obj, ctx = window, ...args) {
-  if (!obj) return obj
+(function () {
+  const FILE_ERROR = {
+    INITIALIZE_FAILED: '文件系统初始化失败',
+    FILE_EXISTED: '文件已存在',
+    Directory_EXISTED: '目录已存在',
+    ONLY_FILE_WRITE: '只有文件才能写入',
+    NOT_ENTRY: '不是有效的Entry对象',
+    INVALID_PATH: '文件或者目录不能包含\\/:*?"<>|'
+  }
+  const DIR_SEPARATOR = '/'
+  const DIR_OPEN_BOUND = String.fromCharCode(DIR_SEPARATOR.charCodeAt(0) + 1)
 
-  // 如果已经是Promise对象
-  if (typeof obj.then === 'function') return obj
-
-  // 若obj是函数直接转换
-  if (typeof obj === 'function') return _toPromise(obj)
-
-  return obj
-
-  // 函数转成 promise
-  function _toPromise(fn) {
-    return new Promise((resolve, reject) => {
-      fn.call(ctx, ...args, (...ags) => {
-        // 多个参数返回数组，单个直接返回对象
-        resolve(ags && ags.length > 1 ? ags : ags[0] || null)
-      }, (err) => {
-        reject(err)
+  /**
+   * https://segmentfault.com/q/1010000007499416
+   * Promise for forEach
+   * @param {*数组} arr 
+   * @param {*回调} cb(val)返回的应该是Promise 
+   * @param {*是否需要执行结果集} needResults
+   */
+  const promiseForEach = function promiseForEach(arr, cb, needResults) {
+    // lastResult参数暂无用
+    let realResult = [], lastResult
+    let result = Promise.resolve()
+    Array.from(arr).forEach((val, index) => {
+      result = result.then(() => {
+        return cb(val, index).then((res) => {
+          lastResult = res
+          needResults && realResult.push(res)
+        })
       })
     })
+    return needResults ? result.then(() => realResult) : result
   }
-}
 
-/**
- * https://segmentfault.com/q/1010000007499416
- * Promise for forEach
- * @param {*数组} arr 
- * @param {*回调} cb(val)返回的应该是Promise 
- * @param {*是否需要执行结果集} needResults
- */
-function promiseForEach(arr, cb, needResults) {
-  // lastResult参数暂无用
-  let realResult = [], lastResult
-  let result = Promise.resolve()
-  Array.from(arr).forEach((val, index) => {
-    result = result.then(() => {
-      return cb(val, index).then((res) => {
-        lastResult = res
-        needResults && realResult.push(res)
+  const URLUtil = {
+    _pathBlackList: /[\\:*?"<>|]/,
+    // from https://github.com/ebidel/idb.filesystem.js/blob/master/src/idb.filesystem.js
+    // When saving an entry, the fullPath should always lead with a slash and never
+    // end with one (e.g. a directory). Also, resolve '.' and '..' to an absolute
+    // one. This method ensures path is legit!
+    resolveToFullPath(cwdFullPath, path) {
+      var fullPath = path
+
+      var relativePath = path[0] !== DIR_SEPARATOR
+      if (relativePath) {
+        fullPath = cwdFullPath + DIR_SEPARATOR + path
+      }
+
+      // Normalize '.'s,  '..'s and '//'s.
+      var parts = fullPath.split(DIR_SEPARATOR)
+      var finalParts = []
+      for (var i = 0; i < parts.length; ++i) {
+        var part = parts[i]
+        if (part === '..') {
+          // Go up one level.
+          if (!finalParts.length) {
+            throw Error('Invalid path')
+          }
+          finalParts.pop()
+        } else if (part === '.') {
+          // Skip over the current directory.
+        } else if (part !== '') {
+          // Eliminate sequences of '/'s as well as possible leading/trailing '/'s.
+          finalParts.push(part)
+        }
+      }
+
+      fullPath = DIR_SEPARATOR + finalParts.join(DIR_SEPARATOR)
+
+      // fullPath is guaranteed to be normalized by construction at this point:
+      // '.'s, '..'s, '//'s will never appear in it.
+
+      return fullPath
+    },
+
+    isValidatedPath(path) {
+      return !this._pathBlackList.test(path)
+    }
+  }
+
+  class FileError {
+    constructor({ code = 999, message = '未知错误' } = { code: 999, message: '未知错误' }) {
+      this.code = code
+      this.message = message
+    }
+  }
+  class Metadata {
+    constructor(modificationTime, size) {
+      this.modificationTime = modificationTime
+      this.size = size
+    }
+  }
+  class FSFile {
+    constructor(name, size, type, lastModifiedDate, blob) {
+      this.name = name
+      this.size = size
+      this.type = type
+      this.lastModifiedDate = lastModifiedDate
+      this.blob = blob
+    }
+  }
+  const ReaderUtil = {
+    read(blob, method) {
+      return new Promise((resolve, reject) => {
+        var reader = new FileReader()
+        var ps = [].slice.call(arguments, 2)
+        ps.unshift(blob)
+        reader[method].apply(reader, ps)
+        reader.onload = function () {
+          return resolve(reader.result)
+        }
+        reader.onerror = function (err) {
+          return reject(err)
+        }
+        reader.onabort = function () {
+          return reject(new Error('读取被中断'))
+        }
       })
-    })
-  })
-
-  return needResults ? result.then(() => realResult) : result
-}
-
-let support = {
-  get FileSystem() {
-    // 文件系统请求标识 
-    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem
-    // 根据URL取得文件的读取权限 
-    window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
-
-    return window.requestFileSystem && window.resolveLocalFileSystemURL
-  },
-  get IndexedDB() {
-    let idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB
-    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction
-    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
-    return idb && window.IDBTransaction && window.IDBKeyRange
-  }
-}
-
-/*
-export {  
-  toPromise,
-  promiseForEach
-} */
-/**
- * 参考的API:
- * http://w3c.github.io/quota-api/
- * 
- */
-/* import { toPromise, promiseForEach } from './utils' */
-
-if (!location.origin) {
-  location.origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '')
-}
-// 文件系统请求标识 
-window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem
-// 根据URL取得文件的读取权限 
-window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
-
-// 临时储存和永久存储
-navigator.temporaryStorage = navigator.temporaryStorage || navigator.webkitTemporaryStorage
-navigator.persistentStorage = navigator.persistentStorage || navigator.webkitPersistentStorage
-
-// 常量
-const _TEMPORARY = 'temporary',
-  _PERSISTENT = 'persistent',
-  FS_SCHEME = 'filesystem:'
-
-/**
- * 查询和申请定额
- * 测试脚本：
- * 使用情况： FileStorageQuota.instance.queryInfo().then(data=>console.log(data))
- * 申请空间： FileStorageQuota.instance.requestPersistentQuota().then(data=>console.log(data))
- */
-class FileStorageQuota {
-
-  constructor() {
-    let supportedTypes = [_TEMPORARY, _PERSISTENT]
-
-    this.storageQuota = navigator.storageQuota || {
-      storages: { [_TEMPORARY]: navigator.webkitTemporaryStorage, [_PERSISTENT]: navigator.webkitPersistentStorage },
-      queryInfo: function (type) {
-        return toPromise(this.storages[type].queryUsageAndQuota, this.storages[type]).then(arr => {
-          return { usage: arr[0], quota: arr[1] }
-        })
-      },
-      requestPersistentQuota: function (requestQuota) {
-        return toPromise(this.storages[_PERSISTENT].requestQuota, this.storages[_PERSISTENT], requestQuota * 1024 * 1024).then(quota => {
-          return { quota }
-        })
-      },
-      supportedTypes
-    }
-    this.supportedTypes = supportedTypes
-    this._instance = null
-  }
-
-  /**
-   * 获得实例
-   */
-  static get instance() {
-    return this._instance ? this._instance : this._instance = new FileStorageQuota()
-  }
-
-  /**
-   * 已经分配的额度和适用查询
-   * @param {*类型  window.TEMPORAR(0) |window.PERSISTENT(1) }  type
-   */
-  queryInfo(type = window.TEMPORARY) {
-    return new Promise((resolve, reject) => {
-      this.storageQuota.queryInfo(this.supportedTypes[type])
-        .then(storageInfo => resolve({ quota: this.tansferBytes(storageInfo.quota), usage: this.tansferBytes(storageInfo.usage) }))
-        .catch(this.errorHandler(reject))
-    })
-  }
-
-  /**
-   * 请求配额，只有PERSISTENT才需要用户允许，
-   * 返回值是你请求的和已经分配的大值   
-   * @param {* 请求的配额大小} requestQuota  
-   */
-  async requestPersistentQuota(requestQuota = 5) {
-    let { quota: quotaM, usage } = await this.queryInfo(window.PERSISTENT)
-    if (requestQuota > quotaM) {
-      return new Promise((resolve, reject) =>
-        this.storageQuota.requestPersistentQuota(requestQuota * 1024 * 1024)
-          .then(storageInfo => {
-            return resolve({ quota: this.tansferBytes(storageInfo.quota), usage: this.tansferBytes(storageInfo.usage || usage) })
-          })
-          .catch(this.errorHandler(reject)))
-    }
-    return { quota: Math.max(requestQuota, quotaM), usage }
-  }
-
-  /**
-   * 把bytes换算成KB,M,G等
-   * @param {* bytes的长度}  bytesLength
-   * @param {* 转为目标的单位} target
-   */
-  tansferBytes(bytesLength, target = 'M') {
-    let m = {
-      'Byte': 0,
-      'KB': 1,
-      'M': 2,
-      'G': 3
-    }
-    return bytesLength / Math.pow(1024, m[target] || 0)
-  }
-
-  /**
-   * Promise里面的错误处理
-   * @param {*}  reject
-   */
-  errorHandler(reject) {
-    return error => {
-      reject(error)
+    },
+    readAsArrayBuffer(blob) {
+      return this.read(blob, 'readAsArrayBuffer')
+    },
+    readAsBinaryString(blob) {
+      return this.read(blob, 'readAsBinaryString')
+    },
+    readAsDataURL(blob) {
+      return this.read(blob, 'readAsDataURL')
+    },
+    readAsText(blob, encoding = 'gb2312') {
+      return this.read(blob, 'readAsText', encoding)
     }
   }
-}
 
-class FSProvider {
+  const NOT_IMPLEMENTED_ERROR = new FileError({
+      code: 1000,
+      message: '方法未实现'
+    }),
+    NOT_FOUND_ERROR = new FileError({
+      code: 404,
+      message: '未找到'
+    }),
+    NOT_SUPPORTED = new Error('So Low , So Young')
 
-  constructor(fs) {
-    // 文件系统
-    this._fs = fs
-    // 文件系统的根Entry   
-    this._root = fs.root
-    // 实例对象
-    this._instance = null
-    // 类型，window.TEMPORAR| window.PERSISTENT
-    this._type = null
-    // 文件系统的基础地址
-    this._fsBaseUrl = null
-  }
+  class Entry {
+    constructor(isFile = true, isDirectory = false, name, fullPath) {
+      this.isFile = isFile
+      this.isDirectory = isDirectory
+      this.name = name
+      this.fullPath = fullPath
+      this.metadata = {
+        lastModifiedDate: new Date(),
+        size: 0
+      }
+    }
 
-  /**
-     * 
-     * @param {* window.TEMPORAR(0) |window.PERSISTENT(1)} type
-     * @param {* 申请空间大小，单位为M } size
+    /**
+     * 获取元数据 done
      */
-  static getInstance(type = window.TEMPORARY, size = 1) {
-    if (this._instance) {
-      return Promise.resolve(this._instance)
+    getMetadata() {
+      return this._dispatch('getMetadata')
     }
-    // 类型
-    try {
-      if (!window.requestFileSystem) {
-        return Promise.resolve(null)
-      }
 
-      let typeValue = type, that = this,
-        // 文件系统基础地址
-        fsBaseUrl = FS_SCHEME + location.origin + '/' + (type === 1 ? _PERSISTENT : _TEMPORARY) + '/'
+    moveTo() {
+      throw NOT_IMPLEMENTED_ERROR
+      // this._dispatch('moveTo', [...arguments])
+    }
+
+    copyTo() {
+      throw NOT_IMPLEMENTED_ERROR
+      // this._dispatch('copyTo', [...arguments])
+    }
+
+    toURL() {
+      return this._dispatch('toURL')
+    }
+
+    /**
+     * 删除  done
+     */
+    remove() {
+      return this._dispatch('remove')
+    }
+
+    /**
+     * 获得父目录 done
+     */
+    getParent() {
+      return this._dispatch('getParent')
+    }
+  }
+
+  Entry.prototype._dispatch = function (method, ...args) {
+    return new Promise(resolve => {
+      if (FileSystem._instance) {
+        return resolve(FileSystem._instance[method](this, ...args))
+      }
+      return FileSystem.getInstance().then(fs => {
+        FileSystem._instance = fs
+        return resolve(FileSystem._instance[method](this, ...args))
+      })
+    })
+  }
+  Entry.copyFrom = function (entry) {
+    var en = entry.isFile ? new FileEntry(entry.name, entry.fullPath, entry.file)
+      : new DirectoryEntry(entry.name, entry.fullPath)
+    en.metadata = entry.metadata
+    return en
+  }
+
+  class FileEntry extends Entry {
+    constructor(name, fullPath, file) {
+      super(true, false, name, fullPath)
+      this.file = file
+    }
+    /**
+     * FileEntry写入数据 done
+     * @param {Blob|String|BufferArray} content 
+     * @param {String} type 
+     * @param {Boolean} append 
+     */
+    write(content, type = 'text/plain', append = false) {
+      return this._dispatch('write', content, type, append)
+    }
+
+    getBlob() {
+      return this._dispatch('getBlob')
+    }
+
+    readAsArrayBuffer() {
+      return this._dispatch('readFile', 'readAsArrayBuffer')
+    }
+
+    readAsBinaryString() {
+      return this._dispatch('readFile', 'readAsBinaryString')
+    }
+
+    readAsDataURL() {
+      return this._dispatch('readFile', 'readAsDataURL')
+    }
+
+    readAsText(encoding = 'utf-8') {
+      return this._dispatch('readFile', 'readAsText', encoding)
+    }
+  }
+
+  class DirectoryEntry extends Entry {
+    constructor(name, fullPath) {
+      super(false, true, name, fullPath)
+    }
+
+    /**
+     * 获取文件 done
+     * @param {String} path 路径
+     * @param {Object} options  create:是否创建 ， exclusive 排他
+     */
+    getFile(path, options = { create: true, exclusive: false }) {
+      if (!URLUtil.isValidatedPath(path)) {
+        return Promise.reject(FILE_ERROR.INVALID_PATH)
+      }
+      return this._dispatch('getFile', path, options)
+    }
+
+    /**
+     * 获取目录 done
+     * @param {String} path 
+     * @param {Object} options 
+     */
+    getDirectory(path, options = { create: true, exclusive: false }) {
+      if (!URLUtil.isValidatedPath(path)) {
+        return Promise.reject(FILE_ERROR.INVALID_PATH)
+      }
+      return this._dispatch('getDirectory', path, options)
+    }
+
+    /**
+     * 递归删除 done
+     */
+    remove() {
+      return this._dispatch('removeRecursively')
+    }
+
+    /**
+     * 获取目录下的目录和文件
+     */
+    getEntries() {
+      return this._dispatch('getEntries')
+    }
+
+    ensureDirectory(path) {
+      return this._dispatch('ensureDirectory', path)
+    }
+  }
+
+  class FileSystem {
+    constructor() {
+      // DB
+      this._db = null
+      // 实例
+      this._instance = null
+      // store Name
+      this._storeName = FileSystem._storeName
+      // root
+      this.root = null
+      // 0 未初始化， 1初始化中
+      this._state = 0
+    }
+
+    static getInstance(dbVersion = 1.0) {
+      if (!FileSystem.isSupported) {
+        throw NOT_SUPPORTED
+      }
+      if (this._instance) {
+        Promise.resolve(this._instance)
+      }
+      // 确保同一实例
+      if (this._state === 1) {
+        return new Promise((resolve, reject) => {
+          let times = 0
+          let ticket = setInterval(() => {
+            if (this._instance && this._state === 2) {
+              times++
+              clearInterval(ticket)
+              return resolve(this._instance)
+            }
+            if (times > 10) {
+              return reject(FILE_ERROR.INITIALIZE_FAILED)
+            }
+          }, 5)
+        })
+      }
+      // 标记在初始化中
+      this._state = 1
       return new Promise((resolve, reject) => {
-        window.requestFileSystem(type, size * 1024 * 1024, fs => {
-          that._instance = new FSProvider(fs)
-          that._instance._type = typeValue
-          that._instance._fsBaseUrl = fsBaseUrl
-          return resolve(that._instance)
-        }, () => resolve(null))
-      })
-    } catch (err) {
-      return Promise.resolve(null)
-    }
-  }
-
-  /**
-   * 获得FileEntry
-   * @param {*文件路径} path  
-   */
-  _getFileEntry(path, create = false) {
-    return toPromise(this._root.getFile, this._root, path, { create, exclusive: false })
-  }
-
-  /**
-   * 获取目录
-   * @param {*路径} path 
-   * @param {*不存在的时候是否创建} create 
-   */
-  _getDirectory(path = '', create = false) {
-    return toPromise(this._root.getDirectory, this._root, path, { create, exclusive: false })
-  }
-
-  /**
-   * 递归查询目录和文件
-   * @param {*根Entry} rootEntry 
-   * @param {*保存结果的数组} refResults 
-   */
-  async _readEntriesRecursively(rootEntry, refResults) {
-    if (rootEntry.isFile) {
-      return Promise.resolve(rootEntry)
-    }
-    let reader = rootEntry.createReader()
-    let entries = await toPromise(reader.readEntries, reader)
-    refResults.push(...entries)
-    let psEntries = entries.map(entry => this._readEntriesRecursively(entry, refResults))
-    return Promise.all(psEntries)
-  }
-
-  /**
-   * 获得Entry
-   * @param {*路径} path 
-   */
-  resolveLocalFileSystemURL(path) {
-    return new Promise((resolve) => {
-      toPromise(window.resolveLocalFileSystemURL, window, `${this._fsBaseUrl}${path.startsWith('\\/') ? path.substr(1) : path}`).then(entry => resolve(entry)).catch(() => {
-        resolve(null)
-      })
-    })
-  }
-
-  /**
-   * 获得文件
-   * @param {*文件路径} path 
-   */
-  async getFile(path) {
-    try {
-      let fe = await this._getFileEntry(path)
-      return toPromise(fe.file, fe)
-    } catch (err) {
-      return Promise.resolve(null)
-    }
-  }
-
-  /**
-   * 往文件写入内容
-   * @param {*文件路径} path 
-   * @param {*写入的内容} content 
-   * @param {*数据类型} type 
-   * @param {*是否是append} append 
-   */
-  async writeToFile(path, content, type = 'text/plain', append = false) {
-    if (!path) {
-      Promise.reject(new Error('path参数为空'))
-    }
-
-    let dir = path.substring(0, path.lastIndexOf('/'))
-    let dirEntry = await this.resolveLocalFileSystemURL(dir)
-    if (!dirEntry) {
-      dirEntry = await this.ensureDirectory(dir)
-    }
-
-    let fe = await this._getFileEntry(path, true)
-    let writer = await toPromise(fe.createWriter, fe)
-    let data = content
-
-    // 不是blob，转为blob
-    if (content instanceof ArrayBuffer) {
-      data = new Blob([new Uint8Array(content)], { type })
-    } else if (typeof content === 'string') {
-      data = new Blob([content], { type: 'text/plain' })
-    } else {
-      data = new Blob([content])
-    }
-
-    if (append) {
-      writer.seek(writer.length)
-    }
-
-    return new Promise((resolve, reject) => {
-      // 写入成功
-      writer.onwriteend = () => {
-        resolve(data)
-      }
-
-      // 写入失败
-      writer.onerror = (err) => {
-        reject(err)
-      }
-
-      writer.write(data)
-    })
-  }
-
-  /**
-   * 获取指定目录下的文件和文件夹
-   * @param {*路径} path 
-   */
-  async readEntries(path = '') {
-    let entry = null
-    if (!path) {
-      entry = this._root
-    } else {
-      entry = await this.resolveLocalFileSystemURL(path)
-    }
-
-    // let reader = entry.createReader()
-    // return toPromise(reader.readEntries, reader).then
-    let refResults = []
-    let entries = await this._readEntriesRecursively(entry, refResults)
-    refResults.push(entry)
-    refResults.sort((a, b) => a.fullPath > b.fullPath)
-    return refResults.map(entry => entry.fullPath)
-  }
-
-  /**
-   * 获取所有的文件和文件夹，按照路径排序
-   */
-  async readAllEntries() {
-    let refResults = []
-    let entries = await this._readEntriesRecursively(this._root, refResults)
-    refResults.sort((a, b) => a.fullPath > b.fullPath)
-    return refResults.map(entry => entry.fullPath)
-  }
-
-  /**
-   * 确认目录存在，递归检查，没有会自动创建
-   * 
-   * @param {*} directory 
-   */
-  async ensureDirectory(directory = '') {
-    // 过滤空的目录，比如 '/music/' => ['','music','']
-    let _dirs = directory.split('/').filter(v => !!v)
-
-    if (!_dirs || _dirs.length === 0) {
-      return Promise.resolve(true)
-    }
-
-    return promiseForEach(_dirs, (dir, index) => {
-      return this._getDirectory(_dirs.slice(0, index + 1).join('/'), true)
-    }, true).then((dirEntes) => {
-      return (dirEntes && dirEntes[dirEntes.length - 1]).fullPath
-    })
-  }
-
-  /**
-   * 清除所有的文件和文件夹
-   */
-  async clear() {
-    let entries = await this.readEntries()
-    let ps_entries = entries.map(e => e.isFile ? toPromise(e.remove, e) : toPromise(e.removeRecursively, e))
-    return Promise.all(ps_entries).then(r => true)
-  }
-
-  /**
-  * Promise里面的错误处理
-  * @param {*reject}  
-  */
-  errorHandler(reject) {
-    return (error) => {
-      reject(error)
-    }
-  }
-
-}
-
-// 测试语句
-// 读取某个目录的子目录和文件：  FSProvider.getInstance().then(fs=>fs.readEntries()).then(f=>console.log(f))
-// 写文件         FSProvider.getInstance().then(fs=>fs.writeToFile('music/txt.txt','爱死你')).then(f=>console.log(f))
-// 获取文件：     FSProvider.getInstance().then(fs=>fs.getFile('music/txt.txt')).then(f=>console.log(f))
-// 递归创建目录：  FSProvider.getInstance().then(fs=>fs.ensureDirectory('music/vbox')).then(r=>console.log( r))
-// 递归获取：     FSProvider.getInstance().then(fs=>fs.readAllEntries()).then(f=>console.log(f))
-// 删除所有：     FSProvider.getInstance().then(fs=>fs.clear()).then(f=>console.log(f)).catch(err=>console.log(err)) 
-
-let _IDB_ = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
-
-class IDBProvider {
-
-  constructor() {
-    // DB
-    this._db = null
-    // 实例
-    this._instance = null
-    // store Name
-    this._storeName = IDBProvider._storeName
-  }
-
-  get transaction() {
-    return this._db.transaction([this._storeName], IDBTransaction.READ_WRITE || 'readwrite')
-  }
-
-  _toPromise(method, ...args) {
-    try {
-      return new Promise((resolve, reject) => {
-        // 获得事务
-        let trans = this.transaction
-        // 获得请求
-        let req = trans.objectStore(this._storeName)[method](...args)
-        // 请求成功
-        req.onsuccess = event => resolve(event.target.result)
-        // 请求失败
-        req.onerror = event => reject(req.error)
-        // 事务失败
-        trans.onerror = event => reject(trans.error)
-      })
-    } catch (err) {
-      Promise.reject(err)
-    }
-  }
-
-  static getInstance(dbVersion = 1.0) {
-    if (this._instance) {
-      Promise.resolve(this._instance)
-    }
-    return new Promise((resolve, reject) => {
-      let request = _IDB_.open(IDBProvider._dbName, dbVersion)
-      request.onerror = event => {
-        return reject(null)
-      }
-      request.onsuccess = event => {
-        let db = request.result
-        // 老版本，新版本是onupgradeneeded
-        if (db.setVersion && db.version !== dbVersion) {
-          var setVersion = db.setVersion(dbVersion)
-          setVersion.onsuccess = function () {
-            db.createObjectStore(this._storeName)
-            this._instance = new IDBProvider()
+        let request = self.indexedDB.open(FileSystem._dbName, dbVersion)
+        request.onerror = () => {
+          this._state = 0
+          return reject(null)
+        }
+        request.onsuccess = () => {
+          let db = request.result
+          // 老版本，新版本是onupgradeneeded
+          if (db.setVersion && db.version !== dbVersion) {
+            var setVersion = db.setVersion(dbVersion)
+            setVersion.onsuccess = function () {
+              db.createObjectStore(this._storeName)
+              this._instance = new FileSystem()
+              this._instance._db = request.result
+              this._instance.root = new DirectoryEntry('/', '/')
+              this._state = 2
+              return resolve(this._instance)
+            }
+          } else {
+            this._instance = new FileSystem()
             this._instance._db = request.result
+            this._instance.root = new DirectoryEntry('/', '/')
+            this._state = 2
             return resolve(this._instance)
           }
+          return null
+        }
+        request.onupgradeneeded = event => {
+          event.target.result.createObjectStore(this._storeName)
+        }
+      })
+    }
+
+    get transaction() {
+      return this._db.transaction([this._storeName], IDBTransaction.READ_WRITE || 'readwrite')
+    }
+
+    _toPromise(method, ...args) {
+      try {
+        let suc
+        if (args.length >= 1 && typeof args[args.length - 1] === 'function') {
+          suc = args[args.length - 1]
+          args = args.slice(0, args.length - 1)
+        }
+
+        return new Promise((resolve, reject) => {
+          // 获得事务
+          let trans = this.transaction
+          // 获得请求
+          let req = trans.objectStore(this._storeName)[method](...args)
+          // 游标
+          if (['openCursor', 'openKeyCursor'].indexOf(method) >= 0 && suc) {
+            req.onsuccess = function (event) {
+              suc(event)
+            }
+            trans.oncomplete = function () {
+              return resolve()
+            }
+            trans.onsuccess = function () {
+              return resolve()
+            }
+          } else {
+            // 如果是onsuccess 就返回，只表示请求成功，当大文件存储的时候，并不是已经写入完毕才返回
+            // req.onsuccess = event => resolve(event.target.result)
+            trans.oncomplete = function () {
+              return resolve(req.result)
+            }
+            trans.onsuccess = function () {
+              return resolve(req.result)
+            }
+          }
+          // 请求失败
+          req.onerror = () => reject(req.error)
+          // 事务失败
+          trans.onerror = () => reject(trans.error)
+        })
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    }
+
+    /**
+     * 
+     * @param {Entry} entry 
+     * @param {写入的内容} content 
+     * @param {blob类型} type 
+     * @param {是否是append模式} append 
+     */
+    write(entry, content, type = 'text/plain', append = false) {
+      this._checkEntry(entry)
+      if (entry.isFile !== true) {
+        throw new FileError({ message: FILE_ERROR.ONLY_FILE_WRITE })
+      }
+      let data = content
+      // 不是blob，转为blob
+      if (content instanceof ArrayBuffer) {
+        data = new Blob([new Uint8Array(content)], { type })
+      } else if (typeof content === 'string') {
+        data = new Blob([content], { type: 'text/plain' })
+      } else if (typeof content.type === 'string') {
+        data = new Blob([content], { type: content.type })
+      } else {
+        data = new Blob([content], { type })
+      }
+      let file = entry.file
+      if (!file) {
+        // 不存在创建
+        file = new FSFile(entry.fullPath.split(DIR_SEPARATOR).pop(), data.size, type, new Date(), data)
+        entry.metadata.lastModifiedDate = file.lastModifiedDate
+        entry.metadata.size = data.size
+        entry.file = file
+      } else {
+        // 存在更新
+        file.lastModifiedDate = new Date()
+        file.type = type
+        file.size = data.size
+        file.blob = data
+        entry.metadata.lastModifiedDate = file.lastModifiedDate
+        entry.metadata.size = data.size
+      }
+
+      return this._toPromise('put', entry, entry.fullPath).then(() => entry)
+    }
+
+    /**
+     * 
+     * @param {Entry} entry 
+     * @param {String} path 
+     * @param {Object} create 是否创建  exclusive排他
+     */
+    getFile(entry, path, { create, exclusive }) {
+      return this.getEntry(...arguments, true)
+    }
+
+    getDirectory(entry, path, { create, exclusive }) {
+      return this.getEntry(...arguments, false)
+    }
+
+    remove(entry) {
+      this._checkEntry(entry)
+      return this._toPromise('delete', entry.fullPath).then(() => true)
+    }
+
+    removeRecursively(entry) {
+      this._checkEntry(entry)
+      var range = IDBKeyRange.bound(entry.fullPath, entry.fullPath + DIR_OPEN_BOUND, false, true)
+      return this._toPromise('delete', range).then(() => true)
+    }
+
+    /**
+     * 获得元数据
+     * @param {Entry} entry 
+     */
+    getMetadata(entry) {
+      let f = entry.file || {}
+      return new Metadata(f && f.lastModifiedDate || null, f && f.size || 0)
+    }
+
+    /**
+     * 获取文件或者目录
+     * @param {Entry} entry 
+     * @param {String} path 
+     * @param {String} param2 
+     * @param {Boolean} getFile true获取文件 false 获取目录
+     */
+    getEntry(entry, path, { create, exclusive = false }, getFile = true) {
+      this._checkEntry(entry)
+      if (path === DIR_SEPARATOR) {
+        // 如果获取'/'直接返回当前目录
+        return entry
+      }
+      path = URLUtil.resolveToFullPath(entry.fullPath, path)
+      return this._toPromise('get', path).then(fe => {
+        if (create === true && exclusive === true && fe) {
+          // 创建 && 排他 && 存在
+          throw new FileError({
+            message: getFile ? FILE_ERROR.FILE_EXISTED : FILE_ERROR.Directory_EXISTED
+          })
+        } else if (create === true && !fe) {
+          // 创建 && 文件不存在
+          let name = path.split(DIR_SEPARATOR).pop(),
+            newEntry = getFile ? new FileEntry(name, path) : new DirectoryEntry(name, path),
+            fileE = getFile ? new FSFile(name, 0, null, new Date(), null) : null
+          if (getFile) newEntry.file = fileE
+          return this._toPromise('put', newEntry, newEntry.fullPath).then(() => {
+            return Entry.copyFrom(newEntry)
+          })
+        } else if (!create && !fe) {
+          // 不创建 && 文件不存在
+          // throw NOT_FOUND_ERROR
+          return null
+        } else if (fe && fe.isDirectory && getFile || fe && fe.isFile && !getFile) {
+          // 不创建 && entry存在 && 是目录 && 获取文件 || 不创建 && entry存在 && 是文件 && 获取目录
+          throw new FileError({
+            code: 1001,
+            message: getFile ? FILE_ERROR.Directory_EXISTED : FILE_ERROR.FILE_EXISTED
+          })
         } else {
-          this._instance = new IDBProvider()
-          this._instance._db = request.result
-          return resolve(this._instance)
+          return Entry.copyFrom(fe)
         }
-      }
-      request.onupgradeneeded = event => {
-        event.target.result.createObjectStore(this._storeName)
-      }
-    })
-  }
-
-  /**
-   * 获取文件 
-   * @param {*String} path 
-   */
-  getFile(path) {
-    return this._toPromise('get', path)
-  }
-
-  /**
-   * 写入文件
-   * @param {*String} path 路径
-   * @param {*String|Blob} content 内容 
-   * @param {*String} type 
-   * @param {*String} append 暂无用
-   */
-  async writeToFile(path, content, type = null, append = false) {
-    let data = content
-    // 不是blob，转为blob
-    if (content instanceof ArrayBuffer) {
-      data = new Blob([new Uint8Array(content)], { type })
-    } else if (typeof content === 'string') {
-      data = new Blob([content], { type: 'text/plain' })
-    } else {
-      data = new Blob([content])
+      })
     }
-    await this._toPromise('put', data, path)
-    return this.getFile(path)
 
-    /*
-    return new Promise((resolve, reject) => {
-        let data = content
-        // 不是blob，转为blob
-        if (content instanceof ArrayBuffer) {
-            data = new Blob([new Uint8Array(content)], { type })
-        } else if (typeof content === 'string') {
-            data = new Blob([content])
-        }
- 
-        // 存入数据
-        let trans = this.transaction
-        trans.objectStore(this._storeName).put(data, path)
- 
-        trans.objectStore(this._storeName).get(path).onsuccess = event => {
-            resolve(event.target.result)
-        }
- 
-        trans.onerror = event => {
-            reject(trans.error)
-        }
-    }) */
-  }
-
-  readEntries(path = '') {
-    if (!path) {
-      return this.readAllEntries()
+    /**
+     * 获得父目录
+     * @param {Entry} entry 
+     */
+    getParent(entry) {
+      this._checkEntry(entry)
+      // 已经是根目录
+      if (entry.fullPath === DIR_SEPARATOR) {
+        return entry
+      }
+      let parentFullPath = entry.fullPath.substring(0, entry.fullPath.lastIndexOf(DIR_SEPARATOR))
+      // 上级目录为根目录的情况
+      if (parentFullPath === '') {
+        return this.root
+      }
+      return this.getDirectory(this.root, parentFullPath, { create: false }, false)
     }
-    return this._toPromise('getAllKeys', IDBKeyRange.lowerBound(path)).then(r => r.filter(p => {
-      // 以当前路径开头 && （截断当前为空字符串，或者截断后以/开头）
-      return p.indexOf(path) === 0 && (p.substring(path.length) === '' || p.substring(path.length).indexOf('/') === 0)
-    }))
+
+    /**
+     * 获得目录下的目录和文件
+     * @param {Entry} entry 
+     */
+    getEntries(entry) {
+      let range = null,
+        results = []
+      if (entry.fullPath !== DIR_SEPARATOR && entry.fullPath !== '') {
+        // console.log(fullPath + '/', fullPath + DIR_OPEN_BOUND)
+        range = IDBKeyRange.bound(
+          entry.fullPath + DIR_SEPARATOR, entry.fullPath + DIR_OPEN_BOUND, false, true)
+      }
+
+      let valPartsLen, fullPathPartsLen
+      return this._toPromise('openCursor', range, function (event) {
+        var cursor = event.target.result
+        if (cursor) {
+          var val = cursor.value
+          valPartsLen = val.fullPath.split(DIR_SEPARATOR).length
+          fullPathPartsLen = entry.fullPath.split(DIR_SEPARATOR).length
+          if (val.fullPath !== DIR_SEPARATOR) {
+            // 区分根目录和非根目录
+            if (entry.fullPath === DIR_SEPARATOR && valPartsLen < fullPathPartsLen + 1 ||
+              entry.fullPath !== DIR_SEPARATOR && valPartsLen === fullPathPartsLen + 1) {
+              results.push(val.isFile ? new FileEntry(val.name, val.fullPath, val.file) : new DirectoryEntry(val.name, val.fullPath))
+            }
+          }
+          cursor['continue']()
+        }
+      }).then(() => results)
+    }
+
+    toURL(entry) {
+      this._checkEntry(entry)
+      if (entry.file && entry.file.blob) {
+        return URL.createObjectURL(entry.file.blob)
+      }
+      return null
+    }
+
+    readFile(entry, method, ...args) {
+      this._checkEntry(entry)
+      if (entry.file && entry.file.blob) {
+        return ReaderUtil.read(entry.file.blob, method, ...args)
+      }
+      throw NOT_FOUND_ERROR
+    }
+
+    getBlob(entry) {
+      this._checkEntry(entry)
+      if (entry.file && entry.file.blob) {
+        return entry.file.blob
+      }
+      throw NOT_FOUND_ERROR
+    }
+
+    /**
+     * 检查Entry
+     * @param {*Entry} entry 
+     */
+    _checkEntry(entry) {
+      if (!entry || !(entry instanceof Entry)) {
+        throw new FileError({ message: FILE_ERROR.NOT_ENTRY })
+      }
+    }
+
+    /**
+     * 
+     * @param {Entry} entry 
+     * @param {path} path 
+     */
+    ensureDirectory(entry, path) {
+      this._checkEntry(entry)
+      if (path === DIR_SEPARATOR) {
+        // 如果获取'/'直接返回当前目录
+        return entry
+      }
+      let rPath = URLUtil.resolveToFullPath(entry.fullPath, path)
+      if (rPath.length < path.length) {
+        return entry
+      }
+      path = rPath.substring(entry.fullPath.length)
+      let dirs = path.split(DIR_SEPARATOR)
+      return promiseForEach(dirs, (dir, index) => {
+        return entry.getDirectory(dirs.slice(0, index + 1).join('/'), { create: true })
+      }, true).then((dirEntes) => {
+        return dirEntes && dirEntes[dirEntes.length - 1]
+      }).catch(err => { throw err })
+    }
   }
 
-  readAllEntries() {
-    return this._toPromise('getAllKeys')
+  FileSystem.isSupported = () => {
+    self.indexedDB_ = self.indexedDB || self.mozIndexedDB || self.webkitIndexedDB || self.msIndexedDB
+    self.IDBTransaction = self.IDBTransaction || self.webkitIDBTransaction || self.msIDBTransaction
+    self.IDBKeyRange = self.IDBKeyRange || self.webkitIDBKeyRange || self.msIDBKeyRange
+    return !!(self.indexedDB && self.IDBTransaction && self.IDBKeyRange)
   }
 
-  ensureDirectory(directory = '') {
-    return Promise.resolve(directory)
-  }
+  FileSystem._dbName = '_fs_db_'
+  FileSystem._storeName = '_fs_store'
 
-  clear() {
-    return this._toPromise('clear').then(r => true)
-  }
+  self.FILE_ERROR = FILE_ERROR
+  self.URLUtil = URLUtil
+  self.ReaderUtil = ReaderUtil
+  self.Entry = Entry
+  self.FileEntry = FileEntry
+  self.DirectoryEntry = DirectoryEntry
+  self.FileSystem = FileSystem
+})(self)
 
-  /**
-   * 加工处理path，比如特殊字符，比如以/开头等等
-   * @param {*String} path 
-   */
-  _handlePath(path) {
-    return path
-  }
-}
-
-IDBProvider._dbName = '_fs_db_'
-IDBProvider._storeName = '_fs_store'
-
-// 测试语句
-// 读取某个目录的子目录和文件：  IDBProvider.getInstance().then(fs=>fs.readEntries()).then(f=>console.log(f))
-// 写文件         IDBProvider.getInstance().then(fs=>fs.writeToFile('music/txt.txt','爱死你')).then(f=>console.log(f))
-// 获取文件：     IDBProvider.getInstance().then(fs=>fs.getFile('music/txt.txt')).then(f=>console.log(f))
-// 递归创建目录：  IDBProvider.getInstance().then(fs=>fs.ensureDirectory('music/vbox')).then(r=>console.log( r))
-// 递归获取：     IDBProvider.getInstance().then(fs=>fs.readAllEntries()).then(f=>console.log(f))
-// 删除所有：     IDBProvider.getInstance().then(fs=>fs.clear()).then(f=>console.log(f)).catch(err=>console.log(err)) 
-
-if (support.FileSystem) {
-  window.FileSystem = FSProvider
-} else if (support.IndexedDB) {
-  window.FileSystem = IDBProvider
-}

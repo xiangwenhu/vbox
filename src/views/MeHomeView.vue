@@ -31,8 +31,8 @@
             }
           })
           let fs = await window.FileSystem.getInstance()
-          if (fs && typeof fs.clear === 'function') {
-            r = await fs.clear()
+          if (fs && typeof fs.root.remove === 'function') {
+            r = await fs.remove()
           }
           alert('清除成功')
         }

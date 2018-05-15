@@ -97,8 +97,9 @@
           fname = window.prompt('请输入音乐的名字', `我的音乐-${time}`),
           songmid = 'MyMusic' + new Date().getTime()
         let fs = await window.FileSystem.getInstance()
-        if (fs && typeof fs.clear === 'function') {
-          await fs.writeToFile(`vbox/C400${songmid}.m4a`, blob)
+        if (fs && typeof fs.root.remove === 'function') {
+          let file = fs.root.getFile(`vbox/C400${songmid}.m4a`)
+          await file.write(blob)
           this.$store.commit('playing/addSong', {
             songname: fname,
             songmid: songmid,
